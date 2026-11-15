@@ -118,9 +118,39 @@ const INITIAL_BOOKS = [
     id: '14', 
     title: 'Winter Holiday Tales', 
     author: 'Vintage Keepsake Collection', 
+    category: 'story',
     cover: 'https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=400&q=80',
     notes: 'Stories by the fire',
     pages: [] 
+  },
+  // Family Photo Albums
+  {
+    id: 'album_santa',
+    title: 'Pictures with Santa',
+    author: 'Agan Family Keepsake',
+    category: 'album',
+    cover: 'https://images.unsplash.com/photo-1543258103-a62bdc069871?auto=format&fit=crop&w=400&q=80',
+    notes: 'Our annual keepsake album of all our pictures with Santa Claus 🎅 (Upload Apple Photos here!)',
+    pages: [],
+  },
+  {
+    id: 'album_2024',
+    title: 'Christmas 2024',
+    author: 'Annual Highlights',
+    category: 'album',
+    cover: 'https://images.unsplash.com/photo-1512474932049-78ac69ede12c?auto=format&fit=crop&w=400&q=80',
+    notes: 'Our best holiday pictures & memories from this year',
+    pages: [],
+  },
+  // Family Cookbooks & Keepsakes
+  {
+    id: 'cookbook_erin',
+    title: "Erin's Family Cookbook",
+    author: 'Holiday Recipes & Traditions',
+    category: 'cookbook',
+    cover: 'https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=400&q=80',
+    notes: 'Treasured family recipes, Christmas morning traditions & sweet holiday treats 🥧',
+    pages: [],
   },
 ];
 
@@ -152,7 +182,13 @@ export default function App() {
   const [books, setBooks] = useState(() => {
     try {
       const saved = localStorage.getItem('erin_christmas_books');
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        // Ensure new albums/cookbooks are merged in if not present in previous cache
+        const existingIds = new Set(parsed.map((b) => b.id));
+        const missing = INITIAL_BOOKS.filter((b) => !existingIds.has(b.id));
+        return [...parsed, ...missing];
+      }
     } catch (e) {}
     return INITIAL_BOOKS;
   });

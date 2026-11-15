@@ -20,6 +20,7 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded }) {
   const [panY, setPanY] = useState(0);
 
   // Book metadata
+  const [category, setCategory] = useState('story'); // 'story' | 'album' | 'cookbook'
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [notes, setNotes] = useState('');
@@ -226,6 +227,7 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded }) {
         formData.append('title', title.trim());
         formData.append('author', author.trim());
         formData.append('notes', notes.trim());
+        formData.append('category', category);
         formData.append('sort_order', Date.now());
         if (finalCoverFile) {
           formData.append('cover', finalCoverFile);
@@ -237,8 +239,9 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded }) {
         createdRecord = {
           id: 'local_' + Date.now(),
           title: title.trim(),
-          author: author.trim() || 'Unknown Author',
-          cover: finalCoverUrl || 'https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&fit=crop&w=400&q=80',
+          author: author.trim() || (category === 'album' ? 'Family Photo Album' : category === 'cookbook' ? 'Holiday Recipes' : 'Unknown Author'),
+          category: category,
+          cover: finalCoverUrl || (category === 'album' ? 'https://images.unsplash.com/photo-1543258103-a62bdc069871?auto=format&fit=crop&w=400&q=80' : 'https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&fit=crop&w=400&q=80'),
           notes: notes.trim(),
           pages: [],
         };
@@ -283,8 +286,49 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded }) {
           </div>
         </div>
 
+        {/* Item Type Selector */}
+        <div className="flex bg-stone-950/90 p-1 rounded-xl border border-stone-800 mb-3 text-xs font-sans">
+          <button
+            type="button"
+            onClick={() => setCategory('story')}
+            className={`flex-1 py-1.5 rounded-lg text-center font-medium transition flex items-center justify-center gap-1 ${
+              category === 'story'
+                ? 'bg-amber-700 text-amber-50 shadow'
+                : 'text-stone-400 hover:text-stone-200'
+            }`}
+          >
+            <span>📖</span> <span>Storybook</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setCategory('album')}
+            className={`flex-1 py-1.5 rounded-lg text-center font-medium transition flex items-center justify-center gap-1 ${
+              category === 'album'
+                ? 'bg-amber-700 text-amber-50 shadow'
+                : 'text-stone-400 hover:text-stone-200'
+            }`}
+          >
+            <span>📷</span> <span>Photo Album</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setCategory('cookbook')}
+            className={`flex-1 py-1.5 rounded-lg text-center font-medium transition flex items-center justify-center gap-1 ${
+              category === 'cookbook'
+                ? 'bg-amber-700 text-amber-50 shadow'
+                : 'text-stone-400 hover:text-stone-200'
+            }`}
+          >
+            <span>🥧</span> <span>Cookbook</span>
+          </button>
+        </div>
+
         <p className="text-xs text-stone-400 mb-3">
-          Snap a photo of the book cover. AI will auto-crop out the table/background and read the title & author.
+          {category === 'album'
+            ? 'Add a Photo Album (e.g. Pictures with Santa, Year in Review). Once created, upload Apple Photos into it!'
+            : category === 'cookbook'
+            ? 'Add a Family Cookbook or Recipe Keepsake to the holiday shelf.'
+            : 'Snap a cover photo. AI will auto-crop out the table/background and read title & author.'}
         </p>
 
         {/* Gemini API Key Box (inline expandable) */}

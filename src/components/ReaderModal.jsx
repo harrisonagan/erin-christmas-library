@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { compressImage } from '../lib/imageCompressor';
 import { pb, getPageImageUrl } from '../lib/pocketbase';
+import { savePagesForBook, getPagesForBook } from '../lib/idbStorage';
 
 export default function ReaderModal({ book, onClose, onUpdateBook }) {
   const [pages, setPages] = useState([]);
@@ -11,12 +12,12 @@ export default function ReaderModal({ book, onClose, onUpdateBook }) {
   const [uploadProgress, setUploadProgress] = useState('');
   const fileInputRef = useRef(null);
 
-  // Fetch pages from PocketBase for this book
+  // Fetch pages from PocketBase or local IndexedDB for this book/album
   useEffect(() => {
     async function loadPages() {
       try {
         setLoading(true);
-        // If PocketBase has pages for this book
+        // 1. Try PocketBase
         const records = await pb.collection('book_pages').getFullList({
           filter: `book = "${book.id}"`,
           sort: 'page_number',
@@ -24,18 +25,23 @@ export default function ReaderModal({ book, onClose, onUpdateBook }) {
         
         if (records.length > 0) {
           setPages(records);
-        } else if (book.pages && book.pages.length > 0) {
-          // Fallback to local array in book object if using mock data
-          setPages(book.pages);
-        } else {
-          setPages([]);
+          return;
         }
       } catch (err) {
-        console.warn('PocketBase fetch pages fallback:', err);
-        setPages(book.pages || []);
-      } finally {
-        setLoading(false);
+        // PocketBase offline
       }
+
+      // 2. Try IndexedDB persistent storage
+      const idbPages = await getPagesForBook(book.id);
+      if (idbPages && idbPages.length > 0) {
+        setPages(idbPages);
+        setLoading(false);
+        return;
+      }
+
+      // 3. Fallback to book.pages
+      setPages(book.pages || []);
+      setLoading(false);
     }
     loadPages();
   }, [book.id]);
@@ -93,17 +99,23 @@ export default function ReaderModal({ book, onClose, onUpdateBook }) {
           const record = await pb.collection('book_pages').create(formData);
           newPages.push(record);
         } catch (pbErr) {
-          // If PocketBase is not reachable in local dev, use local blob URL
-          const localUrl = URL.createObjectURL(compressed);
+          const localDataUrl = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.readAsDataURL(compressed);
+          });
+
           newPages.push({
             id: 'local_' + Date.now() + '_' + i,
             page_number: newPages.length + 1,
-            image: localUrl,
+            image: localDataUrl,
           });
         }
       }
 
       setPages(newPages);
+      await savePagesForBook(book.id, newPages);
+
       if (onUpdateBook) {
         onUpdateBook({ ...book, pages: newPages });
       }
