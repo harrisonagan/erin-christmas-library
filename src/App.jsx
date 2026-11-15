@@ -125,15 +125,19 @@ const INITIAL_BOOKS = [
 ];
 
 export default function App() {
+  // Session-based access control so closing the browser requires re-entry
   const [isUnlocked, setIsUnlocked] = useState(() => {
     try {
-      return localStorage.getItem('erin_library_access_unlocked') === 'true';
+      const session = sessionStorage.getItem('erin_library_access_unlocked');
+      const local = localStorage.getItem('erin_library_access_unlocked');
+      return session === 'true' || local === 'true';
     } catch {
       return false;
     }
   });
   const [passcodeInput, setPasscodeInput] = useState('');
   const [passcodeError, setPasscodeError] = useState('');
+  const [rememberDevice, setRememberDevice] = useState(false);
   const [currentSecretPasscode, setCurrentSecretPasscode] = useState(() => {
     try {
       return localStorage.getItem('erin_library_passcode') || '1225';
@@ -161,18 +165,24 @@ export default function App() {
     if (passcodeInput.trim() === currentSecretPasscode.trim()) {
       setIsUnlocked(true);
       try {
-        localStorage.setItem('erin_library_access_unlocked', 'true');
+        sessionStorage.setItem('erin_library_access_unlocked', 'true');
+        if (rememberDevice) {
+          localStorage.setItem('erin_library_access_unlocked', 'true');
+        } else {
+          localStorage.removeItem('erin_library_access_unlocked');
+        }
       } catch {}
       setPasscodeError('');
       setPasscodeInput('');
     } else {
-      setPasscodeError('Incorrect passcode. (Default is 1225)');
+      setPasscodeError('Incorrect passcode. Please try again.');
     }
   };
 
   const handleLock = () => {
     setIsUnlocked(false);
     try {
+      sessionStorage.removeItem('erin_library_access_unlocked');
       localStorage.removeItem('erin_library_access_unlocked');
     } catch {}
   };
@@ -268,6 +278,18 @@ export default function App() {
               <p className="text-xs text-rose-400 font-sans">{passcodeError}</p>
             )}
 
+            <div className="flex items-center justify-center gap-2 pt-1">
+              <label className="flex items-center gap-2 text-xs font-sans text-stone-400 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={rememberDevice}
+                  onChange={(e) => setRememberDevice(e.target.checked)}
+                  className="rounded border-stone-800 bg-stone-950 text-amber-600 focus:ring-0 cursor-pointer"
+                />
+                <span>Remember me on this browser</span>
+              </label>
+            </div>
+
             <button
               type="submit"
               className="w-full py-3 bg-gradient-to-r from-amber-700 via-amber-600 to-amber-700 hover:from-amber-600 text-amber-50 font-sans font-semibold text-sm rounded-xl shadow-lg border border-amber-500/40 transition active:scale-95"
@@ -275,10 +297,6 @@ export default function App() {
               Unlock Library 🗝️
             </button>
           </form>
-
-          <div className="mt-5 text-[11px] font-sans text-stone-500">
-            Default passcode: <span className="font-mono text-amber-400/80">1225</span>
-          </div>
         </motion.div>
       </div>
     );
