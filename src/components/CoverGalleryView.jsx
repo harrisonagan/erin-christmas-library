@@ -1,0 +1,66 @@
+import React from 'react';
+import { getBookCoverUrl } from '../lib/pocketbase';
+
+export default function CoverGalleryView({ books = [], onSelectBook, onAddBook }) {
+  if (books.length === 0) {
+    return (
+      <div className="text-center py-24 text-amber-200/70 font-sans">
+        <span className="text-5xl block mb-3">📚</span>
+        <h3 className="text-xl font-serif text-amber-100 mb-2">The Shelves are Waiting</h3>
+        <p className="text-xs text-stone-400 mb-6">Start by adding your first cherished Christmas storybook.</p>
+        <button
+          onClick={onAddBook}
+          className="px-6 py-2.5 bg-amber-700 hover:bg-amber-600 text-white rounded-xl text-sm shadow transition"
+        >
+          + Add First Book
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-6xl mx-auto px-6 py-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-8 gap-y-16 items-end">
+        {books.map((book) => {
+          const coverUrl = getBookCoverUrl(book) || book.cover;
+          return (
+            <div
+              key={book.id}
+              onClick={() => onSelectBook(book)}
+              className="group relative cursor-pointer flex flex-col items-center"
+            >
+              {/* Realistic 3D Book with Spine Edge and Shadow */}
+              <div className="relative w-36 sm:w-40 h-52 sm:h-56 rounded-r-md rounded-l-sm shadow-[0_14px_28px_rgba(0,0,0,0.85),-4px_0_12px_rgba(0,0,0,0.5)] overflow-hidden border border-amber-950/40 group-hover:-translate-y-2.5 group-hover:shadow-[0_22px_36px_rgba(0,0,0,0.95)] transition-all duration-300">
+                {/* Book Spine Highlight */}
+                <div className="absolute left-0 top-0 bottom-0 w-3.5 bg-gradient-to-r from-black/50 via-white/10 to-transparent z-10 pointer-events-none" />
+                
+                {coverUrl ? (
+                  <img
+                    src={coverUrl}
+                    alt={book.title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-b from-stone-800 to-stone-900 flex items-center justify-center p-3 text-center">
+                    <span className="text-xs font-serif text-amber-200">{book.title}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Title & Author */}
+              <h3 className="mt-3 text-xs font-serif font-bold text-amber-100 text-center line-clamp-1 max-w-[150px] group-hover:text-amber-300 transition">
+                {book.title}
+              </h3>
+              <p className="text-[11px] text-amber-200/50 text-center line-clamp-1">
+                {book.author}
+              </p>
+
+              {/* Wooden Shelf Plank Below Row */}
+              <div className="absolute -bottom-5 w-full left-0 right-0 h-4 bg-gradient-to-b from-[#4a2e1b] to-[#2a170b] border-t border-[#7a4e2e] shadow-[0_8px_14px_rgba(0,0,0,0.9)] rounded-sm pointer-events-none" />
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
