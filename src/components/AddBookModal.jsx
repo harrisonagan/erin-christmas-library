@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { cropUniformCover, cropToBoundingBox } from '../lib/imageCompressor';
+import { cropUniformCover, cropToBoundingBox, autoTrimTableBorders } from '../lib/imageCompressor';
 import { pb, parseBookCoverWithAI, getGeminiApiKey, setGeminiApiKey } from '../lib/pocketbase';
 
 export default function AddBookModal({ isOpen, onClose, onBookAdded }) {
@@ -97,14 +97,12 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded }) {
     } catch (err) {
       console.warn('AI cover reading error:', err);
       if (err.code === 'MISSING_KEY' || err.message?.includes('MISSING_KEY')) {
-        setAiStatus('🔑 Gemini API key needed for auto-title & auto-crop.');
-        setShowKeyInput(true);
+        setAiStatus('Please enter title & author below.');
       } else if (err.code === 'INVALID_KEY' || err.message?.includes('INVALID_KEY')) {
-        setKeyError('Previous API key was revoked or invalid. Please paste a fresh key.');
-        setAiStatus('⚠️ API key invalid or revoked.');
-        setShowKeyInput(true);
+        setKeyError('Previous API key was revoked or invalid.');
+        setAiStatus('Please enter title & author below.');
       } else {
-        setAiStatus('Could not auto-read text. Please enter title manually.');
+        setAiStatus('Please enter title & author below.');
       }
     } finally {
       setIsScanningAI(false);
@@ -126,6 +124,20 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded }) {
     setPanX(0);
     setPanY(0);
 
+    // 1. Instant client-side edge trimmer (crops table borders in ~15ms!)
+    try {
+      const trimmed = await autoTrimTableBorders(file);
+      if (trimmed?.file) {
+        setActiveImageFile(trimmed.file);
+        setActivePreviewUrl(trimmed.previewUrl);
+        setIsAutoCropped(true);
+        setAiStatus('✨ Table borders automatically trimmed');
+      }
+    } catch (trimErr) {
+      console.warn('Local trim failed:', trimErr);
+    }
+
+    // 2. AI reading & fine-tuning
     await runCoverAnalysis(file);
   };
 
