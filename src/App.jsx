@@ -125,6 +125,23 @@ const INITIAL_BOOKS = [
 ];
 
 export default function App() {
+  const [isUnlocked, setIsUnlocked] = useState(() => {
+    try {
+      return localStorage.getItem('erin_library_access_unlocked') === 'true';
+    } catch {
+      return false;
+    }
+  });
+  const [passcodeInput, setPasscodeInput] = useState('');
+  const [passcodeError, setPasscodeError] = useState('');
+  const [currentSecretPasscode, setCurrentSecretPasscode] = useState(() => {
+    try {
+      return localStorage.getItem('erin_library_passcode') || '1225';
+    } catch {
+      return '1225';
+    }
+  });
+
   const [isAtBookshelf, setIsAtBookshelf] = useState(false);
   const [viewMode, setViewMode] = useState('spines'); // 'spines' | 'covers' | 'list'
   const [searchQuery, setSearchQuery] = useState('');
@@ -138,6 +155,27 @@ export default function App() {
   const [selectedBook, setSelectedBook] = useState(null);
   const [isReaderOpen, setIsReaderOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  const handleUnlock = (e) => {
+    e?.preventDefault();
+    if (passcodeInput.trim() === currentSecretPasscode.trim()) {
+      setIsUnlocked(true);
+      try {
+        localStorage.setItem('erin_library_access_unlocked', 'true');
+      } catch {}
+      setPasscodeError('');
+      setPasscodeInput('');
+    } else {
+      setPasscodeError('Incorrect passcode. (Default is 1225)');
+    }
+  };
+
+  const handleLock = () => {
+    setIsUnlocked(false);
+    try {
+      localStorage.removeItem('erin_library_access_unlocked');
+    } catch {}
+  };
 
   // Sync with PocketBase on launch if available
   useEffect(() => {
@@ -183,6 +221,68 @@ export default function App() {
     setBooks((prev) => prev.filter((b) => b.id !== bookId));
     setSelectedBook(null);
   };
+
+  if (!isUnlocked) {
+    return (
+      <div className="min-h-screen bg-[#0d0907] text-amber-50 select-none flex items-center justify-center p-4 relative overflow-hidden font-serif">
+        {/* Ambient Candle Glow */}
+        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-amber-600/10 blur-[140px] pointer-events-none" />
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.94, y: 15 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          className="relative max-w-sm w-full bg-[#18110df6] backdrop-blur-md rounded-3xl border border-amber-900/60 p-7 sm:p-8 text-center shadow-[0_25px_60px_rgba(0,0,0,0.95)] z-10"
+        >
+          <div className="flex items-center justify-center gap-2 mb-2 text-amber-400">
+            <span>🕯️</span>
+            <span className="text-[10px] uppercase tracking-widest font-sans font-semibold text-amber-300/80">
+              Private Holiday Collection
+            </span>
+            <span>🕯️</span>
+          </div>
+
+          <h1 className="text-2xl sm:text-3xl font-bold text-amber-100 mb-2">
+            Erin's Christmas Library
+          </h1>
+
+          <p className="text-stone-300 text-xs font-sans mb-6 leading-relaxed">
+            This library is currently restricted for private curation. Please enter your passcode:
+          </p>
+
+          <form onSubmit={handleUnlock} className="space-y-4">
+            <div>
+              <input
+                type="password"
+                autoFocus
+                placeholder="Enter passcode"
+                value={passcodeInput}
+                onChange={(e) => {
+                  setPasscodeInput(e.target.value);
+                  setPasscodeError('');
+                }}
+                className="w-full px-4 py-3 bg-stone-950/90 border border-stone-800 rounded-xl text-center text-sm font-sans tracking-widest text-amber-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600"
+              />
+            </div>
+
+            {passcodeError && (
+              <p className="text-xs text-rose-400 font-sans">{passcodeError}</p>
+            )}
+
+            <button
+              type="submit"
+              className="w-full py-3 bg-gradient-to-r from-amber-700 via-amber-600 to-amber-700 hover:from-amber-600 text-amber-50 font-sans font-semibold text-sm rounded-xl shadow-lg border border-amber-500/40 transition active:scale-95"
+            >
+              Unlock Library 🗝️
+            </button>
+          </form>
+
+          <div className="mt-5 text-[11px] font-sans text-stone-500">
+            Default passcode: <span className="font-mono text-amber-400/80">1225</span>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#110c09] text-amber-50 select-none overflow-x-hidden font-serif">
@@ -284,6 +384,14 @@ export default function App() {
                   >
                     <span>+</span> <span>Add Book</span>
                   </button>
+
+                  <button
+                    onClick={handleLock}
+                    className="px-3 py-2 bg-stone-900/80 hover:bg-stone-800 border border-stone-800 rounded-xl text-xs font-sans text-stone-400 hover:text-amber-200 transition flex items-center gap-1"
+                    title="Lock library"
+                  >
+                    <span>🔒</span> <span>Lock</span>
+                  </button>
                 </div>
               </div>
 
@@ -302,12 +410,21 @@ export default function App() {
                     🎄 Erin's Library
                   </h2>
 
-                  <button
-                    onClick={() => setIsAddModalOpen(true)}
-                    className="px-3 py-1 bg-gradient-to-r from-amber-700 to-amber-800 text-white rounded-lg text-xs font-sans font-semibold shadow flex items-center gap-1 active:scale-95"
-                  >
-                    <span>+</span> <span>Add</span>
-                  </button>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      onClick={() => setIsAddModalOpen(true)}
+                      className="px-3 py-1 bg-gradient-to-r from-amber-700 to-amber-800 text-white rounded-lg text-xs font-sans font-semibold shadow flex items-center gap-1 active:scale-95"
+                    >
+                      <span>+</span> <span>Add</span>
+                    </button>
+                    <button
+                      onClick={handleLock}
+                      className="px-2 py-1 bg-stone-900 border border-stone-800 rounded-lg text-xs text-stone-400 hover:text-amber-200"
+                      title="Lock library"
+                    >
+                      🔒
+                    </button>
+                  </div>
                 </div>
 
                 {/* Row 2: Search & View Switcher */}

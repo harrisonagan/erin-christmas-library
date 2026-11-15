@@ -1,28 +1,114 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { cropUniformCover } from '../lib/imageCompressor';
-import { pb, parseBookCoverWithAI } from '../lib/pocketbase';
+import { motion, AnimatePresence } from 'framer-motion';
+import { cropUniformCover, cropToBoundingBox } from '../lib/imageCompressor';
+import { pb, parseBookCoverWithAI, getGeminiApiKey, setGeminiApiKey } from '../lib/pocketbase';
 
 export default function AddBookModal({ isOpen, onClose, onBookAdded }) {
+  // Original photo as taken by user
   const [rawImageFile, setRawImageFile] = useState(null);
   const [rawPreviewUrl, setRawPreviewUrl] = useState(null);
-  const [zoom, setZoom] = useState(1.18); // Default smart auto-trim to eliminate outer table margins
+
+  // Active image used for the frame (may be auto-cropped by AI)
+  const [activeImageFile, setActiveImageFile] = useState(null);
+  const [activePreviewUrl, setActivePreviewUrl] = useState(null);
+  const [isAutoCropped, setIsAutoCropped] = useState(false);
+  const [detectedBox, setDetectedBox] = useState(null);
+
+  // Cropper transform state
+  const [zoom, setZoom] = useState(1.0);
   const [panX, setPanX] = useState(0);
   const [panY, setPanY] = useState(0);
-  
+
+  // Book metadata
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [notes, setNotes] = useState('');
-  
+
+  // AI & Save state
   const [isScanningAI, setIsScanningAI] = useState(false);
   const [aiStatus, setAiStatus] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+
+  // API Key management
+  const [showKeyInput, setShowKeyInput] = useState(false);
+  const [customKey, setCustomKey] = useState(() => getGeminiApiKey());
+  const [keyError, setKeyError] = useState('');
 
   const previewFrameRef = useRef(null);
   const isDraggingRef = useRef(false);
   const startDragRef = useRef({ x: 0, y: 0, panX: 0, panY: 0 });
 
+  useEffect(() => {
+    if (!isOpen) {
+      // Reset state on close
+      setRawImageFile(null);
+      setRawPreviewUrl(null);
+      setActiveImageFile(null);
+      setActivePreviewUrl(null);
+      setIsAutoCropped(false);
+      setDetectedBox(null);
+      setTitle('');
+      setAuthor('');
+      setNotes('');
+      setAiStatus('');
+      setShowKeyInput(false);
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
+
+  const runCoverAnalysis = async (file) => {
+    setIsScanningAI(true);
+    setAiStatus('✨ Reading cover & detecting book edges with Gemini...');
+    setKeyError('');
+
+    try {
+      const result = await parseBookCoverWithAI(file);
+
+      if (result.title) setTitle(result.title);
+      if (result.author) setAuthor(result.author);
+
+      // Automatic high-precision background removal (crop to book edges)
+      if (result.box_2d && Array.isArray(result.box_2d) && result.box_2d.length === 4) {
+        setDetectedBox(result.box_2d);
+        try {
+          const cropped = await cropToBoundingBox(file, result.box_2d);
+          if (cropped?.file) {
+            setActiveImageFile(cropped.file);
+            setActivePreviewUrl(cropped.previewUrl);
+            setIsAutoCropped(true);
+            setZoom(1.0);
+            setPanX(0);
+            setPanY(0);
+            setAiStatus(`✨ Auto-cropped cover to book & read title!`);
+            return;
+          }
+        } catch (cropErr) {
+          console.warn('Auto-crop execution failed:', cropErr);
+        }
+      }
+
+      if (result.title || result.author) {
+        setAiStatus(`✨ Found: "${result.title || 'Book'}" by ${result.author || 'Author'}`);
+      } else {
+        setAiStatus('Please verify title & author below.');
+      }
+    } catch (err) {
+      console.warn('AI cover reading error:', err);
+      if (err.code === 'MISSING_KEY' || err.message?.includes('MISSING_KEY')) {
+        setAiStatus('🔑 Gemini API key needed for auto-title & auto-crop.');
+        setShowKeyInput(true);
+      } else if (err.code === 'INVALID_KEY' || err.message?.includes('INVALID_KEY')) {
+        setKeyError('Previous API key was revoked or invalid. Please paste a fresh key.');
+        setAiStatus('⚠️ API key invalid or revoked.');
+        setShowKeyInput(true);
+      } else {
+        setAiStatus('Could not auto-read text. Please enter title manually.');
+      }
+    } finally {
+      setIsScanningAI(false);
+    }
+  };
 
   const handleFileSelect = async (e) => {
     const file = e.target.files?.[0];
@@ -31,61 +117,59 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded }) {
     const preview = URL.createObjectURL(file);
     setRawImageFile(file);
     setRawPreviewUrl(preview);
-    setZoom(1.18); // Smart auto-trim
+    setActiveImageFile(file);
+    setActivePreviewUrl(preview);
+    setIsAutoCropped(false);
+    setDetectedBox(null);
+    setZoom(1.0);
     setPanX(0);
     setPanY(0);
 
-    // Call Gemini AI Vision
-    setIsScanningAI(true);
-    setAiStatus('✨ Reading book cover with Gemini AI...');
+    await runCoverAnalysis(file);
+  };
 
-    try {
-      const result = await parseBookCoverWithAI(file);
-      
-      if (result.title) {
-        setTitle(result.title);
-      }
-      if (result.author) {
-        setAuthor(result.author);
-      }
-
-      // Auto-crop adjustment if Gemini detected the book's rectangular boundaries
-      if (result.box_2d && Array.isArray(result.box_2d) && result.box_2d.length === 4) {
-        const [ymin, xmin, ymax, xmax] = result.box_2d;
-        const boxWidth = (xmax - xmin) / 1000;
-        const boxHeight = (ymax - ymin) / 1000;
-        
-        // Calculate smart zoom based on detected book area
-        if (boxWidth > 0.3 && boxHeight > 0.3) {
-          const autoZoom = Math.min(2.0, Math.max(1.1, 1 / Math.max(boxWidth, boxHeight)));
-          setZoom(parseFloat(autoZoom.toFixed(2)));
-        }
-      }
-
-      if (result.title || result.author) {
-        setAiStatus(`✨ Auto-populated: "${result.title || 'Book'}" by ${result.author || 'Author'}`);
-      } else {
-        setAiStatus('Please type title & author below.');
-      }
-    } catch (err) {
-      console.warn('AI cover reading error:', err);
-      setAiStatus('Could not auto-read text. Please enter title manually.');
-    } finally {
-      setIsScanningAI(false);
+  const handleSaveApiKey = async (e) => {
+    e.preventDefault();
+    if (!customKey.trim()) return;
+    setGeminiApiKey(customKey.trim());
+    setShowKeyInput(false);
+    setKeyError('');
+    if (rawImageFile) {
+      await runCoverAnalysis(rawImageFile);
     }
   };
 
-  // Touch and mouse pan handlers for the book crop box
+  const handleUndoAutoCrop = () => {
+    if (rawImageFile && rawPreviewUrl) {
+      setActiveImageFile(rawImageFile);
+      setActivePreviewUrl(rawPreviewUrl);
+      setIsAutoCropped(false);
+      setZoom(1.15); // gentle zoom for raw photo
+      setPanX(0);
+      setPanY(0);
+    }
+  };
+
+  const handleReapplyAutoCrop = async () => {
+    if (rawImageFile && detectedBox) {
+      const cropped = await cropToBoundingBox(rawImageFile, detectedBox);
+      if (cropped?.file) {
+        setActiveImageFile(cropped.file);
+        setActivePreviewUrl(cropped.previewUrl);
+        setIsAutoCropped(true);
+        setZoom(1.0);
+        setPanX(0);
+        setPanY(0);
+      }
+    }
+  };
+
+  // Pan dragging
   const handlePointerDown = (e) => {
     isDraggingRef.current = true;
     const clientX = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
     const clientY = e.clientY ?? e.touches?.[0]?.clientY ?? 0;
-    startDragRef.current = {
-      x: clientX,
-      y: clientY,
-      panX,
-      panY,
-    };
+    startDragRef.current = { x: clientX, y: clientY, panX, panY };
   };
 
   const handlePointerMove = (e) => {
@@ -114,21 +198,21 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded }) {
       let finalCoverFile = null;
       let finalCoverUrl = null;
 
-      // Crop photo into uniform 1:1.4 book cover using exact preview scale
-      if (rawImageFile) {
+      // Crop image to standard 1:1.4 book cover
+      const targetSource = activeImageFile || rawImageFile;
+      if (targetSource) {
         const pWidth = previewFrameRef.current?.clientWidth || 144;
         const pHeight = previewFrameRef.current?.clientHeight || 208;
 
-        const cropped = await cropUniformCover(rawImageFile, { 
-          zoom, 
-          panX, 
+        const cropped = await cropUniformCover(targetSource, {
+          zoom,
+          panX,
           panY,
           previewWidth: pWidth,
           previewHeight: pHeight,
         });
         finalCoverFile = cropped.file;
-        
-        // Convert to data URL for persistent offline storage across reloads
+
         finalCoverUrl = await new Promise((resolve) => {
           const reader = new FileReader();
           reader.onload = () => resolve(reader.result);
@@ -177,24 +261,81 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded }) {
         exit={{ opacity: 0, scale: 0.95 }}
         className="bg-[#1b1410] border border-amber-900/60 rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl text-amber-50 font-sans relative my-auto max-h-[94vh] overflow-y-auto"
       >
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-stone-400 hover:text-stone-100 text-lg z-20"
-        >
-          ✕
-        </button>
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-lg sm:text-xl font-serif font-bold text-amber-100 flex items-center gap-2">
+            <span>🌲</span> Add Christmas Book
+          </h3>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setShowKeyInput(!showKeyInput)}
+              className="text-xs text-amber-300/80 hover:text-amber-200 border border-amber-900/60 rounded-lg px-2 py-1 bg-amber-950/40"
+              title="Configure Gemini API Key"
+            >
+              🔑 AI Key
+            </button>
+            <button
+              onClick={onClose}
+              className="text-stone-400 hover:text-stone-100 text-lg px-1.5 py-0.5"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
 
-        <h3 className="text-lg sm:text-xl font-serif font-bold text-amber-100 mb-1 flex items-center gap-2">
-          <span>🌲</span> Add Christmas Book
-        </h3>
         <p className="text-xs text-stone-400 mb-3">
-          Snap a cover to auto-fill title & author, and frame it uniformly.
+          Snap a photo of the book cover. AI will auto-crop out the table/background and read the title & author.
         </p>
+
+        {/* Gemini API Key Box (inline expandable) */}
+        <AnimatePresence>
+          {showKeyInput && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="mb-4 p-3 bg-amber-950/40 border border-amber-800/60 rounded-xl text-xs space-y-2"
+            >
+              <div className="flex justify-between items-center">
+                <span className="font-semibold text-amber-200 flex items-center gap-1">
+                  <span>✨</span> Google Gemini API Key
+                </span>
+                <a
+                  href="https://aistudio.google.com/app/apikey"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-[11px] text-amber-400 hover:underline"
+                >
+                  Get free key ↗
+                </a>
+              </div>
+              <p className="text-[11px] text-stone-300 leading-tight">
+                Stored privately in your browser (never committed to GitHub). Enables AI title reading and automatic background removal.
+              </p>
+              {keyError && <p className="text-rose-400 text-[11px]">{keyError}</p>}
+              <form onSubmit={handleSaveApiKey} className="flex gap-2">
+                <input
+                  type="password"
+                  placeholder="Paste AIzaSy... key"
+                  value={customKey}
+                  onChange={(e) => setCustomKey(e.target.value)}
+                  className="flex-1 px-2.5 py-1.5 bg-black/60 border border-stone-700 rounded-lg text-xs text-amber-100 font-mono focus:outline-none focus:border-amber-600"
+                />
+                <button
+                  type="submit"
+                  className="px-3 py-1.5 bg-amber-700 hover:bg-amber-600 text-amber-50 font-semibold rounded-lg text-xs"
+                >
+                  Save Key
+                </button>
+              </form>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <form onSubmit={handleSave} className="space-y-4">
           {/* Uniform Cover Framing Box */}
           <div className="flex flex-col items-center justify-center bg-[#140e0b] border-2 border-dashed border-amber-900/60 rounded-2xl p-4">
-            {rawPreviewUrl ? (
+            {activePreviewUrl ? (
               <div className="flex flex-col items-center w-full">
                 {/* 1:1.4 Standard Book Cover Frame */}
                 <div
@@ -208,8 +349,8 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded }) {
                   onTouchEnd={handlePointerUp}
                 >
                   <img
-                    src={rawPreviewUrl}
-                    alt="Cover Raw"
+                    src={activePreviewUrl}
+                    alt="Cover Preview"
                     draggable={false}
                     className="absolute max-w-none transition-transform pointer-events-none"
                     style={{
@@ -221,44 +362,78 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded }) {
                     }}
                   />
 
-                  {/* Corner Guide Marks for Safe Book Area */}
+                  {/* Corner Guide Marks */}
                   <div className="absolute top-1 left-1 text-[10px] text-amber-400/60 pointer-events-none">┌</div>
                   <div className="absolute top-1 right-1 text-[10px] text-amber-400/60 pointer-events-none">┐</div>
                   <div className="absolute bottom-1 left-1 text-[10px] text-amber-400/60 pointer-events-none">└</div>
                   <div className="absolute bottom-1 right-1 text-[10px] text-amber-400/60 pointer-events-none">┘</div>
 
-                  {/* 3D Realistic Spine Edge Highlight Overlay */}
+                  {/* Spine Edge Highlight */}
                   <div className="absolute left-0 top-0 bottom-0 w-3 bg-gradient-to-r from-black/50 via-white/10 to-transparent pointer-events-none z-10" />
                 </div>
 
-                {/* One-Tap Auto-Crop Presets */}
-                <div className="flex items-center gap-1.5 mt-2.5">
-                  <button
-                    type="button"
-                    onClick={() => { setZoom(1.2); setPanX(0); setPanY(0); }}
-                    className={`px-2.5 py-1 rounded-lg text-[11px] font-sans transition ${
-                      Math.abs(zoom - 1.2) < 0.05 ? 'bg-amber-800 text-white font-semibold' : 'bg-stone-900 text-stone-300 hover:bg-stone-800'
-                    }`}
-                  >
-                    📐 Auto-Trim (1.2x)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => { setZoom(1.4); setPanX(0); setPanY(0); }}
-                    className={`px-2.5 py-1 rounded-lg text-[11px] font-sans transition ${
-                      Math.abs(zoom - 1.4) < 0.05 ? 'bg-amber-800 text-white font-semibold' : 'bg-stone-900 text-stone-300 hover:bg-stone-800'
-                    }`}
-                  >
-                    🔍 Tight (1.4x)
-                  </button>
+                {/* Auto-Crop Badge & Action */}
+                <div className="flex items-center gap-2 mt-2">
+                  {isAutoCropped ? (
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[11px] bg-emerald-950/80 text-emerald-300 border border-emerald-800/60 px-2 py-0.5 rounded-full flex items-center gap-1">
+                        <span>✂️</span> Table & background removed
+                      </span>
+                      <button
+                        type="button"
+                        onClick={handleUndoAutoCrop}
+                        className="text-[11px] text-stone-400 hover:text-stone-200 underline"
+                      >
+                        Show original
+                      </button>
+                    </div>
+                  ) : detectedBox ? (
+                    <button
+                      type="button"
+                      onClick={handleReapplyAutoCrop}
+                      className="text-[11px] bg-amber-900/80 hover:bg-amber-800 text-amber-200 border border-amber-700/60 px-2.5 py-0.5 rounded-full"
+                    >
+                      ✂️ Auto-Crop to Book
+                    </button>
+                  ) : null}
+                </div>
+
+                {/* One-Tap Presets */}
+                <div className="flex items-center gap-1.5 mt-2">
                   <button
                     type="button"
                     onClick={() => { setZoom(1.0); setPanX(0); setPanY(0); }}
-                    className={`px-2.5 py-1 rounded-lg text-[11px] font-sans transition ${
+                    className={`px-2 py-1 rounded-lg text-[11px] font-sans transition ${
                       Math.abs(zoom - 1.0) < 0.05 ? 'bg-amber-800 text-white font-semibold' : 'bg-stone-900 text-stone-300 hover:bg-stone-800'
                     }`}
                   >
-                    ↔️ Full (1.0x)
+                    1.0x Fit
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setZoom(1.15); setPanX(0); setPanY(0); }}
+                    className={`px-2 py-1 rounded-lg text-[11px] font-sans transition ${
+                      Math.abs(zoom - 1.15) < 0.05 ? 'bg-amber-800 text-white font-semibold' : 'bg-stone-900 text-stone-300 hover:bg-stone-800'
+                    }`}
+                  >
+                    1.15x Trim
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setZoom(1.35); setPanX(0); setPanY(0); }}
+                    className={`px-2 py-1 rounded-lg text-[11px] font-sans transition ${
+                      Math.abs(zoom - 1.35) < 0.05 ? 'bg-amber-800 text-white font-semibold' : 'bg-stone-900 text-stone-300 hover:bg-stone-800'
+                    }`}
+                  >
+                    1.35x Close
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setPanX(0); setPanY(0); }}
+                    className="px-2 py-1 rounded-lg text-[11px] font-sans bg-stone-900 text-stone-300 hover:bg-stone-800"
+                    title="Center cover"
+                  >
+                    Center
                   </button>
                 </div>
 
@@ -267,7 +442,7 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded }) {
                   <span className="text-[11px] text-stone-400">Zoom</span>
                   <input
                     type="range"
-                    min="1"
+                    min="0.9"
                     max="2.2"
                     step="0.05"
                     value={zoom}
@@ -277,8 +452,8 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded }) {
                   <span className="text-xs font-mono text-amber-200/80 w-8 text-right">{zoom.toFixed(1)}x</span>
                 </div>
 
-                <div className="mt-2 flex gap-2">
-                  <label className="text-xs text-amber-300 hover:text-amber-200 underline cursor-pointer">
+                <div className="mt-2 flex gap-3 text-xs">
+                  <label className="text-amber-300 hover:text-amber-200 underline cursor-pointer">
                     Retake / Choose Another Photo
                     <input
                       type="file"
@@ -288,6 +463,15 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded }) {
                       onChange={handleFileSelect}
                     />
                   </label>
+                  {rawImageFile && !isScanningAI && (
+                    <button
+                      type="button"
+                      onClick={() => runCoverAnalysis(rawImageFile)}
+                      className="text-stone-400 hover:text-amber-200 underline"
+                    >
+                      Re-scan with AI
+                    </button>
+                  )}
                 </div>
               </div>
             ) : (
@@ -295,7 +479,7 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded }) {
                 <span className="text-4xl mb-2">📸</span>
                 <span className="text-sm font-semibold text-amber-200">Take or Upload Book Cover Photo</span>
                 <span className="text-xs text-stone-400 mt-1">
-                  AI will auto-fill the title and author from the cover
+                  AI will auto-crop out the background and read title & author
                 </span>
                 <input
                   type="file"
@@ -311,7 +495,7 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded }) {
             {isScanningAI && (
               <div className="mt-3 flex items-center gap-2 text-xs text-amber-300 font-mono animate-pulse">
                 <div className="w-3.5 h-3.5 border-2 border-amber-400 border-t-transparent rounded-full animate-spin" />
-                <span>Reading title & author with Gemini AI...</span>
+                <span>Scanning cover with Gemini AI...</span>
               </div>
             )}
             {!isScanningAI && aiStatus && (
@@ -321,7 +505,7 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded }) {
             )}
           </div>
 
-          {/* Book Title (Auto-populated + Editable) */}
+          {/* Book Title */}
           <div>
             <div className="flex items-center justify-between mb-1">
               <label className="block text-xs font-medium text-stone-300">Book Title *</label>
@@ -337,7 +521,7 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded }) {
             />
           </div>
 
-          {/* Author (Auto-populated + Editable) */}
+          {/* Author */}
           <div>
             <div className="flex items-center justify-between mb-1">
               <label className="block text-xs font-medium text-stone-300">Author</label>

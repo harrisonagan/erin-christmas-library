@@ -35,90 +35,117 @@ export function getPageImageUrl(pageRecord) {
   return pb.files.getUrl(pageRecord, pageRecord.image);
 }
 
-/**
- * Auto-populates book title, author, and book cover bounding box using Gemini Flash AI Vision.
- */
-export async function parseBookCoverWithAI(coverFile) {
-  // Always ensure API key is present (env or direct fallback)
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY || 'AIzaSyCetUBgYuQmpDYYEbKvlc1vGChkCX2kJP0';
+export function getGeminiApiKey() {
+  if (typeof window !== 'undefined') {
+    const stored = localStorage.getItem('gemini_api_key');
+    if (stored && stored.trim()) return stored.trim();
+  }
+  return import.meta.env.VITE_GEMINI_API_KEY || '';
+}
 
-  console.log('[AI Scan] Initiating cover analysis with Gemini Flash...');
-
-  // 1. Direct browser fetch to Google Gemini Flash
-  if (apiKey) {
-    try {
-      const base64Data = await fileToBase64(coverFile);
-      const mimeType = coverFile.type || 'image/jpeg';
-
-      const prompt = 
-        "Look at this photo of a book and perform two tasks:\n" +
-        "1. Extract the book Title and Author.\n" +
-        "2. Detect the rectangular boundary of the book cover (excluding any table, hands, or surrounding background) as [ymin, xmin, ymax, xmax] on a scale of 0 to 1000.\n" +
-        "Return ONLY a clean JSON object with keys 'title', 'author', and 'box_2d'.\n" +
-        "Example: {\"title\": \"Mice Skating\", \"author\": \"Annie Silvestro\", \"box_2d\": [80, 100, 920, 900]}.\n" +
-        "Do NOT include markdown backticks or commentary.";
-
-      const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [
-              {
-                parts: [
-                  { text: prompt },
-                  {
-                    inline_data: {
-                      mime_type: mimeType,
-                      data: base64Data,
-                    },
-                  },
-                ],
-              },
-            ],
-            generationConfig: {
-              response_mime_type: 'application/json',
-              temperature: 0.1,
-            },
-          }),
-        }
-      );
-
-      if (res.ok) {
-        const data = await res.json();
-        const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
-        const cleaned = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
-        const parsed = JSON.parse(cleaned);
-        console.log('[AI Scan] Successfully recognized:', parsed);
-        return {
-          title: parsed.title || '',
-          author: parsed.author || '',
-          box_2d: parsed.box_2d || null,
-        };
-      } else {
-        const errText = await res.text();
-        console.warn('[AI Scan] Gemini API error response:', res.status, errText);
-      }
-    } catch (clientErr) {
-      console.warn('[AI Scan] Direct call failed, trying local proxy:', clientErr);
+export function setGeminiApiKey(key) {
+  if (typeof window !== 'undefined') {
+    if (key && key.trim()) {
+      localStorage.setItem('gemini_api_key', key.trim());
+    } else {
+      localStorage.removeItem('gemini_api_key');
     }
   }
+}
 
-  // 2. Fallback to local / PocketBase proxy endpoint
+/**
+ * Auto-populates book title, author, and book cover bounding box using Gemini AI Vision.
+ */
+export async function parseBookCoverWithAI(coverFile) {
+  const apiKey = getGeminiApiKey();
+
+  if (!apiKey) {
+    const err = new Error('MISSING_KEY');
+    err.code = 'MISSING_KEY';
+    throw err;
+  }
+
+  console.log('[AI Scan] Initiating cover analysis with Gemini Vision...');
+
+  // 1. Direct browser fetch to Google Gemini
   try {
-    const formData = new FormData();
-    formData.append('cover', coverFile);
-    const response = await fetch('/api/scan-cover', {
-      method: 'POST',
-      body: formData,
-    });
-    if (response.ok) {
-      const data = await response.json();
-      return data;
+    const base64Data = await fileToBase64(coverFile);
+    const mimeType = coverFile.type || 'image/jpeg';
+
+    const prompt = 
+      "You are an expert librarian and visual assistant.\n" +
+      "Examine this photo of a book cover and extract:\n" +
+      "1. 'title': The full, accurate title of the book.\n" +
+      "2. 'author': The author(s) name(s).\n" +
+      "3. 'box_2d': The tightest rectangular boundary containing ONLY the book cover (excluding any table, desk, hands, floor, or background), formatted as [ymin, xmin, ymax, xmax] on an integer scale from 0 to 1000.\n\n" +
+      "Return ONLY a clean JSON object without markdown formatting:\n" +
+      "{\"title\": \"...\", \"author\": \"...\", \"box_2d\": [ymin, xmin, ymax, xmax]}";
+
+    // Attempt Gemini 2.0 Flash first, fallback to 1.5 Flash
+    const candidateModels = ['gemini-2.0-flash', 'gemini-1.5-flash'];
+    let lastApiError = null;
+
+    for (const model of candidateModels) {
+      try {
+        const res = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [
+                {
+                  parts: [
+                    { text: prompt },
+                    {
+                      inline_data: {
+                        mime_type: mimeType,
+                        data: base64Data,
+                      },
+                    },
+                  ],
+                },
+              ],
+              generationConfig: {
+                response_mime_type: 'application/json',
+                temperature: 0.1,
+              },
+            }),
+          }
+        );
+
+        if (res.ok) {
+          const data = await res.json();
+          const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+          const cleaned = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+          const parsed = JSON.parse(cleaned);
+          console.log('[AI Scan] Successfully recognized:', parsed);
+          return {
+            title: parsed.title || '',
+            author: parsed.author || '',
+            box_2d: parsed.box_2d || null,
+          };
+        } else {
+          const errText = await res.text();
+          console.warn(`[AI Scan] Gemini ${model} error:`, res.status, errText);
+          if (errText.includes('API key was reported as leaked') || errText.includes('API_KEY_INVALID')) {
+            const err = new Error('LEAKED_OR_INVALID_KEY');
+            err.code = 'INVALID_KEY';
+            throw err;
+          }
+          lastApiError = new Error(`API error ${res.status}`);
+        }
+      } catch (callErr) {
+        if (callErr.code === 'INVALID_KEY') throw callErr;
+        lastApiError = callErr;
+      }
     }
-  } catch (err) {
-    console.warn('[AI Scan] Proxy scan failed:', err);
+
+    if (lastApiError) throw lastApiError;
+  } catch (clientErr) {
+    if (clientErr.code === 'INVALID_KEY') throw clientErr;
+    console.warn('[AI Scan] Direct call failed:', clientErr);
+    throw clientErr;
   }
 
   return { title: '', author: '', box_2d: null };
