@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getBookCoverUrl } from '../lib/pocketbase';
 
@@ -50,6 +50,50 @@ function MangerIcon({ className = "w-3.5 h-3.5 sm:w-4 sm:h-4" }) {
   );
 }
 
+// Helper to select 1 or 2 random books to display face-out on each shelf tier
+function pickRandomFaceOut(allBooks) {
+  if (!allBooks || allBooks.length === 0) return new Set();
+
+  const selected = new Set();
+  const story = allBooks.filter((b) => b.category === 'story' || (!b.category && b.id !== 'album_santa' && b.id !== 'cookbook_erin' && !b.title?.toLowerCase().includes('santa') && !b.title?.toLowerCase().includes('photo') && !b.title?.toLowerCase().includes('cook')));
+  const albums = allBooks.filter((b) => b.category === 'album' || b.id === 'album_santa' || b.title?.toLowerCase().includes('santa') || b.title?.toLowerCase().includes('photo'));
+  const cookbooks = allBooks.filter((b) => b.category === 'cookbook' || b.id === 'cookbook_erin' || b.title?.toLowerCase().includes('cook'));
+
+  // Storybooks: pick 1 or 2 books to face out, spaced apart on the shelf
+  if (story.length >= 6) {
+    const mid = Math.floor(story.length / 2);
+    const firstHalf = story.slice(1, mid);
+    const secondHalf = story.slice(mid, -1);
+    if (firstHalf.length > 0) {
+      const b1 = firstHalf[Math.floor(Math.random() * firstHalf.length)];
+      if (b1) selected.add(b1.id);
+    }
+    if (secondHalf.length > 0) {
+      const b2 = secondHalf[Math.floor(Math.random() * secondHalf.length)];
+      if (b2) selected.add(b2.id);
+    }
+  } else if (story.length > 0) {
+    selected.add(story[Math.floor(Math.random() * story.length)].id);
+  }
+
+  // Photo Albums: pick 1 album to show face out (e.g. Pictures with Santa)
+  if (albums.length > 0) {
+    const santaAlbum = albums.find((a) => a.id === 'album_santa');
+    if (santaAlbum && Math.random() > 0.35) {
+      selected.add(santaAlbum.id);
+    } else {
+      selected.add(albums[Math.floor(Math.random() * albums.length)].id);
+    }
+  }
+
+  // Cookbooks: pick 1 cookbook to show face out
+  if (cookbooks.length > 0) {
+    selected.add(cookbooks[Math.floor(Math.random() * cookbooks.length)].id);
+  }
+
+  return selected;
+}
+
 export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) {
   const [hoveredBook, setHoveredBook] = useState(null);
   const [activeTab, setActiveTab] = useState('all'); // 'all' | 'story' | 'album' | 'cookbook'
@@ -61,11 +105,38 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
     }
   });
 
+  // Set of book IDs that are currently displayed face-out (showing front cover)
+  const [faceOutBookIds, setFaceOutBookIds] = useState(() => pickRandomFaceOut(books));
+
+  // If books list changes significantly, ensure we have face-out books picked
+  useEffect(() => {
+    if (books.length > 0 && faceOutBookIds.size === 0) {
+      setFaceOutBookIds(pickRandomFaceOut(books));
+    }
+  }, [books]);
+
   const toggleOrientation = (newMode) => {
     setOrientation(newMode);
     try {
       localStorage.setItem('erin_spine_orientation', newMode);
     } catch {}
+  };
+
+  const shuffleFaceOut = () => {
+    setFaceOutBookIds(pickRandomFaceOut(books));
+  };
+
+  const toggleFaceOut = (e, bookId) => {
+    e?.stopPropagation();
+    setFaceOutBookIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(bookId)) {
+        next.delete(bookId);
+      } else {
+        next.add(bookId);
+      }
+      return next;
+    });
   };
 
   // Map each book to an elegant, antique leather/cloth library spine
@@ -128,9 +199,10 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
           {items.map((book) => {
             const isHighlighted = book.isHighlighted;
             const isSelected = hoveredBook?.id === book.id;
+            const isFaceOut = faceOutBookIds.has(book.id);
             const titleLen = book.title?.length || 0;
 
-            // Fitted, proportional horizontal typography (never "too large" or clipped)
+            // Fitted, proportional horizontal typography
             const horizontalFontSize = 
               titleLen <= 12
                 ? 'text-[9.5px] sm:text-[10px] font-semibold leading-[1.2]'
@@ -138,6 +210,84 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
                 ? 'text-[8.5px] sm:text-[9px] font-medium leading-[1.18]'
                 : 'text-[7.5px] sm:text-[8px] font-normal leading-[1.14]';
 
+            if (isFaceOut) {
+              /* ========================================================= */
+              /* PROPPED FACE-OUT BOOK DISPLAY (Cover Facing Viewer)       */
+              /* ========================================================= */
+              return (
+                <motion.div
+                  key={`faceout-${book.id}`}
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+                  onClick={() => {
+                    setHoveredBook(null);
+                    onSelectBook(book);
+                  }}
+                  style={{
+                    height: `${book.height || 225}px`,
+                    width: `${Math.round((book.height || 225) * 0.72)}px`,
+                  }}
+                  className="relative group cursor-pointer flex-shrink-0 mx-1 sm:mx-1.5 select-none"
+                >
+                  {/* Subtle holiday ribbon bookmark */}
+                  {isHighlighted && (
+                    <div className="absolute -top-5 left-6 z-20 flex flex-col items-center pointer-events-none">
+                      <div className="w-1.5 h-4 bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700 shadow-[0_1px_3px_rgba(0,0,0,0.8)] rounded-b-xs" />
+                    </div>
+                  )}
+
+                  {/* Hardcover Book Frame propped on shelf */}
+                  <div className="relative w-full h-full rounded-r-md rounded-l-xs overflow-hidden shadow-[-6px_10px_25px_rgba(0,0,0,0.92),0_2px_4px_rgba(0,0,0,0.85)] border-t border-r border-amber-900/30 flex bg-stone-900 group-hover:shadow-[0_14px_30px_rgba(251,191,36,0.35)] transition-shadow">
+                    {/* Left Hardcover Spine Hinge / Binding Crease */}
+                    <div className="w-3.5 h-full bg-gradient-to-r from-black/85 via-black/45 to-transparent flex-shrink-0 z-10 pointer-events-none border-r border-black/40" />
+
+                    {/* Book Cover Image */}
+                    <div className="relative flex-1 h-full overflow-hidden bg-[#16100c]">
+                      <img
+                        src={getBookCoverUrl(book) || book.cover}
+                        alt={book.title}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        loading="lazy"
+                      />
+
+                      {/* Protective glossy lacquer sheen */}
+                      <div className="absolute inset-0 bg-gradient-to-tr from-black/30 via-transparent to-white/10 pointer-events-none" />
+
+                      {/* Bottom banner for clean title readability */}
+                      <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex items-end p-2 opacity-95 group-hover:opacity-100 transition-opacity">
+                        <div className="w-full">
+                          <p className="font-serif text-[10px] sm:text-[11px] font-bold text-amber-100 line-clamp-1 drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)]">
+                            {book.title}
+                          </p>
+                          <p className="text-[7.5px] sm:text-[8px] font-serif text-amber-200/80 uppercase tracking-wider line-clamp-1">
+                            {book.author}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Toggle to slide back in as spine */}
+                      <button
+                        onClick={(e) => toggleFaceOut(e, book.id)}
+                        className="absolute top-1.5 right-1.5 z-20 px-1.5 py-0.5 rounded bg-black/75 hover:bg-amber-950/90 backdrop-blur-xs border border-amber-400/40 text-[7px] font-serif text-amber-200 tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
+                        title="Slide into shelf as spine"
+                      >
+                        Spine 📚
+                      </button>
+                    </div>
+
+                    {/* Right Paper Page Block Bevel (Edge of pages) */}
+                    <div className="w-1.5 h-full bg-gradient-to-l from-[#e6dbce] via-[#d4c6b5] to-[#8c7b69] border-l border-black/50 shadow-inner flex-shrink-0 pointer-events-none" />
+                  </div>
+
+                  {/* Wooden Shelf Easel / Kickstand shadow underneath */}
+                  <div className="absolute -bottom-1.5 inset-x-2 h-2 bg-black/80 blur-xs rounded-full pointer-events-none -z-10" />
+                </motion.div>
+              );
+            }
+
+            /* ========================================================= */
+            /* SLID-IN BOOK SPINE DISPLAY                                */
+            /* ========================================================= */
             return (
               <div
                 key={book.id}
@@ -155,9 +305,16 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
                   </div>
                 )}
 
-                {/* ========================================================= */}
-                {/* CLASSY VINTAGE LEATHER BOOK SPINE                         */}
-                {/* ========================================================= */}
+                {/* Hover button to display book face-out */}
+                <button
+                  onClick={(e) => toggleFaceOut(e, book.id)}
+                  className="absolute -top-3.5 right-1/2 translate-x-1/2 z-30 px-1.5 py-0.5 rounded bg-black/90 hover:bg-amber-900 border border-amber-400/50 text-[6.5px] font-serif text-amber-200 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity shadow-md whitespace-nowrap"
+                  title="Display front cover face-out"
+                >
+                  Cover 📖
+                </button>
+
+                {/* Classic Leather Book Spine */}
                 <motion.div
                   animate={isSelected ? {
                     y: -18,
@@ -186,9 +343,7 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
                     <div className="w-4/5 h-[1px] bg-gradient-to-r from-transparent via-amber-300/40 to-transparent" />
                   </div>
 
-                  {/* ========================================================= */}
-                  {/* TITLE AREA: HORIZONTAL (FITTED) VS NORTH-TO-SOUTH (VERTICAL) */}
-                  {/* ========================================================= */}
+                  {/* Title Area: Horizontal Fitted vs North-to-South Vertical */}
                   {orientation === 'horizontal' ? (
                     /* 1. HORIZONTAL FITTED TITLE */
                     <div className="w-full px-0.5 flex flex-col items-center justify-center my-auto z-10">
@@ -339,7 +494,7 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
       onMouseLeave={() => setHoveredBook(null)}
     >
       {/* ========================================================= */}
-      {/* CLASSICAL LIBRARY DIRECTORY TABS & ORIENTATION TOGGLE     */}
+      {/* CLASSICAL LIBRARY DIRECTORY TABS & DISPLAY CONTROLS       */}
       {/* ========================================================= */}
       <div className="flex items-center justify-between flex-wrap gap-3 mb-4 sm:mb-5 px-1 select-none z-20">
         {/* Category Tabs */}
@@ -395,33 +550,46 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
           </button>
         </div>
 
-        {/* Orientation Toggle: Fit Title ↔ vs North to South ↕ */}
-        <div className="flex items-center gap-1.5 bg-[#1b120ce0] border border-amber-900/50 rounded-full px-2.5 py-1 text-[10px] font-serif shadow-sm">
-          <span className="text-amber-400/70 uppercase tracking-widest text-[8px] mr-1 hidden sm:inline">
-            Spine Text:
-          </span>
+        {/* Display Controls: Shuffle Covers + Spine Orientation */}
+        <div className="flex items-center flex-wrap gap-2">
+          {/* Shuffle Face-Out Covers button */}
           <button
-            onClick={() => toggleOrientation('horizontal')}
-            className={`px-2 py-0.5 rounded-full transition-all text-[9.5px] ${
-              orientation === 'horizontal'
-                ? 'bg-amber-800/90 text-amber-100 font-semibold shadow-xs'
-                : 'text-amber-300/50 hover:text-amber-200'
-            }`}
-            title="Horizontal fitted titles"
+            onClick={shuffleFaceOut}
+            className="px-2.5 py-1 rounded-full bg-[#1b120ce0] hover:bg-amber-900/60 border border-amber-900/50 text-[9.5px] font-serif text-amber-200/90 transition-all flex items-center gap-1 shadow-sm active:scale-95"
+            title="Randomly feature different book covers face-out on the shelves"
           >
-            ↔ Fit Title
+            <span>🎲</span>
+            <span>Shuffle Covers</span>
           </button>
-          <button
-            onClick={() => toggleOrientation('vertical')}
-            className={`px-2 py-0.5 rounded-full transition-all text-[9.5px] ${
-              orientation === 'vertical'
-                ? 'bg-amber-800/90 text-amber-100 font-semibold shadow-xs'
-                : 'text-amber-300/50 hover:text-amber-200'
-            }`}
-            title="North to South vertical spine titles"
-          >
-            ↕ North to South
-          </button>
+
+          {/* Orientation Toggle: Fit Title ↔ vs North to South ↕ */}
+          <div className="flex items-center gap-1.5 bg-[#1b120ce0] border border-amber-900/50 rounded-full px-2.5 py-1 text-[10px] font-serif shadow-sm">
+            <span className="text-amber-400/70 uppercase tracking-widest text-[8px] mr-1 hidden sm:inline">
+              Spine:
+            </span>
+            <button
+              onClick={() => toggleOrientation('horizontal')}
+              className={`px-2 py-0.5 rounded-full transition-all text-[9.5px] ${
+                orientation === 'horizontal'
+                  ? 'bg-amber-800/90 text-amber-100 font-semibold shadow-xs'
+                  : 'text-amber-300/50 hover:text-amber-200'
+              }`}
+              title="Horizontal fitted titles"
+            >
+              ↔ Fit Title
+            </button>
+            <button
+              onClick={() => toggleOrientation('vertical')}
+              className={`px-2 py-0.5 rounded-full transition-all text-[9.5px] ${
+                orientation === 'vertical'
+                  ? 'bg-amber-800/90 text-amber-100 font-semibold shadow-xs'
+                  : 'text-amber-300/50 hover:text-amber-200'
+              }`}
+              title="North to South vertical spine titles"
+            >
+              ↕ North to South
+            </button>
+          </div>
         </div>
       </div>
 
@@ -519,7 +687,7 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
 
       {/* Hover Preview Card (Desktop) */}
       <AnimatePresence>
-        {hoveredBook && (
+        {hoveredBook && !faceOutBookIds.has(hoveredBook.id) && (
           <motion.div
             initial={{ opacity: 0, y: 15, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
