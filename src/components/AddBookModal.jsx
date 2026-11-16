@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { cropUniformCover, cropToBoundingBox, autoTrimTableBorders } from '../lib/imageCompressor';
 import { pb, parseBookCoverWithAI, getGeminiApiKey, setGeminiApiKey } from '../lib/pocketbase';
 
-export default function AddBookModal({ isOpen, onClose, onBookAdded }) {
+export default function AddBookModal({ isOpen, onClose, onBookAdded, initialCategory = 'story' }) {
   // Original photo as taken by user
   const [rawImageFile, setRawImageFile] = useState(null);
   const [rawPreviewUrl, setRawPreviewUrl] = useState(null);
@@ -20,10 +20,17 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded }) {
   const [panY, setPanY] = useState(0);
 
   // Book metadata
-  const [category, setCategory] = useState('story'); // 'story' | 'album' | 'cookbook'
+  const [category, setCategory] = useState(initialCategory || 'story'); // 'story' | 'album' | 'cookbook'
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [notes, setNotes] = useState('');
+
+  // Sync category when opening modal with a specific category
+  useEffect(() => {
+    if (isOpen && initialCategory) {
+      setCategory(initialCategory);
+    }
+  }, [isOpen, initialCategory]);
 
   // AI & Save state
   const [isScanningAI, setIsScanningAI] = useState(false);

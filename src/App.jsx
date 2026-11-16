@@ -142,6 +142,15 @@ const INITIAL_BOOKS = [
     notes: 'Our best holiday pictures & memories from this year',
     pages: [],
   },
+  {
+    id: 'album_2023',
+    title: 'Christmas 2023',
+    author: 'Annual Highlights',
+    category: 'album',
+    cover: 'https://images.unsplash.com/photo-1545645312-70b9255651c6?auto=format&fit=crop&w=400&q=80',
+    notes: 'Holiday family memories and gatherings from 2023',
+    pages: [],
+  },
   // Family Cookbooks & Keepsakes
   {
     id: 'cookbook_erin',
@@ -195,6 +204,7 @@ export default function App() {
   const [selectedBook, setSelectedBook] = useState(null);
   const [isReaderOpen, setIsReaderOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [addModalCategory, setAddModalCategory] = useState('story');
 
   const handleUnlock = (e) => {
     e?.preventDefault();
@@ -539,7 +549,10 @@ export default function App() {
                 <SpineBookshelf
                   books={filteredBooks}
                   onSelectBook={(book) => setSelectedBook(book)}
-                  onAddBook={() => setIsAddModalOpen(true)}
+                  onAddBook={(cat) => {
+                    setAddModalCategory(cat || 'story');
+                    setIsAddModalOpen(true);
+                  }}
                 />
               )}
 
@@ -547,7 +560,10 @@ export default function App() {
                 <CoverGalleryView
                   books={filteredBooks}
                   onSelectBook={(book) => setSelectedBook(book)}
-                  onAddBook={() => setIsAddModalOpen(true)}
+                  onAddBook={() => {
+                    setAddModalCategory('story');
+                    setIsAddModalOpen(true);
+                  }}
                 />
               )}
 
@@ -666,6 +682,7 @@ export default function App() {
       {/* Add Book with Camera & AI Modal */}
       <AddBookModal
         isOpen={isAddModalOpen}
+        initialCategory={addModalCategory}
         onClose={() => setIsAddModalOpen(false)}
         onBookAdded={handleBookAdded}
       />
