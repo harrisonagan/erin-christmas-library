@@ -197,8 +197,11 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
         <div className="absolute inset-x-0 bottom-7 h-60 bg-gradient-to-t from-black/90 via-black/50 to-transparent pointer-events-none -z-10" />
 
         {/* Books standing side-by-side on the shelf */}
-        <div className="flex items-end justify-start sm:justify-center gap-2 sm:gap-3 px-6 sm:px-12 overflow-x-auto pb-0.5 scrollbar-none">
-          {items.map((book) => {
+        {/* Books standing side-by-side on the shelf */}
+        <div className="flex items-end justify-start sm:justify-center gap-2.5 sm:gap-4 px-8 sm:px-16 overflow-x-auto pb-1 scrollbar-none">
+          {items.map((book, bookIdx) => {
+            const isFirstOnShelf = bookIdx === 0;
+            const isLastOnShelf = bookIdx === items.length - 1;
             const isHighlighted = book.isHighlighted;
             const isSelected = hoveredBook?.id === book.id;
             const isFaceOut = faceOutBookIds.has(book.id);
@@ -227,38 +230,44 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
                   }}
                   style={{
                     height: `${book.height || 225}px`,
-                    width: `${Math.round((book.height || 225) * 0.72)}px`,
+                    width: `${Math.round((book.height || 225) * 0.77)}px`,
                   }}
-                  className="relative group cursor-pointer flex-shrink-0 mx-1 sm:mx-1.5 select-none"
+                  className={`relative group cursor-pointer flex-shrink-0 select-none ${
+                    isFirstOnShelf 
+                      ? 'ml-3 sm:ml-5 mr-1 sm:mr-2' 
+                      : isLastOnShelf 
+                      ? 'ml-1 sm:ml-2 mr-3 sm:mr-5' 
+                      : 'mx-1 sm:mx-2'
+                  }`}
                 >
                   {/* Subtle holiday ribbon bookmark */}
                   {isHighlighted && (
-                    <div className="absolute -top-5 left-6 z-20 flex flex-col items-center pointer-events-none">
+                    <div className="absolute -top-5 left-7 z-20 flex flex-col items-center pointer-events-none">
                       <div className="w-1.5 h-4 bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700 shadow-[0_1px_3px_rgba(0,0,0,0.8)] rounded-b-xs" />
                     </div>
                   )}
 
                   {/* Hardcover Book Frame propped on shelf */}
-                  <div className="relative w-full h-full rounded-r-md rounded-l-xs overflow-hidden shadow-[-6px_10px_25px_rgba(0,0,0,0.92),0_2px_4px_rgba(0,0,0,0.85)] border-t border-r border-amber-900/30 flex bg-stone-900 group-hover:shadow-[0_14px_30px_rgba(251,191,36,0.35)] transition-shadow">
-                    {/* Left Hardcover Spine Hinge / Binding Crease */}
-                    <div className="w-3.5 h-full bg-gradient-to-r from-black/85 via-black/45 to-transparent flex-shrink-0 z-10 pointer-events-none border-r border-black/40" />
+                  <div className="relative w-full h-full rounded-r-md rounded-l-xs overflow-hidden shadow-[-6px_10px_25px_rgba(0,0,0,0.92),0_2px_4px_rgba(0,0,0,0.85)] border-t border-r border-amber-900/30 flex bg-[#1e130c] p-1 sm:p-1.5 group-hover:shadow-[0_14px_30px_rgba(251,191,36,0.35)] transition-shadow">
+                    {/* Left Hardcover Spine Hinge / Binding Crease (Absolute Overlay so cover art isn't narrowed) */}
+                    <div className="absolute inset-y-0 left-0 w-2.5 sm:w-3 bg-gradient-to-r from-black/75 via-black/30 to-transparent z-20 pointer-events-none rounded-l-xs border-r border-black/25" />
 
-                    {/* Book Cover Image */}
-                    <div className="relative flex-1 h-full overflow-hidden bg-[#16100c]">
+                    {/* Book Cover Image Frame */}
+                    <div className="relative w-full h-full rounded-xs overflow-hidden bg-[#140c08] flex items-center justify-center shadow-inner">
                       <img
                         src={getBookCoverUrl(book) || book.cover}
                         alt={book.title}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="w-full h-full object-contain rounded-xs drop-shadow-[0_2px_5px_rgba(0,0,0,0.65)] transition-transform duration-300 group-hover:scale-[1.02]"
                         loading="lazy"
                       />
 
                       {/* Protective glossy lacquer sheen */}
-                      <div className="absolute inset-0 bg-gradient-to-tr from-black/30 via-transparent to-white/10 pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-white/10 pointer-events-none z-10" />
 
-                      {/* Bottom banner for clean title readability */}
-                      <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex items-end p-2 opacity-95 group-hover:opacity-100 transition-opacity">
+                      {/* Sleek bottom title banner (Subtle gradient on hover, does not obscure artwork) */}
+                      <div className="absolute inset-x-0 bottom-0 h-9 sm:h-10 bg-gradient-to-t from-black/95 via-black/55 to-transparent flex items-end p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-20">
                         <div className="w-full">
-                          <p className="font-serif text-[10px] sm:text-[11px] font-bold text-amber-100 line-clamp-1 drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)]">
+                          <p className="font-serif text-[10px] sm:text-[10.5px] font-bold text-amber-100 line-clamp-1 drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)]">
                             {book.title}
                           </p>
                           <p className="text-[7.5px] sm:text-[8px] font-serif text-amber-200/80 uppercase tracking-wider line-clamp-1">
@@ -270,15 +279,15 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
                       {/* Toggle to slide back in as spine */}
                       <button
                         onClick={(e) => toggleFaceOut(e, book.id)}
-                        className="absolute top-1.5 right-1.5 z-20 px-1.5 py-0.5 rounded bg-black/75 hover:bg-amber-950/90 backdrop-blur-xs border border-amber-400/40 text-[7px] font-serif text-amber-200 tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
+                        className="absolute top-1.5 right-1.5 z-30 px-1.5 py-0.5 rounded bg-black/80 hover:bg-amber-950/90 backdrop-blur-xs border border-amber-400/40 text-[7px] font-serif text-amber-200 tracking-wider uppercase opacity-85 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shadow-sm"
                         title="Slide into shelf as spine"
                       >
                         Spine 📚
                       </button>
                     </div>
 
-                    {/* Right Paper Page Block Bevel (Edge of pages) */}
-                    <div className="w-1.5 h-full bg-gradient-to-l from-[#e6dbce] via-[#d4c6b5] to-[#8c7b69] border-l border-black/50 shadow-inner flex-shrink-0 pointer-events-none" />
+                    {/* Right Paper Page Block Bevel (Edge of pages - subtle depth overlay) */}
+                    <div className="absolute inset-y-0 right-0 w-1.5 bg-gradient-to-l from-[#d4c6b5]/50 via-[#8c7b69]/30 to-transparent border-l border-black/30 pointer-events-none z-20 rounded-r-md" />
                   </div>
 
                   {/* Wooden Shelf Easel / Kickstand shadow underneath */}
@@ -293,7 +302,13 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
             return (
               <div
                 key={book.id}
-                className="relative group cursor-pointer flex-shrink-0"
+                className={`relative group cursor-pointer flex-shrink-0 ${
+                  isFirstOnShelf 
+                    ? 'ml-2 sm:ml-3' 
+                    : isLastOnShelf 
+                    ? 'mr-2 sm:mr-3' 
+                    : ''
+                }`}
                 onMouseEnter={() => setHoveredBook(book)}
                 onClick={() => {
                   setHoveredBook(null);
