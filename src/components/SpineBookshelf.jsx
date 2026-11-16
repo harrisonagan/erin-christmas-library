@@ -2,16 +2,78 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getBookCoverUrl } from '../lib/pocketbase';
 
+// Small Christmas Tree Outline Icon (Crisp Vector Gold Line-Art)
+function ChristmasTreeIcon({ className = "w-3 h-3 sm:w-3.5 sm:h-3.5" }) {
+  return (
+    <svg 
+      viewBox="0 0 20 20" 
+      className={`${className} inline-block filter drop-shadow-[0_1px_1px_rgba(0,0,0,0.95)]`} 
+      fill="none" 
+      stroke="currentColor" 
+      strokeWidth="1.3" 
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+    >
+      {/* Star on top */}
+      <polygon points="10,1.5 11,3.5 13,3.8 11.5,5.2 12,7.2 10,6.2 8,7.2 8.5,5.2 7,3.8 9,3.5" fill="currentColor" stroke="none" />
+      {/* Tiered tree boughs */}
+      <path d="M10 5.5 L6.5 9.5 h2 L5 13.5 h2.5 L4 17 h12 L12.5 13.5 h2.5 L11.5 9.5 h2 L10 5.5 Z" />
+      {/* Tree trunk */}
+      <path d="M9 17 v2 h2 v-2" />
+    </svg>
+  );
+}
+
+// Little Nativity Manger Outline Icon (Peaked Roof, Star of Bethlehem & Crib)
+function MangerIcon({ className = "w-3.5 h-3.5 sm:w-4 sm:h-4" }) {
+  return (
+    <svg 
+      viewBox="0 0 20 20" 
+      className={`${className} inline-block filter drop-shadow-[0_1px_1px_rgba(0,0,0,0.95)]`} 
+      fill="none" 
+      stroke="currentColor" 
+      strokeWidth="1.3" 
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+    >
+      {/* Star of Bethlehem shining directly above manger */}
+      <path d="M10 1.2 v3 M8.5 2.7 h3 M9 1.7 l2 2 M11 1.7 l-2 2" strokeWidth="1.1" />
+      {/* Manger stable A-frame peaked roof */}
+      <path d="M3.5 9.5 L10 5.5 L16.5 9.5" strokeWidth="1.4" />
+      {/* Wooden manger crib */}
+      <path d="M6 13.5 h8 l-1 3.5 h-6 Z" strokeWidth="1.3" />
+      {/* Crossed wooden support legs */}
+      <path d="M6.5 13.5 L5 17 M13.5 13.5 L15 17" strokeWidth="1.3" />
+      {/* Baby cradle soft glow */}
+      <path d="M8 13.5 c.6-1.5 3.4-1.5 4 0" strokeWidth="1.1" strokeDasharray="1.2 1.2" />
+    </svg>
+  );
+}
+
 export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) {
   const [hoveredBook, setHoveredBook] = useState(null);
   const [activeTab, setActiveTab] = useState('all'); // 'all' | 'story' | 'album' | 'cookbook'
+  const [orientation, setOrientation] = useState(() => {
+    try {
+      return localStorage.getItem('erin_spine_orientation') || 'horizontal';
+    } catch {
+      return 'horizontal';
+    }
+  });
+
+  const toggleOrientation = (newMode) => {
+    setOrientation(newMode);
+    try {
+      localStorage.setItem('erin_spine_orientation', newMode);
+    } catch {}
+  };
 
   // Map each book to an elegant, antique leather/cloth library spine
   const styledBooks = books.map((b, idx) => {
     const isAlbum = b.category === 'album' || b.id === 'album_santa' || b.title?.toLowerCase().includes('santa') || b.title?.toLowerCase().includes('photo');
     const isCookbook = b.category === 'cookbook' || b.id === 'cookbook_erin' || b.title?.toLowerCase().includes('cook');
 
-    // Substantial, realistic library spine heights and generous widths so words never clip
+    // Substantial, realistic library spine heights and generous widths
     const heights = isAlbum ? [254, 260, 250] : isCookbook ? [246, 252] : [228, 218, 238, 214, 232, 222, 240, 220];
     const widths = isAlbum ? [90, 94, 88] : isCookbook ? [88, 92] : [74, 80, 70, 82, 76, 72, 78, 74];
 
@@ -66,6 +128,15 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
           {items.map((book) => {
             const isHighlighted = book.isHighlighted;
             const isSelected = hoveredBook?.id === book.id;
+            const titleLen = book.title?.length || 0;
+
+            // Fitted, proportional horizontal typography (never "too large" or clipped)
+            const horizontalFontSize = 
+              titleLen <= 12
+                ? 'text-[9.5px] sm:text-[10px] font-semibold leading-[1.2]'
+                : titleLen <= 22
+                ? 'text-[8.5px] sm:text-[9px] font-medium leading-[1.18]'
+                : 'text-[7.5px] sm:text-[8px] font-normal leading-[1.14]';
 
             return (
               <div
@@ -107,58 +178,96 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
                     height: `${book.height}px`,
                     width: `${book.width}px`,
                   }}
-                  className={`relative rounded-t-sm shadow-[inset_-5px_0_10px_rgba(0,0,0,0.75),inset_4px_0_6px_rgba(255,255,255,0.09),-4px_4px_14px_rgba(0,0,0,0.9)] bg-gradient-to-r ${book.color} border-t border-r border-amber-900/30 flex flex-col justify-between items-center py-2.5 px-1 select-none transition-shadow group-hover:shadow-[0_12px_26px_rgba(251,191,36,0.35)]`}
+                  className={`relative rounded-t-sm shadow-[inset_-5px_0_10px_rgba(0,0,0,0.75),inset_4px_0_6px_rgba(255,255,255,0.09),-4px_4px_14px_rgba(0,0,0,0.9)] bg-gradient-to-r ${book.color} border-t border-r border-amber-900/30 flex flex-col justify-between items-center py-2 px-1 select-none transition-shadow group-hover:shadow-[0_12px_26px_rgba(251,191,36,0.35)]`}
                 >
-                  {/* Top Headband & Raised Gilded Rib 1 */}
+                  {/* Top Headband & Raised Gilded Rib */}
                   <div className="w-full flex flex-col items-center gap-1">
                     <div className="w-full h-1 bg-amber-400/30 border-b border-black/60" />
                     <div className="w-4/5 h-[1px] bg-gradient-to-r from-transparent via-amber-300/40 to-transparent" />
                   </div>
 
-                  {/* Horizontal Gilded Title Cartouche (Classy Antique Morocco Label) */}
-                  <div className="w-full px-0.5 flex flex-col items-center justify-center my-auto z-10">
-                    <div className="w-full py-2 px-1 border border-amber-400/35 bg-black/40 rounded-xs flex flex-col items-center justify-center shadow-[inset_0_1px_4px_rgba(0,0,0,0.85)]">
-                      {/* Title with natural word wrapping without mid-word breaking */}
-                      <span
-                        className={`font-serif leading-[1.22] text-center select-none ${
-                          book.title.length <= 15
-                            ? 'text-[11px] sm:text-[11.5px] font-bold'
-                            : book.title.length <= 25
-                            ? 'text-[9.5px] sm:text-[10px] font-semibold'
-                            : 'text-[8.5px] sm:text-[9px] font-medium'
-                        } ${
-                          book.foil === 'gold'
-                            ? 'text-[#faeac7] drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)]'
-                            : 'text-[#edf1f5] drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)]'
-                        }`}
-                        style={{
-                          overflowWrap: 'break-word',
-                          wordBreak: 'normal',
-                          hyphens: 'none',
-                          display: '-webkit-box',
-                          WebkitLineClamp: 3,
-                          WebkitBoxOrient: 'vertical',
-                          overflow: 'hidden',
-                        }}
-                      >
-                        {book.title}
-                      </span>
+                  {/* ========================================================= */}
+                  {/* TITLE AREA: HORIZONTAL (FITTED) VS NORTH-TO-SOUTH (VERTICAL) */}
+                  {/* ========================================================= */}
+                  {orientation === 'horizontal' ? (
+                    /* 1. HORIZONTAL FITTED TITLE */
+                    <div className="w-full px-0.5 flex flex-col items-center justify-center my-auto z-10">
+                      <div className="w-full py-1.5 px-1 border border-amber-400/35 bg-black/45 rounded-xs flex flex-col items-center justify-center shadow-[inset_0_1px_4px_rgba(0,0,0,0.85)]">
+                        <span
+                          className={`font-serif text-center select-none ${horizontalFontSize} ${
+                            book.foil === 'gold'
+                              ? 'text-[#faeac7] drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)]'
+                              : 'text-[#edf1f5] drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)]'
+                          }`}
+                          style={{
+                            overflowWrap: 'break-word',
+                            wordBreak: 'normal',
+                            hyphens: 'none',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 4,
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden',
+                          }}
+                        >
+                          {book.title}
+                        </span>
 
-                      {/* Author Surname / Volume Note in Classic Small-Caps */}
-                      {book.author && (
-                        <>
-                          <div className="w-3/4 h-[1px] bg-amber-400/25 my-1" />
-                          <div className="text-[7.5px] sm:text-[8px] font-serif text-amber-200/80 uppercase tracking-[0.14em] text-center truncate max-w-[95%]">
-                            {book.category === 'album'
-                              ? 'Album'
-                              : book.category === 'cookbook'
-                              ? 'Recipes'
-                              : book.author.split(' ').pop()}
-                          </div>
-                        </>
-                      )}
+                        {book.author && (
+                          <>
+                            <div className="w-2/3 h-[1px] bg-amber-400/25 my-1" />
+                            <div className="text-[7px] sm:text-[7.5px] font-serif text-amber-200/80 uppercase tracking-[0.14em] text-center leading-tight max-w-full">
+                              {book.category === 'album'
+                                ? 'Album'
+                                : book.category === 'cookbook'
+                                ? 'Recipes'
+                                : book.author.split(' ').pop()}
+                            </div>
+                          </>
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    /* 2. NORTH TO SOUTH (VERTICAL) VINTAGE LIBRARY SPINE */
+                    <div className="w-full flex-1 flex flex-col items-center justify-center my-1 z-10 px-0.5">
+                      <div className="w-full h-full py-2 border border-amber-400/35 bg-black/45 rounded-xs flex flex-col items-center justify-center shadow-[inset_0_1px_4px_rgba(0,0,0,0.85)] max-h-[195px] overflow-hidden">
+                        <span
+                          className="font-serif text-[9.5px] sm:text-[10px] font-semibold tracking-wider text-center select-none text-[#faeac7] drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)] leading-tight"
+                          style={{
+                            writingMode: 'vertical-rl',
+                            textOrientation: 'mixed',
+                            maxHeight: `${book.height - 75}px`,
+                            overflow: 'hidden',
+                            whiteSpace: 'nowrap',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {book.title}
+                        </span>
+
+                        {book.author && (
+                          <>
+                            <div className="w-[1px] h-3 bg-amber-400/30 my-1 flex-shrink-0" />
+                            <span
+                              className="font-serif text-[7px] sm:text-[7.5px] text-amber-200/80 uppercase tracking-widest text-center select-none leading-none flex-shrink-0"
+                              style={{
+                                writingMode: 'vertical-rl',
+                                textOrientation: 'mixed',
+                                maxHeight: '42px',
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                              }}
+                            >
+                              {book.category === 'album'
+                                ? 'Album'
+                                : book.category === 'cookbook'
+                                ? 'Recipes'
+                                : book.author.split(' ').pop()}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  )}
 
                   {/* Bottom Tailband & Delicate Filigree Emblem */}
                   <div className="flex flex-col items-center gap-1 w-full">
@@ -230,58 +339,90 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
       onMouseLeave={() => setHoveredBook(null)}
     >
       {/* ========================================================= */}
-      {/* CLASSICAL LIBRARY DIRECTORY TABS                          */}
+      {/* CLASSICAL LIBRARY DIRECTORY TABS & ORIENTATION TOGGLE     */}
       {/* ========================================================= */}
-      <div className="flex items-center justify-center flex-wrap gap-x-6 sm:gap-x-8 gap-y-2 mb-4 sm:mb-5 font-serif text-[11px] sm:text-xs uppercase tracking-[0.24em] select-none z-20">
-        <button
-          onClick={() => setActiveTab('all')}
-          className={`transition-all duration-200 pb-1.5 ${
-            activeTab === 'all'
-              ? 'text-amber-100 font-bold border-b-2 border-amber-400 drop-shadow-[0_2px_8px_rgba(251,191,36,0.6)]'
-              : 'text-amber-200/50 hover:text-amber-100 border-b-2 border-transparent'
-          }`}
-        >
-          All Volumes ({styledBooks.length})
-        </button>
+      <div className="flex items-center justify-between flex-wrap gap-3 mb-4 sm:mb-5 px-1 select-none z-20">
+        {/* Category Tabs */}
+        <div className="flex items-center justify-center flex-wrap gap-x-5 sm:gap-x-7 gap-y-1.5 font-serif text-[11px] sm:text-xs uppercase tracking-[0.22em]">
+          <button
+            onClick={() => setActiveTab('all')}
+            className={`transition-all duration-200 pb-1 ${
+              activeTab === 'all'
+                ? 'text-amber-100 font-bold border-b-2 border-amber-400 drop-shadow-[0_2px_8px_rgba(251,191,36,0.6)]'
+                : 'text-amber-200/50 hover:text-amber-100 border-b-2 border-transparent'
+            }`}
+          >
+            All Volumes ({styledBooks.length})
+          </button>
 
-        <span className="text-amber-700/50 select-none">•</span>
+          <span className="text-amber-700/50 select-none">•</span>
 
-        <button
-          onClick={() => setActiveTab('story')}
-          className={`transition-all duration-200 pb-1.5 ${
-            activeTab === 'story'
-              ? 'text-amber-100 font-bold border-b-2 border-amber-400 drop-shadow-[0_2px_8px_rgba(251,191,36,0.6)]'
-              : 'text-amber-200/50 hover:text-amber-100 border-b-2 border-transparent'
-          }`}
-        >
-          Storybooks ({storybooks.length})
-        </button>
+          <button
+            onClick={() => setActiveTab('story')}
+            className={`transition-all duration-200 pb-1 ${
+              activeTab === 'story'
+                ? 'text-amber-100 font-bold border-b-2 border-amber-400 drop-shadow-[0_2px_8px_rgba(251,191,36,0.6)]'
+                : 'text-amber-200/50 hover:text-amber-100 border-b-2 border-transparent'
+            }`}
+          >
+            Storybooks ({storybooks.length})
+          </button>
 
-        <span className="text-amber-700/50 select-none">•</span>
+          <span className="text-amber-700/50 select-none">•</span>
 
-        <button
-          onClick={() => setActiveTab('album')}
-          className={`transition-all duration-200 pb-1.5 ${
-            activeTab === 'album'
-              ? 'text-amber-100 font-bold border-b-2 border-amber-400 drop-shadow-[0_2px_8px_rgba(251,191,36,0.6)]'
-              : 'text-amber-200/50 hover:text-amber-100 border-b-2 border-transparent'
-          }`}
-        >
-          Photo Albums ({photoAlbums.length})
-        </button>
+          <button
+            onClick={() => setActiveTab('album')}
+            className={`transition-all duration-200 pb-1 ${
+              activeTab === 'album'
+                ? 'text-amber-100 font-bold border-b-2 border-amber-400 drop-shadow-[0_2px_8px_rgba(251,191,36,0.6)]'
+                : 'text-amber-200/50 hover:text-amber-100 border-b-2 border-transparent'
+            }`}
+          >
+            Photo Albums ({photoAlbums.length})
+          </button>
 
-        <span className="text-amber-700/50 select-none">•</span>
+          <span className="text-amber-700/50 select-none">•</span>
 
-        <button
-          onClick={() => setActiveTab('cookbook')}
-          className={`transition-all duration-200 pb-1.5 ${
-            activeTab === 'cookbook'
-              ? 'text-amber-100 font-bold border-b-2 border-amber-400 drop-shadow-[0_2px_8px_rgba(251,191,36,0.6)]'
-              : 'text-amber-200/50 hover:text-amber-100 border-b-2 border-transparent'
-          }`}
-        >
-          Cookbooks ({cookbooks.length})
-        </button>
+          <button
+            onClick={() => setActiveTab('cookbook')}
+            className={`transition-all duration-200 pb-1 ${
+              activeTab === 'cookbook'
+                ? 'text-amber-100 font-bold border-b-2 border-amber-400 drop-shadow-[0_2px_8px_rgba(251,191,36,0.6)]'
+                : 'text-amber-200/50 hover:text-amber-100 border-b-2 border-transparent'
+            }`}
+          >
+            Cookbooks ({cookbooks.length})
+          </button>
+        </div>
+
+        {/* Orientation Toggle: Fit Title ↔ vs North to South ↕ */}
+        <div className="flex items-center gap-1.5 bg-[#1b120ce0] border border-amber-900/50 rounded-full px-2.5 py-1 text-[10px] font-serif shadow-sm">
+          <span className="text-amber-400/70 uppercase tracking-widest text-[8px] mr-1 hidden sm:inline">
+            Spine Text:
+          </span>
+          <button
+            onClick={() => toggleOrientation('horizontal')}
+            className={`px-2 py-0.5 rounded-full transition-all text-[9.5px] ${
+              orientation === 'horizontal'
+                ? 'bg-amber-800/90 text-amber-100 font-semibold shadow-xs'
+                : 'text-amber-300/50 hover:text-amber-200'
+            }`}
+            title="Horizontal fitted titles"
+          >
+            ↔ Fit Title
+          </button>
+          <button
+            onClick={() => toggleOrientation('vertical')}
+            className={`px-2 py-0.5 rounded-full transition-all text-[9.5px] ${
+              orientation === 'vertical'
+                ? 'bg-amber-800/90 text-amber-100 font-semibold shadow-xs'
+                : 'text-amber-300/50 hover:text-amber-200'
+            }`}
+            title="North to South vertical spine titles"
+          >
+            ↕ North to South
+          </button>
+        </div>
       </div>
 
       {/* ========================================================= */}
@@ -302,7 +443,7 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
           {/* ========================================================= */}
           {/* INLAID PAINTED HOLIDAY WRAPPING PAPER RIBBON              */}
           {/* ========================================================= */}
-          <div className="relative w-full max-w-2xl h-4 sm:h-5 bg-gradient-to-r from-[#631118] via-[#8c1c25] to-[#631118] rounded-sm border-y border-dashed border-amber-300/50 shadow-[0_2px_5px_rgba(0,0,0,0.85),inset_0_1px_2px_rgba(255,255,255,0.18)] flex items-center justify-between px-2.5 sm:px-4 overflow-hidden">
+          <div className="relative w-full max-w-2xl h-4 sm:h-5 bg-gradient-to-r from-[#631118] via-[#8c1c25] to-[#631118] rounded-sm border-y border-dashed border-amber-300/50 shadow-[0_2px_5px_rgba(0,0,0,0.85),inset_0_1px_2px_rgba(255,255,255,0.18)] flex items-center justify-between px-2 sm:px-4 overflow-hidden">
             {/* Fine holiday gift wrap diagonal gold pinstripes */}
             <div 
               className="absolute inset-0 opacity-20 pointer-events-none" 
@@ -314,17 +455,17 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
             {/* Left Brass Tack / Upholstery Stud attaching ribbon to wood */}
             <div className="relative z-10 w-2 h-2 rounded-full bg-gradient-to-br from-amber-200 via-amber-400 to-amber-700 shadow-[0_1px_2px_rgba(0,0,0,0.9)] border border-amber-900/60 flex-shrink-0" />
 
-            {/* Painted Gold Stencil Details across Ribbon */}
-            <div className="relative z-10 flex items-center justify-around w-full px-2 sm:px-6 text-[8px] sm:text-[9.5px] text-amber-200/90 font-serif tracking-widest pointer-events-none drop-shadow-[0_1px_1px_rgba(0,0,0,0.95)]">
-              <span>✦</span>
-              <span className="hidden sm:inline text-amber-300/60 text-[8px]">❄</span>
-              <span className="text-amber-300/70">🌿</span>
+            {/* Painted Gold Stencil Details: Christmas Tree & Manger Outline Icons */}
+            <div className="relative z-10 flex items-center justify-around w-full px-1 sm:px-4 text-amber-200/90 font-serif tracking-widest pointer-events-none drop-shadow-[0_1px_1px_rgba(0,0,0,0.95)]">
+              <span className="text-[7.5px] sm:text-[9px]">✦</span>
+              <ChristmasTreeIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300/90" />
+              <MangerIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300/90" />
               <span className="text-amber-100 font-medium tracking-[0.22em] uppercase text-[7.5px] sm:text-[8.5px]">
                 Holiday Keepsakes
               </span>
-              <span className="text-amber-300/70">🌿</span>
-              <span className="hidden sm:inline text-amber-300/60 text-[8px]">❄</span>
-              <span>✦</span>
+              <MangerIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300/90" />
+              <ChristmasTreeIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300/90" />
+              <span className="text-[7.5px] sm:text-[9px]">✦</span>
             </div>
 
             {/* Right Brass Tack / Upholstery Stud attaching ribbon to wood */}
