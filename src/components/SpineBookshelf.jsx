@@ -197,49 +197,53 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
         <div className="absolute inset-x-0 bottom-7 h-60 bg-gradient-to-t from-black/90 via-black/50 to-transparent pointer-events-none -z-10" />
 
         {/* Books standing side-by-side on the shelf */}
-        {/* Books standing side-by-side on the shelf */}
-        <div className="flex items-end justify-start sm:justify-center gap-2.5 sm:gap-4 px-8 sm:px-16 overflow-x-auto pb-1 scrollbar-none">
-          {items.map((book, bookIdx) => {
-            const isFirstOnShelf = bookIdx === 0;
-            const isLastOnShelf = bookIdx === items.length - 1;
-            const isHighlighted = book.isHighlighted;
-            const isSelected = hoveredBook?.id === book.id;
-            const isFaceOut = faceOutBookIds.has(book.id);
-            const titleLen = book.title?.length || 0;
+        <div className="w-full overflow-x-auto pb-1.5 scrollbar-none px-4 sm:px-8">
+          <div 
+            className={`flex items-end w-max min-w-full gap-2.5 sm:gap-4 px-3 sm:px-6 ${
+              items.length <= 4 ? 'justify-center' : 'justify-start'
+            }`}
+          >
+            {items.map((book, bookIdx) => {
+              const isFirstOnShelf = bookIdx === 0;
+              const isLastOnShelf = bookIdx === items.length - 1;
+              const isHighlighted = book.isHighlighted;
+              const isSelected = hoveredBook?.id === book.id;
+              const isFaceOut = faceOutBookIds.has(book.id);
+              const titleLen = book.title?.length || 0;
 
-            // Fitted, proportional horizontal typography
-            const horizontalFontSize = 
-              titleLen <= 12
-                ? 'text-[9.5px] sm:text-[10px] font-semibold leading-[1.2]'
-                : titleLen <= 22
-                ? 'text-[8.5px] sm:text-[9px] font-medium leading-[1.18]'
-                : 'text-[7.5px] sm:text-[8px] font-normal leading-[1.14]';
+              // Fitted, proportional horizontal typography
+              const horizontalFontSize = 
+                titleLen <= 12
+                  ? 'text-[9.5px] sm:text-[10px] font-semibold leading-[1.2]'
+                  : titleLen <= 22
+                  ? 'text-[8.5px] sm:text-[9px] font-medium leading-[1.18]'
+                  : 'text-[7.5px] sm:text-[8px] font-normal leading-[1.14]';
 
-            if (isFaceOut) {
-              /* ========================================================= */
-              /* PROPPED FACE-OUT BOOK DISPLAY (Cover Facing Viewer)       */
-              /* ========================================================= */
-              return (
-                <motion.div
-                  key={`faceout-${book.id}`}
-                  whileHover={{ y: -8, scale: 1.02 }}
-                  transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-                  onClick={() => {
-                    setHoveredBook(null);
-                    onSelectBook(book);
-                  }}
-                  style={{
-                    height: `${book.height || 225}px`,
-                    width: `${Math.round((book.height || 225) * 0.77)}px`,
-                  }}
-                  className={`relative group cursor-pointer flex-shrink-0 select-none ${
-                    isFirstOnShelf 
-                      ? 'ml-3 sm:ml-5 mr-1 sm:mr-2' 
-                      : isLastOnShelf 
-                      ? 'ml-1 sm:ml-2 mr-3 sm:mr-5' 
-                      : 'mx-1 sm:mx-2'
-                  }`}
-                >
+              if (isFaceOut) {
+                /* ========================================================= */
+                /* PROPPED FACE-OUT BOOK DISPLAY (Cover Facing Viewer)       */
+                /* ========================================================= */
+                return (
+                  <motion.div
+                    key={`faceout-${book.id}`}
+                    whileHover={{ y: -8, scale: 1.02 }}
+                    transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+                    onClick={() => {
+                      setHoveredBook(null);
+                      onSelectBook(book);
+                    }}
+                    style={{
+                      height: `${book.height || 225}px`,
+                      width: `${Math.round((book.height || 225) * 0.77)}px`,
+                    }}
+                    className={`relative group cursor-pointer flex-shrink-0 select-none ${
+                      isFirstOnShelf 
+                        ? 'ml-2 sm:ml-3 mr-1 sm:mr-2' 
+                        : isLastOnShelf 
+                        ? 'ml-1 sm:ml-2 mr-2 sm:mr-3' 
+                        : 'mx-1 sm:mx-2'
+                    }`}
+                  >
                   {/* Subtle holiday ribbon bookmark */}
                   {isHighlighted && (
                     <div className="absolute -top-5 left-7 z-20 flex flex-col items-center pointer-events-none">
@@ -475,6 +479,7 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
               </div>
             </motion.div>
           )}
+          </div>
         </div>
 
         {/* ========================================================= */}
