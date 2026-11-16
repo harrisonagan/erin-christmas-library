@@ -254,12 +254,6 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook, ex
   const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
 
   const renderShelfRow = (items, romanNumeral, shelfLabel, addCategoryPrompt = null) => {
-    // Top-tier shelf where our keepsakes reside
-    const isMouseShelf = 
-      romanNumeral === 'I' || 
-      (activeTab === 'album' && romanNumeral === 'II') || 
-      (activeTab === 'cookbook' && romanNumeral === 'III');
-
     return (
       <div 
         className="relative mb-12 sm:mb-16"
@@ -282,7 +276,6 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook, ex
               const isSelected = hoveredBook?.id === book.id;
               const isFaceOut = faceOutBookIds.has(book.id);
               const titleLen = book.title?.length || 0;
-              const shouldRenderMouseHere = isMouseShelf && (bookIdx === 1 || (items.length === 1 && bookIdx === 0));
 
               // Fitted, proportional horizontal typography
               const horizontalFontSize = 
@@ -484,21 +477,8 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook, ex
                 </div>
               );
 
-              return (
-                <React.Fragment key={`shelf-book-item-${book.id}`}>
-                  {bookElement}
-                  {/* Authentic Keepsake Christmas Mouse on the Shelf */}
-                  {shouldRenderMouseHere && (
-                    <ShelfChristmasMouse key="shelf-christmas-mouse" />
-                  )}
-                </React.Fragment>
-              );
+              return bookElement;
             })}
-
-            {/* Fallback if shelf is empty */}
-            {isMouseShelf && items.length === 0 && (
-              <ShelfChristmasMouse key="shelf-christmas-mouse-empty" />
-            )}
 
           {/* Quick-Add Spine Placeholder on each shelf for intuitive curation */}
           {addCategoryPrompt && (
@@ -558,7 +538,7 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook, ex
       {/* ========================================================= */}
       {/* CLASSICAL LIBRARY DIRECTORY TABS & DISPLAY CONTROLS       */}
       {/* ========================================================= */}
-      <div className="flex items-center justify-between flex-wrap gap-3 mb-4 sm:mb-5 px-1 select-none z-20">
+      <div className="flex items-center justify-between flex-wrap gap-3 mb-8 sm:mb-12 px-1 select-none z-20">
         {/* Category Tabs */}
         <div className="flex items-center justify-center flex-wrap gap-x-4 sm:gap-x-6 gap-y-1.5 font-serif text-[10.5px] sm:text-xs uppercase tracking-[0.2em]">
           <button
@@ -664,6 +644,11 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook, ex
           backgroundImage: 'repeating-linear-gradient(to right, rgba(0,0,0,0.35) 0px, rgba(0,0,0,0.35) 1px, transparent 1px, transparent 38px), radial-gradient(ellipse at 50% 30%, #1f120a 0%, #0d0603 100%)',
         }}
       >
+        {/* Elf on the Shelf: Keepsake Christmas Mouse perched on top-right of the bookcase */}
+        <div className="absolute bottom-[calc(100%-3px)] sm:bottom-[calc(100%-4px)] right-3 sm:right-8 z-30 pointer-events-auto">
+          <ShelfChristmasMouse />
+        </div>
+
         {/* Carved Wood Crown Molding with Attached Painted Holiday Wrapping Ribbon */}
         <div className="relative -mt-6 sm:-mt-8 mb-5 w-full h-8 sm:h-9 bg-gradient-to-b from-[#4f2a15] via-[#351b0d] to-[#1e0e06] rounded-t-xl border-t-2 border-[#794121] border-b border-black/80 shadow-[0_8px_18px_rgba(0,0,0,0.9)] flex items-center justify-center px-4 sm:px-8 select-none">
           {/* Subtle wood grain highlight */}
@@ -690,7 +675,7 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook, ex
               <ChristmasTreeIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300/90" />
               <MangerIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300/90" />
               <span className="text-amber-100 font-medium tracking-[0.22em] uppercase text-[7.5px] sm:text-[8.5px]">
-                Holiday Keepsakes
+                Christmas Keepsakes
               </span>
               <MangerIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300/90" />
               <ChristmasTreeIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300/90" />
