@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getBookCoverUrl } from '../lib/pocketbase';
+import ShelfChristmasMouse from './ShelfChristmasMouse';
 
 // Small Christmas Tree Outline Icon (Crisp Vector Gold Line-Art)
 function ChristmasTreeIcon({ className = "w-3 h-3 sm:w-3.5 sm:h-3.5" }) {
@@ -253,6 +254,12 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook, ex
   const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
 
   const renderShelfRow = (items, romanNumeral, shelfLabel, addCategoryPrompt = null) => {
+    // Top-tier shelf where our keepsakes reside
+    const isMouseShelf = 
+      romanNumeral === 'I' || 
+      (activeTab === 'album' && romanNumeral === 'II') || 
+      (activeTab === 'cookbook' && romanNumeral === 'III');
+
     return (
       <div 
         className="relative mb-12 sm:mb-16"
@@ -275,6 +282,7 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook, ex
               const isSelected = hoveredBook?.id === book.id;
               const isFaceOut = faceOutBookIds.has(book.id);
               const titleLen = book.title?.length || 0;
+              const shouldRenderMouseHere = isMouseShelf && (bookIdx === 1 || (items.length === 1 && bookIdx === 0));
 
               // Fitted, proportional horizontal typography
               const horizontalFontSize = 
@@ -284,31 +292,30 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook, ex
                   ? 'text-[8.5px] sm:text-[9px] font-medium leading-[1.18]'
                   : 'text-[7.5px] sm:text-[8px] font-normal leading-[1.14]';
 
-              if (isFaceOut) {
+              const bookElement = isFaceOut ? (
                 /* ========================================================= */
                 /* PROPPED FACE-OUT BOOK DISPLAY (Cover Facing Viewer)       */
                 /* ========================================================= */
-                return (
-                  <motion.div
-                    key={`faceout-${book.id}`}
-                    whileHover={{ y: -8, scale: 1.02 }}
-                    transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-                    onClick={() => {
-                      setHoveredBook(null);
-                      onSelectBook(book);
-                    }}
-                    style={{
-                      height: `${book.height || 225}px`,
-                      width: `${Math.round((book.height || 225) * 0.77)}px`,
-                    }}
-                    className={`relative group cursor-pointer flex-shrink-0 select-none ${
-                      isFirstOnShelf 
-                        ? 'ml-2 sm:ml-3 mr-1 sm:mr-2' 
-                        : isLastOnShelf 
-                        ? 'ml-1 sm:ml-2 mr-2 sm:mr-3' 
-                        : 'mx-1 sm:mx-2'
-                    }`}
-                  >
+                <motion.div
+                  key={`faceout-${book.id}`}
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+                  onClick={() => {
+                    setHoveredBook(null);
+                    onSelectBook(book);
+                  }}
+                  style={{
+                    height: `${book.height || 225}px`,
+                    width: `${Math.round((book.height || 225) * 0.77)}px`,
+                  }}
+                  className={`relative group cursor-pointer flex-shrink-0 select-none ${
+                    isFirstOnShelf 
+                      ? 'ml-2 sm:ml-3 mr-1 sm:mr-2' 
+                      : isLastOnShelf 
+                      ? 'ml-1 sm:ml-2 mr-2 sm:mr-3' 
+                      : 'mx-1 sm:mx-2'
+                  }`}
+                >
                   {/* Subtle holiday ribbon bookmark */}
                   {isHighlighted && (
                     <div className="absolute -top-5 left-7 z-20 flex flex-col items-center pointer-events-none">
@@ -362,124 +369,136 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook, ex
                   {/* Wooden Shelf Easel / Kickstand shadow underneath */}
                   <div className="absolute -bottom-1.5 inset-x-2 h-2 bg-black/80 blur-xs rounded-full pointer-events-none -z-10" />
                 </motion.div>
+              ) : (
+                /* ========================================================= */
+                /* SLID-IN BOOK SPINE DISPLAY                                */
+                /* ========================================================= */
+                <div
+                  key={book.id}
+                  className={`relative group cursor-pointer flex-shrink-0 ${
+                    isFirstOnShelf 
+                      ? 'ml-2 sm:ml-3' 
+                      : isLastOnShelf 
+                      ? 'mr-2 sm:mr-3' 
+                      : ''
+                  }`}
+                  onMouseEnter={() => setHoveredBook(book)}
+                  onClick={() => {
+                    setHoveredBook(null);
+                    onSelectBook(book);
+                  }}
+                >
+                  {/* Subtle holiday ribbon bookmark */}
+                  {isHighlighted && (
+                    <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center pointer-events-none">
+                      <div className="w-1.5 h-4 bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700 shadow-[0_1px_3px_rgba(0,0,0,0.8)] rounded-b-xs" />
+                    </div>
+                  )}
+
+                  {/* Hover button to display book face-out */}
+                  <button
+                    onClick={(e) => toggleFaceOut(e, book.id)}
+                    className="absolute -top-3.5 right-1/2 translate-x-1/2 z-30 px-1.5 py-0.5 rounded bg-black/90 hover:bg-amber-900 border border-amber-400/50 text-[6.5px] font-serif text-amber-200 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity shadow-md whitespace-nowrap"
+                    title="Display front cover face-out"
+                  >
+                    Cover 📖
+                  </button>
+
+                  {/* Classic Leather Book Spine */}
+                  <motion.div
+                    animate={isSelected ? {
+                      y: -18,
+                      z: 35,
+                      rotateY: -4,
+                      scale: 1.03,
+                      transition: { type: 'spring', stiffness: 340, damping: 24 }
+                    } : isHighlighted ? {
+                      y: -4,
+                      transition: { duration: 0.3 }
+                    } : {
+                      y: 0,
+                      rotateY: 0,
+                      scale: 1,
+                      transition: { duration: 0.3 }
+                    }}
+                    style={{
+                      height: `${book.height}px`,
+                      width: `${book.width}px`,
+                    }}
+                    className={`relative rounded-t-sm shadow-[inset_-5px_0_10px_rgba(0,0,0,0.75),inset_4px_0_6px_rgba(255,255,255,0.09),-4px_4px_14px_rgba(0,0,0,0.9)] bg-gradient-to-r ${book.color} border-t border-r border-amber-900/30 flex flex-col justify-between items-center py-2 px-1 select-none transition-shadow group-hover:shadow-[0_12px_26px_rgba(251,191,36,0.35)]`}
+                  >
+                    {/* Top Headband & Raised Gilded Rib */}
+                    <div className="w-full flex flex-col items-center gap-1">
+                      <div className="w-full h-1 bg-amber-400/30 border-b border-black/60" />
+                      <div className="w-4/5 h-[1px] bg-gradient-to-r from-transparent via-amber-300/40 to-transparent" />
+                    </div>
+
+                    {/* Title Area: Horizontal Fitted Title */}
+                    <div className="w-full px-0.5 flex flex-col items-center justify-center my-auto z-10">
+                      <div className="w-full py-1.5 px-1 border border-amber-400/35 bg-black/45 rounded-xs flex flex-col items-center justify-center shadow-[inset_0_1px_4px_rgba(0,0,0,0.85)]">
+                        <span
+                          className={`font-serif text-center select-none ${horizontalFontSize} ${
+                            book.foil === 'gold'
+                              ? 'text-[#faeac7] drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)]'
+                              : 'text-[#edf1f5] drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)]'
+                          }`}
+                          style={{
+                            overflowWrap: 'break-word',
+                            wordBreak: 'normal',
+                            hyphens: 'none',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 4,
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden',
+                          }}
+                        >
+                          {book.title}
+                        </span>
+
+                        {book.author && (
+                          <>
+                            <div className="w-2/3 h-[1px] bg-amber-400/25 my-1" />
+                            <div className="text-[7px] sm:text-[7.5px] font-serif text-amber-200/80 uppercase tracking-[0.14em] text-center leading-tight max-w-full">
+                              {book.category === 'album'
+                                ? 'Album'
+                                : book.category === 'cookbook'
+                                ? 'Recipes'
+                                : book.author.split(' ').pop()}
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Bottom Tailband & Delicate Filigree Emblem */}
+                    <div className="flex flex-col items-center gap-1 w-full">
+                      <div className="w-4/5 h-[1px] bg-gradient-to-r from-transparent via-amber-300/30 to-transparent" />
+                      <div className="flex items-center justify-center py-0.5">
+                        <span className="text-[10px] sm:text-[11px] font-serif text-amber-300/85 filter drop-shadow">
+                          {book.emblem}
+                        </span>
+                      </div>
+                      <div className="w-full h-1 bg-amber-400/30 border-t border-black/60" />
+                    </div>
+                  </motion.div>
+                </div>
               );
-            }
 
-            /* ========================================================= */
-            /* SLID-IN BOOK SPINE DISPLAY                                */
-            /* ========================================================= */
-            return (
-              <div
-                key={book.id}
-                className={`relative group cursor-pointer flex-shrink-0 ${
-                  isFirstOnShelf 
-                    ? 'ml-2 sm:ml-3' 
-                    : isLastOnShelf 
-                    ? 'mr-2 sm:mr-3' 
-                    : ''
-                }`}
-                onMouseEnter={() => setHoveredBook(book)}
-                onClick={() => {
-                  setHoveredBook(null);
-                  onSelectBook(book);
-                }}
-              >
-                {/* Subtle holiday ribbon bookmark */}
-                {isHighlighted && (
-                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center pointer-events-none">
-                    <div className="w-1.5 h-4 bg-gradient-to-b from-amber-300 via-amber-500 to-amber-700 shadow-[0_1px_3px_rgba(0,0,0,0.8)] rounded-b-xs" />
-                  </div>
-                )}
+              return (
+                <React.Fragment key={`shelf-book-item-${book.id}`}>
+                  {bookElement}
+                  {/* Authentic Keepsake Christmas Mouse on the Shelf */}
+                  {shouldRenderMouseHere && (
+                    <ShelfChristmasMouse key="shelf-christmas-mouse" />
+                  )}
+                </React.Fragment>
+              );
+            })}
 
-                {/* Hover button to display book face-out */}
-                <button
-                  onClick={(e) => toggleFaceOut(e, book.id)}
-                  className="absolute -top-3.5 right-1/2 translate-x-1/2 z-30 px-1.5 py-0.5 rounded bg-black/90 hover:bg-amber-900 border border-amber-400/50 text-[6.5px] font-serif text-amber-200 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity shadow-md whitespace-nowrap"
-                  title="Display front cover face-out"
-                >
-                  Cover 📖
-                </button>
-
-                {/* Classic Leather Book Spine */}
-                <motion.div
-                  animate={isSelected ? {
-                    y: -18,
-                    z: 35,
-                    rotateY: -4,
-                    scale: 1.03,
-                    transition: { type: 'spring', stiffness: 340, damping: 24 }
-                  } : isHighlighted ? {
-                    y: -4,
-                    transition: { duration: 0.3 }
-                  } : {
-                    y: 0,
-                    rotateY: 0,
-                    scale: 1,
-                    transition: { duration: 0.3 }
-                  }}
-                  style={{
-                    height: `${book.height}px`,
-                    width: `${book.width}px`,
-                  }}
-                  className={`relative rounded-t-sm shadow-[inset_-5px_0_10px_rgba(0,0,0,0.75),inset_4px_0_6px_rgba(255,255,255,0.09),-4px_4px_14px_rgba(0,0,0,0.9)] bg-gradient-to-r ${book.color} border-t border-r border-amber-900/30 flex flex-col justify-between items-center py-2 px-1 select-none transition-shadow group-hover:shadow-[0_12px_26px_rgba(251,191,36,0.35)]`}
-                >
-                  {/* Top Headband & Raised Gilded Rib */}
-                  <div className="w-full flex flex-col items-center gap-1">
-                    <div className="w-full h-1 bg-amber-400/30 border-b border-black/60" />
-                    <div className="w-4/5 h-[1px] bg-gradient-to-r from-transparent via-amber-300/40 to-transparent" />
-                  </div>
-
-                  {/* Title Area: Horizontal Fitted Title */}
-                  <div className="w-full px-0.5 flex flex-col items-center justify-center my-auto z-10">
-                    <div className="w-full py-1.5 px-1 border border-amber-400/35 bg-black/45 rounded-xs flex flex-col items-center justify-center shadow-[inset_0_1px_4px_rgba(0,0,0,0.85)]">
-                      <span
-                        className={`font-serif text-center select-none ${horizontalFontSize} ${
-                          book.foil === 'gold'
-                            ? 'text-[#faeac7] drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)]'
-                            : 'text-[#edf1f5] drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)]'
-                        }`}
-                        style={{
-                          overflowWrap: 'break-word',
-                          wordBreak: 'normal',
-                          hyphens: 'none',
-                          display: '-webkit-box',
-                          WebkitLineClamp: 4,
-                          WebkitBoxOrient: 'vertical',
-                          overflow: 'hidden',
-                        }}
-                      >
-                        {book.title}
-                      </span>
-
-                      {book.author && (
-                        <>
-                          <div className="w-2/3 h-[1px] bg-amber-400/25 my-1" />
-                          <div className="text-[7px] sm:text-[7.5px] font-serif text-amber-200/80 uppercase tracking-[0.14em] text-center leading-tight max-w-full">
-                            {book.category === 'album'
-                              ? 'Album'
-                              : book.category === 'cookbook'
-                              ? 'Recipes'
-                              : book.author.split(' ').pop()}
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Bottom Tailband & Delicate Filigree Emblem */}
-                  <div className="flex flex-col items-center gap-1 w-full">
-                    <div className="w-4/5 h-[1px] bg-gradient-to-r from-transparent via-amber-300/30 to-transparent" />
-                    <div className="flex items-center justify-center py-0.5">
-                      <span className="text-[10px] sm:text-[11px] font-serif text-amber-300/85 filter drop-shadow">
-                        {book.emblem}
-                      </span>
-                    </div>
-                    <div className="w-full h-1 bg-amber-400/30 border-t border-black/60" />
-                  </div>
-                </motion.div>
-              </div>
-            );
-          })}
+            {/* Fallback if shelf is empty */}
+            {isMouseShelf && items.length === 0 && (
+              <ShelfChristmasMouse key="shelf-christmas-mouse-empty" />
+            )}
 
           {/* Quick-Add Spine Placeholder on each shelf for intuitive curation */}
           {addCategoryPrompt && (
