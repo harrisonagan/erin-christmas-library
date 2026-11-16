@@ -76,13 +76,13 @@ export default function CoverGalleryView({ books = [], onSelectBook, onAddBook, 
               onClick={() => onSelectBook(book)}
               className="group relative cursor-pointer flex flex-col items-center"
             >
-              {/* Realistic 3D Book with Spine Edge and Shadow */}
-              <div className="relative w-36 sm:w-40 h-52 sm:h-56 rounded-r-md rounded-l-sm shadow-[0_14px_28px_rgba(0,0,0,0.85),-4px_0_12px_rgba(0,0,0,0.5)] overflow-hidden border border-amber-950/40 group-hover:-translate-y-2.5 group-hover:shadow-[0_22px_36px_rgba(0,0,0,0.95)] transition-all duration-300 bg-[#140c08] flex items-center justify-center">
+              {/* Realistic 3D Book with Spine Edge and Shadow (Hugs each book's natural shape) */}
+              <div className="relative inline-flex items-center justify-center rounded-r-md rounded-l-sm shadow-[0_14px_28px_rgba(0,0,0,0.85),-4px_0_12px_rgba(0,0,0,0.5)] overflow-hidden border border-amber-950/40 group-hover:-translate-y-2.5 group-hover:shadow-[0_22px_36px_rgba(0,0,0,0.95)] transition-all duration-300 bg-[#140c08]">
                 {/* Book Spine Highlight */}
                 <div className="absolute left-0 top-0 bottom-0 w-3.5 bg-gradient-to-r from-black/50 via-white/10 to-transparent z-10 pointer-events-none" />
 
                 {/* Top Corner Badges */}
-                <div className="absolute top-2 right-2 z-20 flex flex-col items-end gap-1 pointer-events-none">
+                <div className="absolute top-1.5 right-1.5 z-20 flex flex-col items-end gap-1 pointer-events-none">
                   {isCookbook && (
                     <span className="px-1.5 py-0.5 rounded bg-amber-900/95 border border-amber-400/60 text-[8.5px] font-sans font-semibold text-amber-100 shadow">
                       🥧 Cookbook
@@ -109,7 +109,7 @@ export default function CoverGalleryView({ books = [], onSelectBook, onAddBook, 
                   <img
                     src={coverUrl}
                     alt={book.title}
-                    className="w-full h-full object-contain"
+                    className="max-h-48 sm:max-h-56 max-w-[148px] sm:max-w-[172px] w-auto h-auto object-contain block"
                     loading="lazy"
                   />
                 ) : (
