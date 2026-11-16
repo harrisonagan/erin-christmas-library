@@ -232,7 +232,7 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
       {/* ========================================================= */}
       {/* CLASSICAL LIBRARY DIRECTORY TABS                          */}
       {/* ========================================================= */}
-      <div className="flex items-center justify-center flex-wrap gap-x-6 sm:gap-x-8 gap-y-2 mb-6 sm:mb-8 font-serif text-[11px] sm:text-xs uppercase tracking-[0.24em] select-none">
+      <div className="flex items-center justify-center flex-wrap gap-x-6 sm:gap-x-8 gap-y-2 mb-14 sm:mb-18 font-serif text-[11px] sm:text-xs uppercase tracking-[0.24em] select-none z-20">
         <button
           onClick={() => setActiveTab('all')}
           className={`transition-all duration-200 pb-1.5 ${
