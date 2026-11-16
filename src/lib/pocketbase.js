@@ -85,8 +85,8 @@ export async function parseBookCoverWithAI(coverFile) {
       "Return ONLY a clean JSON object without markdown formatting:\n" +
       "{\"title\": \"...\", \"author\": \"...\", \"box_2d\": [ymin, xmin, ymax, xmax]}";
 
-    // Use latest verified models
-    const candidateModels = ['gemini-3.5-flash-lite', 'gemini-3.8-flash', 'gemini-2.5-flash'];
+    // Use official verified Gemini models
+    const candidateModels = ['gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-2.0-flash'];
     let lastApiError = null;
 
     for (const model of candidateModels) {
@@ -141,7 +141,7 @@ export async function parseBookCoverWithAI(coverFile) {
         } else {
           const errText = await res.text();
           console.warn(`[AI Scan] Gemini ${model} error:`, res.status, errText);
-          if (errText.includes('API key was reported as leaked') || errText.includes('API_KEY_INVALID')) {
+          if (errText.includes('API key was reported as leaked') || errText.includes('API_KEY_INVALID') || errText.includes('API_KEY_SERVICE_BLOCKED')) {
             const err = new Error('LEAKED_OR_INVALID_KEY');
             err.code = 'INVALID_KEY';
             throw err;

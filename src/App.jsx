@@ -11,119 +11,69 @@ import ReaderModal from './components/ReaderModal';
 import AddBookModal from './components/AddBookModal';
 import CloudBackupModal from './components/CloudBackupModal';
 
-// Complete festive starter library
+// Curated Authentic Family Christmas Library (Placeholders Removed)
 const INITIAL_BOOKS = [
   { 
     id: '1', 
     title: 'Mice Skating', 
     author: 'Annie Silvestro', 
+    category: 'story',
     cover: '/covers/mice-skating.jpg',
     notes: 'Illustrated by Teagan White • A cozy winter favorite',
     pages: [] 
   },
   { 
-    id: '2', 
-    title: 'The Polar Express', 
-    author: 'Chris Van Allsburg', 
-    cover: 'https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&fit=crop&w=400&q=80',
-    notes: 'Erin & family holiday tradition',
-    pages: [] 
-  },
-  { 
-    id: '3', 
-    title: 'The Nutcracker', 
-    author: 'E.T.A. Hoffmann', 
-    cover: 'https://images.unsplash.com/photo-1576919228236-a097c32a5cd4?auto=format&fit=crop&w=400&q=80',
-    notes: 'Classic holiday ballet tale',
-    pages: [] 
-  },
-  { 
-    id: '4', 
-    title: 'How the Grinch Stole Christmas!', 
-    author: 'Dr. Seuss', 
-    cover: 'https://images.unsplash.com/photo-1512389142860-9c449e580543?auto=format&fit=crop&w=400&q=80',
-    notes: 'Christmas Eve classic',
-    pages: [] 
-  },
-  { 
-    id: '5', 
-    title: 'A Christmas Carol', 
-    author: 'Charles Dickens', 
-    cover: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80',
-    notes: 'Cozy fireplace ghost story',
-    pages: [] 
-  },
-  { 
-    id: '6', 
-    title: 'The Gift of the Magi', 
-    author: 'O. Henry', 
-    cover: 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=400&q=80',
-    notes: 'A timeless story of giving',
-    pages: [] 
-  },
-  { 
-    id: '7', 
-    title: 'Letters From Father Christmas', 
-    author: 'J.R.R. Tolkien', 
-    cover: 'https://images.unsplash.com/photo-1543258103-a62bdc069871?auto=format&fit=crop&w=400&q=80',
-    notes: 'North Pole adventures',
-    pages: [] 
-  },
-  { 
-    id: '8', 
-    title: 'The Night Before Christmas', 
-    author: 'Clement Clarke Moore', 
-    cover: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=400&q=80',
-    notes: 'Read every year before bed',
-    pages: [] 
-  },
-  { 
-    id: '9', 
-    title: 'Miracle on 34th Street', 
-    author: 'Valentine Davies', 
-    cover: 'https://images.unsplash.com/photo-1512474932049-78ac69ede12c?auto=format&fit=crop&w=400&q=80',
-    notes: 'Believing in the magic of Christmas',
-    pages: [] 
-  },
-  { 
-    id: '10', 
-    title: 'The Little Match Girl', 
-    author: 'Hans Christian Andersen', 
-    cover: 'https://images.unsplash.com/photo-1482517967863-00e15c9b44be?auto=format&fit=crop&w=400&q=80',
-    notes: 'New Year Eve tale',
-    pages: [] 
-  },
-  { 
-    id: '11', 
-    title: 'The Tailor of Gloucester', 
-    author: 'Beatrix Potter', 
-    cover: 'https://images.unsplash.com/photo-1545645312-70b9255651c6?auto=format&fit=crop&w=400&q=80',
-    notes: 'Simpkin and the holiday mice',
-    pages: [] 
-  },
-  { 
-    id: '12', 
-    title: 'The Fir Tree', 
-    author: 'Hans Christian Andersen', 
-    cover: 'https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=400&q=80',
-    notes: 'Pine forest winter story',
-    pages: [] 
-  },
-  { 
-    id: '13', 
-    title: 'The Cricket on the Hearth', 
-    author: 'Charles Dickens', 
-    cover: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=400&q=80',
-    notes: 'A holiday hearthside classic',
-    pages: [] 
-  },
-  { 
-    id: '14', 
-    title: 'Winter Holiday Tales', 
-    author: 'Vintage Keepsake Collection', 
+    id: 'santas_moose', 
+    title: "Santa's Moose", 
+    author: 'Syd Hoff', 
     category: 'story',
-    cover: 'https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=400&q=80',
-    notes: 'Stories by the fire',
+    cover: '/covers/santas-moose.webp',
+    notes: 'An Early I Can Read Book • A classic holiday tale',
+    pages: [] 
+  },
+  { 
+    id: 'the_mitten', 
+    title: 'The Mitten', 
+    author: 'Jan Brett', 
+    category: 'story',
+    cover: '/covers/the-mitten.webp',
+    notes: 'Adapted and illustrated by Jan Brett • Ukrainian Folktale',
+    pages: [] 
+  },
+  { 
+    id: 'one_snowy_night', 
+    title: 'One Snowy Night', 
+    author: 'M. Christina Butler', 
+    category: 'story',
+    cover: '/covers/one-snowy-night.webp',
+    notes: 'Illustrated by Tina Macnaughton • A Touch-and-Feel Book',
+    pages: [] 
+  },
+  { 
+    id: 'night_before_christmas', 
+    title: 'The Night Before Christmas', 
+    author: 'Clement C. Moore', 
+    category: 'story',
+    cover: '/covers/the-night-before-christmas.webp',
+    notes: 'Illustrations by Tom Browning • Read every Christmas Eve',
+    pages: [] 
+  },
+  { 
+    id: 'chickadees_in_december', 
+    title: 'Chickadees In December', 
+    author: 'Bill O. Smith', 
+    category: 'story',
+    cover: '/covers/chickadees-in-december.webp',
+    notes: 'Illustrated by Charles R. Murphy • Heartwarming winter story',
+    pages: [] 
+  },
+  { 
+    id: 'santa_in_michigan', 
+    title: 'Santa is coming to Michigan', 
+    author: 'Steve Smallman', 
+    category: 'story',
+    cover: '/covers/santa-is-coming-to-michigan.webp',
+    notes: 'Illustrated by Robert Dunn and Jim Mitchell • Great Lakes holiday adventure',
     pages: [] 
   },
   // Family Photo Albums
@@ -134,24 +84,6 @@ const INITIAL_BOOKS = [
     category: 'album',
     cover: 'https://images.unsplash.com/photo-1543258103-a62bdc069871?auto=format&fit=crop&w=400&q=80',
     notes: 'Our annual keepsake album of all our pictures with Santa Claus 🎅 (Upload Apple Photos here!)',
-    pages: [],
-  },
-  {
-    id: 'album_2024',
-    title: 'Christmas 2024',
-    author: 'Annual Highlights',
-    category: 'album',
-    cover: 'https://images.unsplash.com/photo-1512474932049-78ac69ede12c?auto=format&fit=crop&w=400&q=80',
-    notes: 'Our best holiday pictures & memories from this year',
-    pages: [],
-  },
-  {
-    id: 'album_2023',
-    title: 'Christmas 2023',
-    author: 'Annual Highlights',
-    category: 'album',
-    cover: 'https://images.unsplash.com/photo-1545645312-70b9255651c6?auto=format&fit=crop&w=400&q=80',
-    notes: 'Holiday family memories and gatherings from 2023',
     pages: [],
   },
   // Family Cookbooks & Keepsakes
@@ -194,14 +126,18 @@ export default function App() {
   const [isCloudModalOpen, setIsCloudModalOpen] = useState(false);
   const [isCloudConnected, setIsCloudConnected] = useState(isFirebaseConfigured());
 
+  const LEGACY_PLACEHOLDERS = new Set(['2','3','4','5','6','7','8','9','10','11','12','13','14','album_2024','album_2023']);
+
   const [books, setBooks] = useState(() => {
     try {
       const saved = localStorage.getItem('erin_christmas_books');
       if (saved) {
         const parsed = JSON.parse(saved);
-        const existingIds = new Set(parsed.map((b) => b.id));
+        // Clean out legacy placeholders
+        const cleaned = parsed.filter(b => !LEGACY_PLACEHOLDERS.has(String(b.id)));
+        const existingIds = new Set(cleaned.map((b) => b.id));
         const missing = INITIAL_BOOKS.filter((b) => !existingIds.has(b.id));
-        return [...parsed, ...missing];
+        return [...cleaned, ...missing];
       }
     } catch (e) {}
     return INITIAL_BOOKS;
@@ -244,10 +180,14 @@ export default function App() {
       try {
         const stored = await getBooksFromIndexedDB();
         if (stored && Array.isArray(stored) && stored.length > 0) {
+          const cleaned = stored.filter(b => !LEGACY_PLACEHOLDERS.has(String(b.id)));
           setBooks((current) => {
-            const storedIds = new Set(stored.map((b) => b.id));
-            const missing = current.filter((b) => !storedIds.has(b.id));
-            return [...stored, ...missing];
+            const currentCleaned = current.filter(b => !LEGACY_PLACEHOLDERS.has(String(b.id)));
+            const storedIds = new Set(cleaned.map((b) => b.id));
+            const missing = currentCleaned.filter((b) => !storedIds.has(b.id));
+            const merged = [...cleaned, ...missing];
+            saveBooksToIndexedDB(merged);
+            return merged;
           });
         }
       } catch (err) {

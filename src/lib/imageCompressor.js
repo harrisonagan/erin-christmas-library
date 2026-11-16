@@ -243,6 +243,7 @@ export async function cropUniformCover(imageSource, cropState = {}) {
     zoom = 1, 
     panX = 0, 
     panY = 0,
+    rotation = 0,
     previewWidth = 144,
     previewHeight = 208,
   } = cropState;
@@ -257,30 +258,44 @@ export async function cropUniformCover(imageSource, cropState = {}) {
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = 'high';
 
-      // Base scale to cover target dimensions
-      const scaleToFill = Math.max(
-        TARGET_COVER_WIDTH / img.width,
-        TARGET_COVER_HEIGHT / img.height
-      );
+      // Clean dark background for letterboxing if needed
+      ctx.fillStyle = '#18120e';
+      ctx.fillRect(0, 0, TARGET_COVER_WIDTH, TARGET_COVER_HEIGHT);
 
-      const effectiveScale = scaleToFill * zoom;
-      const drawWidth = img.width * effectiveScale;
-      const drawHeight = img.height * effectiveScale;
+      ctx.save();
+
+      // Center of canvas
+      const centerX = TARGET_COVER_WIDTH / 2;
+      const centerY = TARGET_COVER_HEIGHT / 2;
 
       // Scale pan coordinates from preview resolution to target canvas resolution
       const scaleMultiplier = TARGET_COVER_WIDTH / Math.max(1, previewWidth);
       const canvasPanX = panX * scaleMultiplier;
       const canvasPanY = panY * scaleMultiplier;
 
-      // Center the image + apply scaled user pan offset
-      const drawX = (TARGET_COVER_WIDTH - drawWidth) / 2 + canvasPanX;
-      const drawY = (TARGET_COVER_HEIGHT - drawHeight) / 2 + canvasPanY;
+      ctx.translate(centerX + canvasPanX, centerY + canvasPanY);
 
-      // Clean dark background for letterboxing if needed
-      ctx.fillStyle = '#18120e';
-      ctx.fillRect(0, 0, TARGET_COVER_WIDTH, TARGET_COVER_HEIGHT);
+      if (rotation !== 0) {
+        ctx.rotate((rotation * Math.PI) / 180);
+      }
 
-      ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
+      // Check effective width/height after rotation
+      const isSideways = rotation === 90 || rotation === 270;
+      const origW = isSideways ? img.height : img.width;
+      const origH = isSideways ? img.width : img.height;
+
+      // Base scale to cover target dimensions
+      const scaleToFill = Math.max(
+        TARGET_COVER_WIDTH / origW,
+        TARGET_COVER_HEIGHT / origH
+      );
+
+      const effectiveScale = scaleToFill * zoom;
+      const drawWidth = img.width * effectiveScale;
+      const drawHeight = img.height * effectiveScale;
+
+      ctx.drawImage(img, -drawWidth / 2, -drawHeight / 2, drawWidth, drawHeight);
+      ctx.restore();
 
       canvas.toBlob(
         (blob) => {

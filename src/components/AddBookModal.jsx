@@ -19,6 +19,7 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded, initialCate
   const [zoom, setZoom] = useState(1.0);
   const [panX, setPanX] = useState(0);
   const [panY, setPanY] = useState(0);
+  const [rotation, setRotation] = useState(0);
 
   // Book metadata
   const [category, setCategory] = useState(initialCategory || 'story'); // 'story' | 'album' | 'cookbook'
@@ -131,6 +132,7 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded, initialCate
     setZoom(1.0);
     setPanX(0);
     setPanY(0);
+    setRotation(0);
 
     // 1. Instant client-side edge trimmer (crops table borders in ~15ms!)
     try {
@@ -229,6 +231,7 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded, initialCate
           zoom,
           panX,
           panY,
+          rotation,
           previewWidth: pWidth,
           previewHeight: pHeight,
         });
@@ -429,7 +432,7 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded, initialCate
                     draggable={false}
                     className="absolute max-w-none transition-transform pointer-events-none"
                     style={{
-                      transform: `translate(${panX}px, ${panY}px) scale(${zoom})`,
+                      transform: `translate(${panX}px, ${panY}px) scale(${zoom}) rotate(${rotation}deg)`,
                       transformOrigin: 'center center',
                       width: '100%',
                       height: '100%',
@@ -509,6 +512,14 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded, initialCate
                     title="Center cover"
                   >
                     Center
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setRotation((r) => (r + 90) % 360)}
+                    className="px-2.5 py-1 rounded-lg text-[11px] font-sans bg-amber-950/80 border border-amber-800/60 text-amber-200 hover:bg-amber-900 transition flex items-center gap-1"
+                    title="Rotate 90 degrees"
+                  >
+                    <span>🔄</span> Rotate
                   </button>
                 </div>
 
