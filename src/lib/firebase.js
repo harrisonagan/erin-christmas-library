@@ -25,7 +25,18 @@ import {
   deleteObject 
 } from 'firebase/storage';
 
-// Default / fallback Firebase config from environment or localStorage
+// Default built-in Firebase configuration for Erin's Christmas Library
+const BUILTIN_FIREBASE_CONFIG = {
+  apiKey: "AIzaSyCXYPszHhNfFMPdt26XNKL69E4uF17QJSU",
+  authDomain: "erins-christmas-library.firebaseapp.com",
+  projectId: "erins-christmas-library",
+  storageBucket: "erins-christmas-library.firebasestorage.app",
+  messagingSenderId: "721482968668",
+  appId: "1:721482968668:web:bcaeaae2aaeb3046110099",
+  measurementId: "G-BSBNXKL34N"
+};
+
+// Default / fallback Firebase config from environment, localStorage, or built-in
 function getFirebaseConfig() {
   if (typeof window !== 'undefined') {
     const custom = localStorage.getItem('erin_firebase_config');
@@ -37,19 +48,19 @@ function getFirebaseConfig() {
     }
   }
 
-  // Environment variables
+  // Environment variables override
   if (import.meta.env.VITE_FIREBASE_PROJECT_ID) {
     return {
-      apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+      apiKey: import.meta.env.VITE_FIREBASE_API_KEY || BUILTIN_FIREBASE_CONFIG.apiKey,
       authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || `${import.meta.env.VITE_FIREBASE_PROJECT_ID}.firebaseapp.com`,
       projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
       storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || `${import.meta.env.VITE_FIREBASE_PROJECT_ID}.firebasestorage.app`,
-      messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-      appId: import.meta.env.VITE_FIREBASE_APP_ID,
+      messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || BUILTIN_FIREBASE_CONFIG.messagingSenderId,
+      appId: import.meta.env.VITE_FIREBASE_APP_ID || BUILTIN_FIREBASE_CONFIG.appId,
     };
   }
 
-  return null;
+  return BUILTIN_FIREBASE_CONFIG;
 }
 
 let app = null;
@@ -57,7 +68,8 @@ let db = null;
 let storage = null;
 
 export function isFirebaseConfigured() {
-  return getFirebaseConfig() !== null;
+  const config = getFirebaseConfig();
+  return Boolean(config && config.projectId);
 }
 
 export function initFirebase() {
