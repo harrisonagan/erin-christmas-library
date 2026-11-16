@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { compressImage } from '../lib/imageCompressor';
 import { pb, getPageImageUrl } from '../lib/pocketbase';
 import { savePagesForBook, getPagesForBook } from '../lib/idbStorage';
+import { isFirebaseConfigured, uploadPageToCloud } from '../lib/firebase';
 
 export default function ReaderModal({ book, onClose, onUpdateBook }) {
   const [pages, setPages] = useState([]);
@@ -89,27 +90,41 @@ export default function ReaderModal({ book, onClose, onUpdateBook }) {
         // 1. Client-side compress down to 1600px WebP (from 6MB -> ~200KB)
         const compressed = await compressImage(file, { maxWidth: 1600, maxHeight: 1600, quality: 0.84 });
 
-        // 2. Upload to PocketBase
-        try {
-          const formData = new FormData();
-          formData.append('book', book.id);
-          formData.append('page_number', newPages.length + 1);
-          formData.append('image', compressed);
+        // 2. Upload to Google Firebase Storage if configured
+        let pageUploaded = false;
+        if (isFirebaseConfigured()) {
+          try {
+            const pageData = await uploadPageToCloud(compressed, book.id, newPages.length + 1);
+            newPages.push(pageData);
+            pageUploaded = true;
+          } catch (cloudErr) {
+            console.warn('Firebase page upload failed:', cloudErr);
+          }
+        }
 
-          const record = await pb.collection('book_pages').create(formData);
-          newPages.push(record);
-        } catch (pbErr) {
-          const localDataUrl = await new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result);
-            reader.readAsDataURL(compressed);
-          });
+        // 3. Fallback: PocketBase or Local IndexedDB Data URL
+        if (!pageUploaded) {
+          try {
+            const formData = new FormData();
+            formData.append('book', book.id);
+            formData.append('page_number', newPages.length + 1);
+            formData.append('image', compressed);
 
-          newPages.push({
-            id: 'local_' + Date.now() + '_' + i,
-            page_number: newPages.length + 1,
-            image: localDataUrl,
-          });
+            const record = await pb.collection('book_pages').create(formData);
+            newPages.push(record);
+          } catch (pbErr) {
+            const localDataUrl = await new Promise((resolve) => {
+              const reader = new FileReader();
+              reader.onload = () => resolve(reader.result);
+              reader.readAsDataURL(compressed);
+            });
+
+            newPages.push({
+              id: 'local_' + Date.now() + '_' + i,
+              page_number: newPages.length + 1,
+              image: localDataUrl,
+            });
+          }
         }
       }
 

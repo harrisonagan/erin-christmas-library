@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cropUniformCover, cropToBoundingBox, autoTrimTableBorders } from '../lib/imageCompressor';
 import { pb, parseBookCoverWithAI, getGeminiApiKey, setGeminiApiKey } from '../lib/pocketbase';
+import { isFirebaseConfigured, uploadCoverToCloud, saveBookToCloud } from '../lib/firebase';
 
 export default function AddBookModal({ isOpen, onClose, onBookAdded, initialCategory = 'story' }) {
   // Original photo as taken by user
@@ -240,33 +241,44 @@ export default function AddBookModal({ isOpen, onClose, onBookAdded, initialCate
         });
       }
 
-      let createdRecord = null;
-      try {
-        const formData = new FormData();
-        formData.append('title', title.trim());
-        formData.append('author', author.trim());
-        formData.append('notes', notes.trim());
-        formData.append('category', category);
-        formData.append('sort_order', Date.now());
-        if (finalCoverFile) {
-          formData.append('cover', finalCoverFile);
-        }
+      const bookId = 'book_' + Date.now();
+      let coverUrl = finalCoverUrl || (category === 'album' ? 'https://images.unsplash.com/photo-1543258103-a62bdc069871?auto=format&fit=crop&w=400&q=80' : 'https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&fit=crop&w=400&q=80');
+      let coverStoragePath = null;
 
-        createdRecord = await pb.collection('books').create(formData);
-      } catch (pbErr) {
-        console.warn('PocketBase offline, saving local book:', pbErr);
-        createdRecord = {
-          id: 'local_' + Date.now(),
-          title: title.trim(),
-          author: author.trim() || (category === 'album' ? 'Family Photo Album' : category === 'cookbook' ? 'Holiday Recipes' : 'Unknown Author'),
-          category: category,
-          cover: finalCoverUrl || (category === 'album' ? 'https://images.unsplash.com/photo-1543258103-a62bdc069871?auto=format&fit=crop&w=400&q=80' : 'https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&fit=crop&w=400&q=80'),
-          notes: notes.trim(),
-          pages: [],
-        };
+      // 1. If Google Firebase is active, upload cover to Google Cloud Storage
+      if (isFirebaseConfigured() && finalCoverFile) {
+        try {
+          setAiStatus('☁️ Uploading cover to Google Cloud Storage...');
+          const cloudResult = await uploadCoverToCloud(finalCoverFile, bookId);
+          coverUrl = cloudResult.downloadUrl;
+          coverStoragePath = cloudResult.storagePath;
+        } catch (cloudErr) {
+          console.warn('Firebase storage upload failed, saving resilient local copy:', cloudErr);
+        }
       }
 
-      onBookAdded(createdRecord);
+      const bookRecord = {
+        id: bookId,
+        title: title.trim(),
+        author: author.trim() || (category === 'album' ? 'Family Photo Album' : category === 'cookbook' ? 'Holiday Recipes' : 'Unknown Author'),
+        category: category,
+        cover: coverUrl,
+        coverStoragePath,
+        notes: notes.trim(),
+        pages: [],
+        createdAt: Date.now(),
+      };
+
+      // 2. If Google Firebase is active, save document in Firestore
+      if (isFirebaseConfigured()) {
+        try {
+          await saveBookToCloud(bookRecord);
+        } catch (cloudDocErr) {
+          console.warn('Firestore doc save error:', cloudDocErr);
+        }
+      }
+
+      onBookAdded(bookRecord);
       onClose();
     } catch (err) {
       alert('Error saving book: ' + err.message);

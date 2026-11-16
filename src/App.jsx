@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { pb, getBookCoverUrl } from './lib/pocketbase';
+import { saveBooksToIndexedDB, getBooksFromIndexedDB } from './lib/idbStorage';
+import { isFirebaseConfigured, subscribeToBooksFromCloud, deleteBookFromCloud } from './lib/firebase';
 import CabinLanding from './components/CabinLanding';
 import SpineBookshelf from './components/SpineBookshelf';
 import CoverGalleryView from './components/CoverGalleryView';
 import ListView from './components/ListView';
 import ReaderModal from './components/ReaderModal';
 import AddBookModal from './components/AddBookModal';
+import CloudBackupModal from './components/CloudBackupModal';
 
 // Complete festive starter library
 const INITIAL_BOOKS = [
@@ -188,12 +191,14 @@ export default function App() {
   const [isAtBookshelf, setIsAtBookshelf] = useState(false);
   const [viewMode, setViewMode] = useState('spines'); // 'spines' | 'covers' | 'list'
   const [searchQuery, setSearchQuery] = useState('');
+  const [isCloudModalOpen, setIsCloudModalOpen] = useState(false);
+  const [isCloudConnected, setIsCloudConnected] = useState(isFirebaseConfigured());
+
   const [books, setBooks] = useState(() => {
     try {
       const saved = localStorage.getItem('erin_christmas_books');
       if (saved) {
         const parsed = JSON.parse(saved);
-        // Ensure new albums/cookbooks are merged in if not present in previous cache
         const existingIds = new Set(parsed.map((b) => b.id));
         const missing = INITIAL_BOOKS.filter((b) => !existingIds.has(b.id));
         return [...parsed, ...missing];
@@ -233,29 +238,54 @@ export default function App() {
     } catch {}
   };
 
-  // Sync with PocketBase on launch if available
+  // 1. Load from IndexedDB on launch (immune to 5MB localStorage limit!)
   useEffect(() => {
-    async function loadBooks() {
+    async function loadIndexedDBBooks() {
       try {
-        const records = await pb.collection('books').getFullList({
-          sort: 'sort_order,-created',
-        });
-        if (records.length > 0) {
-          setBooks(records);
+        const stored = await getBooksFromIndexedDB();
+        if (stored && Array.isArray(stored) && stored.length > 0) {
+          setBooks((current) => {
+            const storedIds = new Set(stored.map((b) => b.id));
+            const missing = current.filter((b) => !storedIds.has(b.id));
+            return [...stored, ...missing];
+          });
         }
       } catch (err) {
-        // PocketBase offline, keep local collection
-        console.info('Loaded local Christmas bookshelf');
+        console.warn('Error reading from IndexedDB:', err);
       }
     }
-    loadBooks();
+    loadIndexedDBBooks();
   }, []);
 
-  // Save to localStorage whenever books change (survives phone browser refreshes)
+  // 2. Real-time Google Firebase sync across all devices
   useEffect(() => {
+    if (isFirebaseConfigured()) {
+      setIsCloudConnected(true);
+      const unsubscribe = subscribeToBooksFromCloud((cloudBooks) => {
+        if (cloudBooks && cloudBooks.length > 0) {
+          setBooks((current) => {
+            const cloudIds = new Set(cloudBooks.map((b) => b.id));
+            const localOnly = current.filter((b) => !cloudIds.has(b.id) && String(b.id).startsWith('local_'));
+            const merged = [...cloudBooks, ...localOnly];
+            saveBooksToIndexedDB(merged);
+            return merged;
+          });
+        }
+      });
+      return () => unsubscribe && unsubscribe();
+    } else {
+      setIsCloudConnected(false);
+    }
+  }, [isCloudConnected]);
+
+  // 3. Save to IndexedDB whenever books change (survives phone refreshes & has gigabytes of storage)
+  useEffect(() => {
+    saveBooksToIndexedDB(books);
     try {
       localStorage.setItem('erin_christmas_books', JSON.stringify(books));
-    } catch (e) {}
+    } catch (e) {
+      // Expected if base64 images exceed 5MB quota; IndexedDB already saved it safely!
+    }
   }, [books]);
 
   const filteredBooks = books.filter((b) =>
@@ -269,13 +299,21 @@ export default function App() {
 
   const handleDeleteBook = async (bookId) => {
     if (!confirm('Remove this book from Erin\'s Christmas shelf?')) return;
-    try {
-      await pb.collection('books').delete(bookId);
-    } catch (e) {
-      // Local fallback
+    const target = books.find((b) => b.id === bookId);
+    if (isFirebaseConfigured()) {
+      try {
+        await deleteBookFromCloud(bookId, target?.coverStoragePath);
+      } catch (e) {
+        console.warn('Cloud delete error:', e);
+      }
     }
     setBooks((prev) => prev.filter((b) => b.id !== bookId));
     setSelectedBook(null);
+  };
+
+  const handleBooksRestored = (restoredBooks) => {
+    setBooks(restoredBooks);
+    saveBooksToIndexedDB(restoredBooks);
   };
 
   if (!isUnlocked) {
@@ -443,6 +481,15 @@ export default function App() {
                   </div>
 
                   <button
+                    onClick={() => setIsCloudModalOpen(true)}
+                    className="px-3 py-1.5 bg-stone-900/80 hover:bg-stone-800 border border-stone-800 rounded-lg text-xs font-sans text-stone-300 hover:text-amber-200 transition flex items-center gap-1.5"
+                    title="Cloud Sync & Backup"
+                  >
+                    <span>☁️</span>
+                    <span className="hidden lg:inline">{isCloudConnected ? 'Cloud Active' : 'Cloud Backup'}</span>
+                  </button>
+
+                  <button
                     onClick={() => setIsAddModalOpen(true)}
                     className="px-4 py-2 bg-gradient-to-r from-amber-700 to-amber-800 hover:from-amber-600 text-white rounded-xl text-xs font-sans font-medium transition shadow flex items-center gap-1.5"
                   >
@@ -475,6 +522,13 @@ export default function App() {
                   </h2>
 
                   <div className="flex items-center gap-1.5">
+                    <button
+                      onClick={() => setIsCloudModalOpen(true)}
+                      className="px-2 py-1 bg-stone-900 border border-stone-800 rounded-lg text-xs text-stone-300 hover:text-amber-200"
+                      title="Cloud Sync & Backup"
+                    >
+                      ☁️
+                    </button>
                     <button
                       onClick={() => setIsAddModalOpen(true)}
                       className="px-3 py-1 bg-gradient-to-r from-amber-700 to-amber-800 text-white rounded-lg text-xs font-sans font-semibold shadow flex items-center gap-1 active:scale-95"
@@ -685,6 +739,17 @@ export default function App() {
         initialCategory={addModalCategory}
         onClose={() => setIsAddModalOpen(false)}
         onBookAdded={handleBookAdded}
+      />
+
+      {/* Cloud Backup & Firebase Settings Modal */}
+      <CloudBackupModal
+        isOpen={isCloudModalOpen}
+        onClose={() => {
+          setIsCloudModalOpen(false);
+          setIsCloudConnected(isFirebaseConfigured());
+        }}
+        books={books}
+        onBooksRestored={handleBooksRestored}
       />
     </div>
   );
