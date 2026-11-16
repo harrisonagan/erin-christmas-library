@@ -97,13 +97,13 @@ function pickRandomFaceOut(allBooks) {
 export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) {
   const [hoveredBook, setHoveredBook] = useState(null);
   const [activeTab, setActiveTab] = useState('all'); // 'all' | 'story' | 'album' | 'cookbook'
-  const [orientation, setOrientation] = useState(() => {
+
+  // Clean up legacy orientation setting from localStorage
+  useEffect(() => {
     try {
-      return localStorage.getItem('erin_spine_orientation') || 'horizontal';
-    } catch {
-      return 'horizontal';
-    }
-  });
+      localStorage.removeItem('erin_spine_orientation');
+    } catch {}
+  }, []);
 
   // Set of book IDs that are currently displayed face-out (showing front cover)
   const [faceOutBookIds, setFaceOutBookIds] = useState(() => pickRandomFaceOut(books));
@@ -114,13 +114,6 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
       setFaceOutBookIds(pickRandomFaceOut(books));
     }
   }, [books]);
-
-  const toggleOrientation = (newMode) => {
-    setOrientation(newMode);
-    try {
-      localStorage.setItem('erin_spine_orientation', newMode);
-    } catch {}
-  };
 
   const shuffleFaceOut = () => {
     setFaceOutBookIds(pickRandomFaceOut(books));
@@ -364,86 +357,42 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
                     <div className="w-4/5 h-[1px] bg-gradient-to-r from-transparent via-amber-300/40 to-transparent" />
                   </div>
 
-                  {/* Title Area: Horizontal Fitted vs North-to-South Vertical */}
-                  {orientation === 'horizontal' ? (
-                    /* 1. HORIZONTAL FITTED TITLE */
-                    <div className="w-full px-0.5 flex flex-col items-center justify-center my-auto z-10">
-                      <div className="w-full py-1.5 px-1 border border-amber-400/35 bg-black/45 rounded-xs flex flex-col items-center justify-center shadow-[inset_0_1px_4px_rgba(0,0,0,0.85)]">
-                        <span
-                          className={`font-serif text-center select-none ${horizontalFontSize} ${
-                            book.foil === 'gold'
-                              ? 'text-[#faeac7] drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)]'
-                              : 'text-[#edf1f5] drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)]'
-                          }`}
-                          style={{
-                            overflowWrap: 'break-word',
-                            wordBreak: 'normal',
-                            hyphens: 'none',
-                            display: '-webkit-box',
-                            WebkitLineClamp: 4,
-                            WebkitBoxOrient: 'vertical',
-                            overflow: 'hidden',
-                          }}
-                        >
-                          {book.title}
-                        </span>
+                  {/* Title Area: Horizontal Fitted Title */}
+                  <div className="w-full px-0.5 flex flex-col items-center justify-center my-auto z-10">
+                    <div className="w-full py-1.5 px-1 border border-amber-400/35 bg-black/45 rounded-xs flex flex-col items-center justify-center shadow-[inset_0_1px_4px_rgba(0,0,0,0.85)]">
+                      <span
+                        className={`font-serif text-center select-none ${horizontalFontSize} ${
+                          book.foil === 'gold'
+                            ? 'text-[#faeac7] drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)]'
+                            : 'text-[#edf1f5] drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)]'
+                        }`}
+                        style={{
+                          overflowWrap: 'break-word',
+                          wordBreak: 'normal',
+                          hyphens: 'none',
+                          display: '-webkit-box',
+                          WebkitLineClamp: 4,
+                          WebkitBoxOrient: 'vertical',
+                          overflow: 'hidden',
+                        }}
+                      >
+                        {book.title}
+                      </span>
 
-                        {book.author && (
-                          <>
-                            <div className="w-2/3 h-[1px] bg-amber-400/25 my-1" />
-                            <div className="text-[7px] sm:text-[7.5px] font-serif text-amber-200/80 uppercase tracking-[0.14em] text-center leading-tight max-w-full">
-                              {book.category === 'album'
-                                ? 'Album'
-                                : book.category === 'cookbook'
-                                ? 'Recipes'
-                                : book.author.split(' ').pop()}
-                            </div>
-                          </>
-                        )}
-                      </div>
+                      {book.author && (
+                        <>
+                          <div className="w-2/3 h-[1px] bg-amber-400/25 my-1" />
+                          <div className="text-[7px] sm:text-[7.5px] font-serif text-amber-200/80 uppercase tracking-[0.14em] text-center leading-tight max-w-full">
+                            {book.category === 'album'
+                              ? 'Album'
+                              : book.category === 'cookbook'
+                              ? 'Recipes'
+                              : book.author.split(' ').pop()}
+                          </div>
+                        </>
+                      )}
                     </div>
-                  ) : (
-                    /* 2. NORTH TO SOUTH (VERTICAL) VINTAGE LIBRARY SPINE */
-                    <div className="w-full flex-1 flex flex-col items-center justify-center my-1 z-10 px-0.5">
-                      <div className="w-full h-full py-2 border border-amber-400/35 bg-black/45 rounded-xs flex flex-col items-center justify-center shadow-[inset_0_1px_4px_rgba(0,0,0,0.85)] max-h-[195px] overflow-hidden">
-                        <span
-                          className="font-serif text-[9.5px] sm:text-[10px] font-semibold tracking-wider text-center select-none text-[#faeac7] drop-shadow-[0_1px_2px_rgba(0,0,0,0.95)] leading-tight"
-                          style={{
-                            writingMode: 'vertical-rl',
-                            textOrientation: 'mixed',
-                            maxHeight: `${book.height - 75}px`,
-                            overflow: 'hidden',
-                            whiteSpace: 'nowrap',
-                            textOverflow: 'ellipsis',
-                          }}
-                        >
-                          {book.title}
-                        </span>
-
-                        {book.author && (
-                          <>
-                            <div className="w-[1px] h-3 bg-amber-400/30 my-1 flex-shrink-0" />
-                            <span
-                              className="font-serif text-[7px] sm:text-[7.5px] text-amber-200/80 uppercase tracking-widest text-center select-none leading-none flex-shrink-0"
-                              style={{
-                                writingMode: 'vertical-rl',
-                                textOrientation: 'mixed',
-                                maxHeight: '42px',
-                                overflow: 'hidden',
-                                whiteSpace: 'nowrap',
-                              }}
-                            >
-                              {book.category === 'album'
-                                ? 'Album'
-                                : book.category === 'cookbook'
-                                ? 'Recipes'
-                                : book.author.split(' ').pop()}
-                            </span>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  )}
+                  </div>
 
                   {/* Bottom Tailband & Delicate Filigree Emblem */}
                   <div className="flex flex-col items-center gap-1 w-full">
@@ -572,46 +521,17 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
           </button>
         </div>
 
-        {/* Display Controls: Shuffle Covers + Spine Orientation */}
+        {/* Display Controls: Shuffle Covers */}
         <div className="flex items-center flex-wrap gap-2">
           {/* Shuffle Face-Out Covers button */}
           <button
             onClick={shuffleFaceOut}
-            className="px-2.5 py-1 rounded-full bg-[#1b120ce0] hover:bg-amber-900/60 border border-amber-900/50 text-[9.5px] font-serif text-amber-200/90 transition-all flex items-center gap-1 shadow-sm active:scale-95"
+            className="px-3 py-1.5 rounded-full bg-[#1b120ce0] hover:bg-amber-900/60 border border-amber-900/50 text-[10px] font-serif text-amber-200/90 transition-all flex items-center gap-1.5 shadow-sm active:scale-95"
             title="Randomly feature different book covers face-out on the shelves"
           >
             <span>🎲</span>
             <span>Shuffle Covers</span>
           </button>
-
-          {/* Orientation Toggle: Fit Title ↔ vs North to South ↕ */}
-          <div className="flex items-center gap-1.5 bg-[#1b120ce0] border border-amber-900/50 rounded-full px-2.5 py-1 text-[10px] font-serif shadow-sm">
-            <span className="text-amber-400/70 uppercase tracking-widest text-[8px] mr-1 hidden sm:inline">
-              Spine:
-            </span>
-            <button
-              onClick={() => toggleOrientation('horizontal')}
-              className={`px-2 py-0.5 rounded-full transition-all text-[9.5px] ${
-                orientation === 'horizontal'
-                  ? 'bg-amber-800/90 text-amber-100 font-semibold shadow-xs'
-                  : 'text-amber-300/50 hover:text-amber-200'
-              }`}
-              title="Horizontal fitted titles"
-            >
-              ↔ Fit Title
-            </button>
-            <button
-              onClick={() => toggleOrientation('vertical')}
-              className={`px-2 py-0.5 rounded-full transition-all text-[9.5px] ${
-                orientation === 'vertical'
-                  ? 'bg-amber-800/90 text-amber-100 font-semibold shadow-xs'
-                  : 'text-amber-300/50 hover:text-amber-200'
-              }`}
-              title="North to South vertical spine titles"
-            >
-              ↕ North to South
-            </button>
-          </div>
         </div>
       </div>
 
