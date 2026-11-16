@@ -28,9 +28,15 @@ export function getBookCoverUrl(book, thumb = '300x420') {
  * Helper to get a book page image URL.
  */
 export function getPageImageUrl(pageRecord) {
-  if (!pageRecord?.image) return null;
-  if (typeof pageRecord.image === 'string' && (pageRecord.image.startsWith('http') || pageRecord.image.startsWith('blob:'))) {
-    return pageRecord.image;
+  if (!pageRecord) return null;
+  const img = typeof pageRecord === 'string' ? pageRecord : pageRecord.image;
+  if (!img) return null;
+  if (typeof img === 'string') {
+    if (img.startsWith('http') || img.startsWith('blob:') || img.startsWith('data:')) {
+      return img;
+    }
+    const cleanPath = img.startsWith('/') ? img.slice(1) : img;
+    return `${import.meta.env.BASE_URL}${cleanPath}`;
   }
   return pb.files.getUrl(pageRecord, pageRecord.image);
 }

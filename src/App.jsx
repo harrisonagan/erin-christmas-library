@@ -224,12 +224,17 @@ const INITIAL_BOOKS = [
   // Family Cookbooks & Keepsakes
   {
     id: 'cookbook_erin',
-    title: "Erin's Family Cookbook",
-    author: 'Holiday Recipes & Traditions',
+    title: "Strom Family Cookbook",
+    author: 'Down Home For Dinner • 1999 Reunion',
     category: 'cookbook',
-    cover: 'https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=400&q=80',
-    notes: 'Treasured family recipes, Christmas morning traditions & sweet holiday treats 🥧',
-    pages: [],
+    cover: '/covers/strom-family-cookbook.webp',
+    pdfUrl: '/strom_family_cookbook_cleaned.pdf',
+    notes: 'Treasured family recipes, childhood memories & photos dedicated to Albion Sr. & Laura Strom 🥧 (Contributed by Erin, Sally, Peter, Virginia & family)',
+    pages: Array.from({ length: 86 }, (_, i) => ({
+      id: `cookbook_page_${i + 1}`,
+      pageNumber: i + 1,
+      image: `/cookbook/page_${String(i + 1).padStart(2, '0')}.webp`,
+    })),
   },
 ];
 
@@ -263,13 +268,24 @@ export default function App() {
 
   const LEGACY_PLACEHOLDERS = new Set(['2','3','4','5','6','7','8','9','10','11','12','13','14','album_2024','album_2023']);
 
+  const upgradeBuiltInBooks = (list) => {
+    const initMap = new Map(INITIAL_BOOKS.map((b) => [b.id, b]));
+    return list.map((b) => {
+      if (b.id === 'cookbook_erin' && (!b.pages || b.pages.length === 0 || b.cover?.includes('unsplash') || b.cover?.includes('photo-1508746829417'))) {
+        const fresh = initMap.get('cookbook_erin');
+        return { ...b, ...fresh };
+      }
+      return b;
+    });
+  };
+
   const [books, setBooks] = useState(() => {
     try {
       const saved = localStorage.getItem('erin_christmas_books');
       if (saved) {
         const parsed = JSON.parse(saved);
-        // Clean out legacy placeholders
-        const cleaned = parsed.filter(b => !LEGACY_PLACEHOLDERS.has(String(b.id)));
+        // Clean out legacy placeholders & upgrade built-in books
+        const cleaned = upgradeBuiltInBooks(parsed.filter(b => !LEGACY_PLACEHOLDERS.has(String(b.id))));
         const existingIds = new Set(cleaned.map((b) => b.id));
         const missing = INITIAL_BOOKS.filter((b) => !existingIds.has(b.id));
         return [...cleaned, ...missing];
@@ -315,9 +331,9 @@ export default function App() {
       try {
         const stored = await getBooksFromIndexedDB();
         if (stored && Array.isArray(stored) && stored.length > 0) {
-          const cleaned = stored.filter(b => !LEGACY_PLACEHOLDERS.has(String(b.id)));
+          const cleaned = upgradeBuiltInBooks(stored.filter(b => !LEGACY_PLACEHOLDERS.has(String(b.id))));
           setBooks((current) => {
-            const currentCleaned = current.filter(b => !LEGACY_PLACEHOLDERS.has(String(b.id)));
+            const currentCleaned = upgradeBuiltInBooks(current.filter(b => !LEGACY_PLACEHOLDERS.has(String(b.id))));
             const storedIds = new Set(cleaned.map((b) => b.id));
             const missing = currentCleaned.filter((b) => !storedIds.has(b.id));
             const merged = [...cleaned, ...missing];

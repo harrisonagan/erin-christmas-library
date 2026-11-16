@@ -176,6 +176,21 @@ export default function ReaderModal({ book, onClose, onUpdateBook }) {
             </div>
           )}
 
+          {/* Download Original PDF if available */}
+          {book.pdfUrl && (
+            <a
+              href={book.pdfUrl.startsWith('/') ? `${import.meta.env.BASE_URL}${book.pdfUrl.slice(1)}` : book.pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              download
+              className="px-3 py-1.5 bg-stone-900 hover:bg-stone-800 text-amber-200 border border-amber-900/50 rounded-lg text-xs font-sans font-medium transition flex items-center gap-1.5"
+              title="Download or view full original PDF"
+            >
+              <span>📄</span>
+              <span className="hidden sm:inline">PDF</span>
+            </a>
+          )}
+
           {/* Add/Upload More Pages button */}
           <input
             ref={fileInputRef}
