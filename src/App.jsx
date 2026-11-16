@@ -76,6 +76,141 @@ const INITIAL_BOOKS = [
     notes: 'Illustrated by Robert Dunn and Jim Mitchell • Great Lakes holiday adventure',
     pages: [] 
   },
+  { 
+    id: 'mr_willowbys_christmas_tree', 
+    title: "Mr. Willowby's Christmas Tree", 
+    author: 'Robert Barry', 
+    category: 'story',
+    cover: '/covers/mr-willowbys-christmas-tree.webp',
+    notes: "A Dell Yearling Classic • When Mr. Willowby's tree is too tall, the top is chopped off and shared with everyone in the forest",
+    pages: [] 
+  },
+  { 
+    id: 'the_very_first_christmas', 
+    title: 'The Very First Christmas', 
+    author: "The Beginner's Bible", 
+    category: 'story',
+    cover: '/covers/the-very-first-christmas.webp',
+    notes: 'The Nativity story for young readers • Baby Jesus born in Bethlehem',
+    pages: [] 
+  },
+  { 
+    id: 'the_newborn_king', 
+    title: 'The Newborn King', 
+    author: 'Bendon Publishing', 
+    category: 'story',
+    cover: '/covers/the-newborn-king.webp',
+    notes: 'A Treasured Keepsake Board Book • The holy birth of Christ',
+    pages: [] 
+  },
+  { 
+    id: 'the_big_snow', 
+    title: 'The Big Snow', 
+    author: 'Berta and Elmer Hader', 
+    category: 'story',
+    cover: '/covers/the-big-snow.webp',
+    notes: 'Winner of the Caldecott Medal • Woodland creatures preparing for winter',
+    pages: [] 
+  },
+  { 
+    id: 'the_12_bugs_of_christmas', 
+    title: 'The 12 Bugs of Christmas', 
+    author: 'David A. Carter', 
+    category: 'story',
+    cover: '/covers/the-12-bugs-of-christmas.webp',
+    notes: 'A Pop-up Holiday Celebration • Whimsical bugs singing holiday cheer',
+    pages: [] 
+  },
+  { 
+    id: 'the_nutcracker_golden', 
+    title: 'The Nutcracker', 
+    author: 'Rita Balducci & Sheilah Beckett', 
+    category: 'story',
+    cover: '/covers/the-nutcracker-golden.webp',
+    notes: 'A Little Golden Book Classic • Clara, the Nutcracker, and the Mouse King',
+    pages: [] 
+  },
+  { 
+    id: 'the_littlest_christmas_elf', 
+    title: 'The Littlest Christmas Elf', 
+    author: 'Brandi Dougherty', 
+    category: 'story',
+    cover: '/covers/the-littlest-christmas-elf.webp',
+    notes: 'Illustrated by Kirsten Richards • Little Golden Book • Oliver the helpful elf',
+    pages: [] 
+  },
+  { 
+    id: 'cat_family_christmas', 
+    title: 'Cat Family Christmas', 
+    author: 'Lucy Brownridge', 
+    category: 'story',
+    cover: '/covers/cat-family-christmas.webp',
+    notes: 'Illustrated by Eunyoung Seo • Cozy feline holiday countdown',
+    pages: [] 
+  },
+  { 
+    id: 'the_christmas_fox', 
+    title: 'The Christmas Fox', 
+    author: 'Anik McGrory', 
+    category: 'story',
+    cover: '/covers/the-christmas-fox.webp',
+    notes: 'A gentle snowy forest tale of welcoming baby Jesus',
+    pages: [] 
+  },
+  { 
+    id: 'snow', 
+    title: 'Snow', 
+    author: 'P.D. Eastman and Roy McKie', 
+    category: 'story',
+    cover: '/covers/snow.webp',
+    notes: 'Beginner Books • A fun-filled snowy day adventure',
+    pages: [] 
+  },
+  { 
+    id: 'the_bears_christmas', 
+    title: "The Bears' Christmas", 
+    author: 'Stan and Jan Berenstain', 
+    category: 'story',
+    cover: '/covers/the-bears-christmas.webp',
+    notes: "Papa Bear tries out small bear's new holiday sports gear",
+    pages: [] 
+  },
+  { 
+    id: 'dws_perfect_present', 
+    title: "D.W.'s Perfect Present", 
+    author: 'Marc Brown', 
+    category: 'story',
+    cover: '/covers/dws-perfect-present.webp',
+    notes: "Arthur's little sister searches for the perfect gift",
+    pages: [] 
+  },
+  { 
+    id: 'the_nutcracker_popup', 
+    title: 'The Nutcracker: A Christmas Pop-up', 
+    author: 'Classic Holiday Keepsake', 
+    category: 'story',
+    cover: '/covers/the-nutcracker-popup.webp',
+    notes: 'Three-dimensional holiday pop-up edition with magical scenes',
+    pages: [] 
+  },
+  { 
+    id: 'the_christmas_promise', 
+    title: 'The Christmas Promise', 
+    author: 'Lee G. Smith', 
+    category: 'story',
+    cover: '/covers/the-christmas-promise.webp',
+    notes: 'Illustrated by Ron Dicianni • A touching promise of hope and love',
+    pages: [] 
+  },
+  { 
+    id: 'the_mouse_in_the_manger', 
+    title: 'The Mouse in the Manger', 
+    author: 'Rev. Gennaro L. Gentile', 
+    category: 'story',
+    cover: '/covers/the-mouse-in-the-manger.webp',
+    notes: 'A heartwarming Christmas Eve tale of a humble mouse at the manger',
+    pages: [] 
+  },
   // Family Photo Albums
   {
     id: 'album_santa',
@@ -202,11 +337,12 @@ export default function App() {
     if (isFirebaseConfigured()) {
       setIsCloudConnected(true);
       const unsubscribe = subscribeToBooksFromCloud((cloudBooks) => {
-        if (cloudBooks && cloudBooks.length > 0) {
+        if (cloudBooks && Array.isArray(cloudBooks)) {
           setBooks((current) => {
             const cloudIds = new Set(cloudBooks.map((b) => b.id));
-            const localOnly = current.filter((b) => !cloudIds.has(b.id) && String(b.id).startsWith('local_'));
-            const merged = [...cloudBooks, ...localOnly];
+            // Keep all current books (starter books + local additions) that aren't in the cloud yet
+            const nonCloud = current.filter((b) => !cloudIds.has(b.id) && !LEGACY_PLACEHOLDERS.has(String(b.id)));
+            const merged = [...cloudBooks, ...nonCloud];
             saveBooksToIndexedDB(merged);
             return merged;
           });

@@ -141,8 +141,8 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
 
   // Map each book to an elegant, antique leather/cloth library spine
   const styledBooks = books.map((b, idx) => {
-    const isAlbum = b.category === 'album' || b.id === 'album_santa' || b.title?.toLowerCase().includes('santa') || b.title?.toLowerCase().includes('photo');
-    const isCookbook = b.category === 'cookbook' || b.id === 'cookbook_erin' || b.title?.toLowerCase().includes('cook');
+    const isAlbum = b.category === 'album' || b.id === 'album_santa' || (!b.category && (b.title?.toLowerCase().includes('pictures with santa') || b.title?.toLowerCase().includes('photo')));
+    const isCookbook = b.category === 'cookbook' || b.id === 'cookbook_erin' || (!b.category && b.title?.toLowerCase().includes('cook'));
 
     // Substantial, realistic library spine heights and generous widths
     const heights = isAlbum ? [254, 260, 250] : isCookbook ? [246, 252] : [228, 218, 238, 214, 232, 222, 240, 220];
@@ -182,6 +182,8 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
   });
 
   const storybooks = styledBooks.filter((b) => b.category === 'story');
+  const storybooksTier1 = storybooks.length > 12 ? storybooks.slice(0, Math.ceil(storybooks.length / 2)) : storybooks;
+  const storybooksTier2 = storybooks.length > 12 ? storybooks.slice(Math.ceil(storybooks.length / 2)) : [];
   const photoAlbums = styledBooks.filter((b) => b.category === 'album');
   const cookbooks = styledBooks.filter((b) => b.category === 'cookbook');
 
@@ -648,28 +650,70 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
         {/* Shelves Layout */}
         {activeTab === 'all' ? (
           <>
-            {renderShelfRow(storybooks, 'I', 'Holiday Storybooks', {
+            {storybooksTier2.length > 0 ? (
+              <>
+                {renderShelfRow(storybooksTier1, 'I', 'Holiday Storybooks • Shelf I', {
+                  category: 'story',
+                  label: 'Add Book',
+                  icon: '📖'
+                })}
+                {renderShelfRow(storybooksTier2, 'II', 'Holiday Storybooks • Shelf II', {
+                  category: 'story',
+                  label: 'Add Book',
+                  icon: '📖'
+                })}
+                {renderShelfRow(photoAlbums, 'III', 'Family Photo Albums & Santa Keepsakes', {
+                  category: 'album',
+                  label: 'Add Album',
+                  icon: '🎅'
+                })}
+                {renderShelfRow(cookbooks, 'IV', "Erin's Family Recipes & Traditions", {
+                  category: 'cookbook',
+                  label: 'Add Recipe',
+                  icon: '🥧'
+                })}
+              </>
+            ) : (
+              <>
+                {renderShelfRow(storybooks, 'I', 'Holiday Storybooks', {
+                  category: 'story',
+                  label: 'Add Book',
+                  icon: '📖'
+                })}
+                {renderShelfRow(photoAlbums, 'II', 'Family Photo Albums & Santa Keepsakes', {
+                  category: 'album',
+                  label: 'Add Album',
+                  icon: '🎅'
+                })}
+                {renderShelfRow(cookbooks, 'III', "Erin's Family Recipes & Traditions", {
+                  category: 'cookbook',
+                  label: 'Add Recipe',
+                  icon: '🥧'
+                })}
+              </>
+            )}
+          </>
+        ) : activeTab === 'story' ? (
+          storybooksTier2.length > 0 ? (
+            <>
+              {renderShelfRow(storybooksTier1, 'I', 'Holiday Storybooks • Shelf I', {
+                category: 'story',
+                label: 'Add Book',
+                icon: '📖'
+              })}
+              {renderShelfRow(storybooksTier2, 'II', 'Holiday Storybooks • Shelf II', {
+                category: 'story',
+                label: 'Add Book',
+                icon: '📖'
+              })}
+            </>
+          ) : (
+            renderShelfRow(storybooks, 'I', 'Holiday Storybooks Collection', {
               category: 'story',
               label: 'Add Book',
               icon: '📖'
-            })}
-            {renderShelfRow(photoAlbums, 'II', 'Family Photo Albums & Santa Keepsakes', {
-              category: 'album',
-              label: 'Add Album',
-              icon: '🎅'
-            })}
-            {renderShelfRow(cookbooks, 'III', "Erin's Family Recipes & Traditions", {
-              category: 'cookbook',
-              label: 'Add Recipe',
-              icon: '🥧'
-            })}
-          </>
-        ) : activeTab === 'story' ? (
-          renderShelfRow(storybooks, 'I', 'Holiday Storybooks Collection', {
-            category: 'story',
-            label: 'Add Book',
-            icon: '📖'
-          })
+            })
+          )
         ) : activeTab === 'album' ? (
           renderShelfRow(photoAlbums, 'II', 'Family Photo Albums & Santa Keepsakes', {
             category: 'album',
