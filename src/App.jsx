@@ -397,7 +397,7 @@ export default function App() {
             key="cabin-landing"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.6 } }}
+            exit={{ opacity: 0, transition: { duration: 0.85, ease: 'easeInOut' } }}
             className="w-screen h-screen overflow-hidden"
           >
             <CabinLanding onStepUp={() => setIsAtBookshelf(true)} />
@@ -408,10 +408,10 @@ export default function App() {
           /* ========================================================= */
           <motion.div
             key="bookshelf-area"
-            initial={{ opacity: 0, scale: 1.08 }}
+            initial={{ opacity: 0, scale: 1.03 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
             className="min-h-screen flex flex-col bg-[#140e0b] relative pb-20"
             style={{
               backgroundImage: 'radial-gradient(ellipse at 50% 0%, #2a160c 0%, #140e0b 70%)',

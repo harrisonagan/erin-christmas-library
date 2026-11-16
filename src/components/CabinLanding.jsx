@@ -7,10 +7,10 @@ export default function CabinLanding({ onStepUp }) {
 
   const handleEnter = () => {
     setIsZooming(true);
-    // Smooth camera walk-up timing into the bookshelf
+    // Luxurious, slow walk-up timing into the bookshelf
     setTimeout(() => {
       onStepUp();
-    }, 1150);
+    }, 2400);
   };
 
   const bgImage = `${import.meta.env.BASE_URL}cabin-garland.jpg`;
@@ -23,9 +23,9 @@ export default function CabinLanding({ onStepUp }) {
       <motion.div
         className="absolute inset-0 origin-[65%_48%]"
         animate={isZooming ? {
-          scale: 3.4,
-          filter: 'blur(4px)',
-          transition: { duration: 1.25, ease: [0.25, 0.1, 0.25, 1] }
+          scale: 2.3,
+          filter: 'blur(2px)',
+          transition: { duration: 2.6, ease: [0.22, 1, 0.36, 1] }
         } : { scale: 1 }}
       >
         {/* Aspect-Locked Full-Bleed Container:
@@ -72,7 +72,7 @@ export default function CabinLanding({ onStepUp }) {
       {/* Center Welcome Plaque (Responsive & compact on mobile) */}
       <motion.div
         initial={{ opacity: 0, y: 25 }}
-        animate={isZooming ? { opacity: 0, y: -20, scale: 0.9, transition: { duration: 0.4 } } : { opacity: 1, y: 0 }}
+        animate={isZooming ? { opacity: 0, y: -15, scale: 0.95, transition: { duration: 0.7, ease: 'easeOut' } } : { opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
         className="absolute inset-0 flex items-center justify-center p-4 sm:p-6 pointer-events-none z-20"
       >
