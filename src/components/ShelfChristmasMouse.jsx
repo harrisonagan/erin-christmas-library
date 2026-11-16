@@ -41,19 +41,19 @@ export default function ShelfChristmasMouse({ className = '' }) {
       style={{ minWidth: '68px' }}
       title="Erin's Christmas Keepsake Mouse (Click me!)"
     >
-      {/* Small "Merry Christmas" Voice Cloud (Hovers gently to the left of the mouse over the top molding) */}
+      {/* Small "Merry Christmas" Voice Cloud (Hovers gently to the right of the mouse with trail dots to mouth) */}
       <AnimatePresence>
         {showVoiceCloud && (
           <motion.div
-            initial={{ opacity: 0, x: 8, scale: 0.8 }}
+            initial={{ opacity: 0, x: -8, scale: 0.8 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: 6, scale: 0.85 }}
+            exit={{ opacity: 0, x: -6, scale: 0.85 }}
             transition={{ type: 'spring', stiffness: 450, damping: 24 }}
-            className="absolute right-full mr-1.5 bottom-[40%] sm:bottom-[45%] z-40 pointer-events-none whitespace-nowrap"
+            className="absolute left-[72%] sm:left-[76%] bottom-[44%] sm:bottom-[48%] z-40 pointer-events-none whitespace-nowrap"
           >
             <div className="relative inline-flex items-center justify-center filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.65)] select-none">
               <svg
-                viewBox="0 0 152 64"
+                viewBox="-14 0 170 74"
                 className="w-32 sm:w-36 h-auto block"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -67,21 +67,23 @@ export default function ShelfChristmasMouse({ className = '' }) {
 
                 {/* Fluffy Voice Cloud Body */}
                 <path
-                  d="M 29.3 45.0 A 15 15 0 0 1 29.3 17.0 A 15 15 0 0 1 57.0 12.5 A 16 16 0 0 1 87.8 15.3 A 15 15 0 0 1 116.7 17.0 A 15 15 0 0 1 118.6 45.6 A 15 15 0 0 1 88.5 43.0 A 16 16 0 0 1 57.0 49.5 A 15 15 0 0 1 29.3 45.0 Z"
+                  d="M 41.1 46.1 A 15 15 0 0 1 41.1 17.9 A 15 15 0 0 1 69.0 12.5 A 16 16 0 0 1 99.8 15.3 A 15 15 0 0 1 128.9 17.9 A 15 15 0 0 1 130.8 46.6 A 15 15 0 0 1 100.5 45.0 A 16 16 0 0 1 69.0 51.5 A 15 15 0 0 1 41.1 46.1 Z"
                   fill="url(#cloudWhiteGrad)"
                   stroke="#c2782b"
                   strokeWidth="1.2"
                 />
 
-                {/* Trail Bubbles leading to the mouse on the right */}
-                <circle cx="126" cy="46" r="3.5" fill="#ffffff" stroke="#c2782b" strokeWidth="1" />
-                <circle cx="135" cy="52" r="2.2" fill="#ffffff" stroke="#c2782b" strokeWidth="0.8" />
-                <circle cx="143" cy="57" r="1.4" fill="#ffffff" stroke="#c2782b" strokeWidth="0.6" />
+                {/* Voice cloud trail dots leading down-left directly to the mouse's mouth */}
+                <circle cx="32" cy="50" r="3.5" fill="#ffffff" stroke="#c2782b" strokeWidth="1" />
+                <circle cx="22" cy="55" r="2.5" fill="#ffffff" stroke="#c2782b" strokeWidth="0.8" />
+                <circle cx="12" cy="60" r="1.8" fill="#ffffff" stroke="#c2782b" strokeWidth="0.6" />
+                <circle cx="3" cy="65" r="1.2" fill="#ffffff" stroke="#c2782b" strokeWidth="0.5" />
+                <circle cx="-5" cy="69" r="0.9" fill="#ffffff" stroke="#c2782b" strokeWidth="0.4" />
 
                 {/* Perfectly Centered "Merry Christmas!" Text */}
                 <text
-                  x="72"
-                  y="31"
+                  x="85"
+                  y="32"
                   textAnchor="middle"
                   dominantBaseline="central"
                   fontFamily="Georgia, 'Times New Roman', serif"

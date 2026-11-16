@@ -647,7 +647,7 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook, ex
         }}
       >
         {/* Elf on the Shelf: Keepsake Christmas Mouse perched on top-right of the bookcase */}
-        <div className="absolute bottom-[calc(100%-3px)] sm:bottom-[calc(100%-4px)] right-3 sm:right-8 z-30 pointer-events-auto">
+        <div className="absolute bottom-[calc(100%-3px)] sm:bottom-[calc(100%-4px)] right-24 sm:right-32 md:right-36 z-30 pointer-events-auto">
           <ShelfChristmasMouse />
         </div>
 
