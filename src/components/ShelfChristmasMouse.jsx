@@ -51,10 +51,10 @@ export default function ShelfChristmasMouse({ className = '' }) {
             transition={{ type: 'spring', stiffness: 500, damping: 25 }}
             className="absolute bottom-[92%] sm:bottom-[94%] left-1/2 -translate-x-1/2 z-40 pointer-events-none"
           >
-            <div className="relative inline-flex items-center justify-center filter drop-shadow-[0_4px_10px_rgba(0,0,0,0.55)] select-none">
+            <div className="relative inline-flex items-center justify-center filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)] select-none">
               <svg
-                viewBox="0 0 138 58"
-                className="w-28 sm:w-32 h-auto block"
+                viewBox="0 0 160 74"
+                className="w-32 sm:w-36 h-auto block"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -67,23 +67,32 @@ export default function ShelfChristmasMouse({ className = '' }) {
 
                 {/* Fluffy Voice Cloud Body */}
                 <path
-                  d="M 24 32 A 14 14 0 0 1 36 16 A 18 18 0 0 1 68 12 A 18 18 0 0 1 100 16 A 15 15 0 0 1 114 30 A 14 14 0 0 1 106 44 A 18 18 0 0 1 74 46 A 18 18 0 0 1 42 44 A 14 14 0 0 1 24 32 Z"
+                  d="M 30.4 47.4 A 16 16 0 0 1 32.2 17.3 A 16 16 0 0 1 63.2 15.1 A 17 17 0 0 1 96.8 15.1 A 16 16 0 0 1 127.8 17.3 A 16 16 0 0 1 129.6 47.4 A 16 16 0 0 1 97.5 45.0 A 17 17 0 0 1 62.5 45.0 A 16 16 0 0 1 30.4 47.4 Z"
                   fill="url(#cloudWhiteGrad)"
                   stroke="#c2782b"
                   strokeWidth="1.2"
                 />
 
                 {/* Cloud Tail Bubbles leading down to the mouse head */}
-                <circle cx="52" cy="49" r="3.2" fill="#ffffff" stroke="#c2782b" strokeWidth="1" />
-                <circle cx="45" cy="54" r="2" fill="#ffffff" stroke="#c2782b" strokeWidth="0.8" />
-              </svg>
+                <circle cx="56" cy="58" r="3.5" fill="#ffffff" stroke="#c2782b" strokeWidth="1" />
+                <circle cx="48" cy="64" r="2.2" fill="#ffffff" stroke="#c2782b" strokeWidth="0.8" />
+                <circle cx="42" cy="69" r="1.4" fill="#ffffff" stroke="#c2782b" strokeWidth="0.6" />
 
-              {/* Centered Voice Cloud Text */}
-              <div className="absolute inset-0 pb-3 flex items-center justify-center pointer-events-none">
-                <span className="font-serif font-bold text-[10px] sm:text-[11px] text-[#7a1e28] tracking-wider whitespace-nowrap drop-shadow-[0_1px_0_rgba(255,255,255,0.95)]">
+                {/* Perfectly Centered "Merry Christmas!" Text */}
+                <text
+                  x="80"
+                  y="32"
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                  fontFamily="Georgia, 'Times New Roman', serif"
+                  fontWeight="bold"
+                  fontSize="11"
+                  fill="#7a1e28"
+                  letterSpacing="0.2"
+                >
                   Merry Christmas!
-                </span>
-              </div>
+                </text>
+              </svg>
             </div>
           </motion.div>
         )}
