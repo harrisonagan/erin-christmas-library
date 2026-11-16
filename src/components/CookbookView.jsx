@@ -581,6 +581,16 @@ export default function CookbookView({ initialRecipeId, onClose }) {
                       </div>
                     )}
 
+                    {/* Family Notes / Kitchen Tips */}
+                    {activeItem.notes && (
+                      <div className="p-4 bg-amber-100/80 rounded-2xl border border-amber-300 text-stone-900 text-sm font-sans flex items-start gap-2.5 shadow-sm">
+                        <span className="text-lg">📝</span>
+                        <div className="flex-1 font-medium leading-relaxed">
+                          {activeItem.notes}
+                        </div>
+                      </div>
+                    )}
+
                     {/* Family Contributor Seal */}
                     <div className="pt-6 border-t-2 border-amber-900/20 flex flex-col sm:flex-row items-center justify-between text-xs font-sans text-stone-600 gap-3">
                       <div className="flex items-center gap-2">
