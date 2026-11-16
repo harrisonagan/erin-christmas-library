@@ -539,8 +539,20 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook, ex
       {/* CLASSICAL LIBRARY DIRECTORY TABS & DISPLAY CONTROLS       */}
       {/* ========================================================= */}
       <div className="flex items-center justify-between flex-wrap gap-3 mb-10 sm:mb-14 px-1 select-none z-20">
-        {/* Category Tabs */}
-        <div className="flex items-center justify-center flex-wrap gap-x-4 sm:gap-x-6 gap-y-1.5 font-serif text-[10.5px] sm:text-xs uppercase tracking-[0.2em] max-w-xl sm:max-w-2xl mx-auto">
+        {/* Display Controls: Shuffle Covers (Placed on the left so the right corner is open for the mouse) */}
+        <div className="flex items-center flex-wrap gap-2 order-1 sm:order-none">
+          <button
+            onClick={shuffleFaceOut}
+            className="px-3 py-1.5 rounded-full bg-[#1b120ce0] hover:bg-amber-900/60 border border-amber-900/50 text-[10px] font-serif text-amber-200/90 transition-all flex items-center gap-1.5 shadow-sm active:scale-95"
+            title="Randomly feature different book covers face-out on the shelves"
+          >
+            <span>🎲</span>
+            <span>Shuffle Covers</span>
+          </button>
+        </div>
+
+        {/* Category Tabs (Centered) */}
+        <div className="flex items-center justify-center flex-wrap gap-x-4 sm:gap-x-6 gap-y-1.5 font-serif text-[10.5px] sm:text-xs uppercase tracking-[0.2em] max-w-xl sm:max-w-2xl mx-auto order-3 sm:order-none">
           <button
             onClick={() => handleTabChange('all')}
             className={`transition-all duration-200 pb-1 ${
@@ -620,18 +632,8 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook, ex
           </button>
         </div>
 
-        {/* Display Controls: Shuffle Covers */}
-        <div className="flex items-center flex-wrap gap-2">
-          {/* Shuffle Face-Out Covers button */}
-          <button
-            onClick={shuffleFaceOut}
-            className="px-3 py-1.5 rounded-full bg-[#1b120ce0] hover:bg-amber-900/60 border border-amber-900/50 text-[10px] font-serif text-amber-200/90 transition-all flex items-center gap-1.5 shadow-sm active:scale-95"
-            title="Randomly feature different book covers face-out on the shelves"
-          >
-            <span>🎲</span>
-            <span>Shuffle Covers</span>
-          </button>
-        </div>
+        {/* Dedicated spacer to balance the left Shuffle button and keep the right corner completely clear for the mouse */}
+        <div className="hidden sm:block w-28 pointer-events-none order-2 sm:order-none" />
       </div>
 
       {/* ========================================================= */}
