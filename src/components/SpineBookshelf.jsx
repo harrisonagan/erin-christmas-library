@@ -197,7 +197,7 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
       onMouseLeave={() => setHoveredBook(null)}
     >
       {/* ========================================================= */}
-      {/* ELEGANT CROWN MOLDING & LUSH EVERGREEN GARLAND            */}
+      {/* REALISTIC CHRISTMAS PINE & PINECONE GARLAND (TOP & SIDES) */}
       {/* ========================================================= */}
       <div className="relative w-full mb-6 sm:mb-8 select-none">
         {/* Carved Wood Crown Molding */}
@@ -205,44 +205,22 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
           <div className="absolute inset-x-0 top-0 h-[1px] bg-amber-300/30" />
         </div>
 
-        {/* Draped Lush Holiday Pine Swag */}
-        <div className="relative -mt-2.5 w-full">
-          <div className="relative w-full h-7 sm:h-9 bg-gradient-to-r from-[#0a2313] via-[#103a1d] to-[#0a2313] rounded-full border border-emerald-700/40 shadow-[0_6px_18px_rgba(0,0,0,0.9)] flex items-center justify-between px-4 sm:px-8 overflow-hidden">
-            <div className="absolute inset-0 opacity-30 bg-[radial-gradient(#22c55e_1px,transparent_1px)] [background-size:6px_6px]" />
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-950/20 to-black/70 pointer-events-none" />
-
-            <div className="flex items-center justify-around w-full relative z-10">
-              {[...Array(14)].map((_, i) => (
-                <div key={i} className="flex items-center gap-1.5 relative">
-                  {/* Subtle pine needle sprig */}
-                  <span className="text-emerald-300/60 text-xs sm:text-sm transform scale-105">🌿</span>
-
-                  {/* Red winterberry cluster */}
-                  {i % 2 === 0 && (
-                    <div className="flex -space-x-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-red-400 via-red-600 to-red-950 shadow-[0_1px_2px_rgba(0,0,0,0.9)] inline-block" />
-                      <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-red-400 via-red-600 to-red-950 shadow-[0_1px_2px_rgba(0,0,0,0.9)] inline-block mt-0.5" />
-                    </div>
-                  )}
-
-                  {/* Warm Glowing Incandescent Fairy Light */}
-                  <span
-                    className="relative w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[#fff4cc] shadow-[0_0_10px_3px_rgba(251,191,36,0.9)] animate-pulse inline-block"
-                    style={{
-                      animationDuration: `${1.4 + (i % 4) * 0.4}s`,
-                      animationDelay: `${(i * 0.18).toFixed(2)}s`,
-                    }}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
+        {/* Photorealistic Evergreen Pine Garland with Pinecones & Glowing Fairy Lights */}
+        <div className="relative -mt-3 sm:-mt-4 w-full flex justify-center pointer-events-none">
+          <img
+            src={`${import.meta.env.BASE_URL}garland-frame.png`}
+            alt="Photorealistic Christmas Pine Garland with Pinecones"
+            className="w-full h-auto max-h-[160px] sm:max-h-[220px] object-cover sm:object-contain"
+            style={{
+              filter: 'drop-shadow(0 14px 22px rgba(0, 0, 0, 0.95))',
+            }}
+          />
         </div>
 
         {/* ========================================================= */}
-        {/* CLASSY LIBRARY DIRECTORY TABS (Replaces tacky pill buttons)*/}
+        {/* CLASSY LIBRARY DIRECTORY TABS (Classical Serif)           */}
         {/* ========================================================= */}
-        <div className="flex items-center justify-center flex-wrap gap-x-6 sm:gap-x-8 gap-y-2 mt-5 font-serif text-xs uppercase tracking-[0.22em]">
+        <div className="flex items-center justify-center flex-wrap gap-x-6 sm:gap-x-8 gap-y-2 mt-4 font-serif text-xs uppercase tracking-[0.22em]">
           <button
             onClick={() => setActiveTab('all')}
             className={`transition-all duration-200 pb-1 ${
@@ -307,6 +285,48 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
       >
         <div className="absolute top-0 bottom-0 left-0 w-1.5 sm:w-2 bg-gradient-to-r from-amber-600/15 to-black/60 pointer-events-none" />
         <div className="absolute top-0 bottom-0 right-0 w-1.5 sm:w-2 bg-gradient-to-l from-amber-600/15 to-black/60 pointer-events-none" />
+
+        {/* Left Side Cascading Pine Garland with Pinecones & Fairy Lights */}
+        <div className="absolute top-0 bottom-6 -left-3 sm:-left-5 w-6 sm:w-8 flex flex-col justify-around items-center pointer-events-none z-20">
+          {[...Array(6)].map((_, i) => (
+            <div key={`left-garland-${i}`} className="flex flex-col items-center gap-1 transform -rotate-12">
+              <span className="text-emerald-400/90 text-sm sm:text-base filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">🌿</span>
+              {i % 2 === 0 ? (
+                <span className="text-xs sm:text-sm filter drop-shadow">🪵</span>
+              ) : (
+                <div className="flex -space-x-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-600 shadow-[0_1px_2px_rgba(0,0,0,0.8)]" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-700 shadow-[0_1px_2px_rgba(0,0,0,0.8)] mt-0.5" />
+                </div>
+              )}
+              <span
+                className="w-2 h-2 rounded-full bg-[#fff4cc] shadow-[0_0_8px_3px_rgba(251,191,36,0.95)] animate-pulse"
+                style={{ animationDelay: `${i * 0.3}s` }}
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* Right Side Cascading Pine Garland with Pinecones & Fairy Lights */}
+        <div className="absolute top-0 bottom-6 -right-3 sm:-right-5 w-6 sm:w-8 flex flex-col justify-around items-center pointer-events-none z-20">
+          {[...Array(6)].map((_, i) => (
+            <div key={`right-garland-${i}`} className="flex flex-col items-center gap-1 transform rotate-12">
+              <span className="text-emerald-400/90 text-sm sm:text-base filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">🌿</span>
+              {i % 2 === 1 ? (
+                <span className="text-xs sm:text-sm filter drop-shadow">🪵</span>
+              ) : (
+                <div className="flex -space-x-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-600 shadow-[0_1px_2px_rgba(0,0,0,0.8)]" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-700 shadow-[0_1px_2px_rgba(0,0,0,0.8)] mt-0.5" />
+                </div>
+              )}
+              <span
+                className="w-2 h-2 rounded-full bg-[#fff4cc] shadow-[0_0_8px_3px_rgba(251,191,36,0.95)] animate-pulse"
+                style={{ animationDelay: `${i * 0.3 + 0.15}s` }}
+              />
+            </div>
+          ))}
+        </div>
 
         {activeTab === 'all' ? (
           <>
