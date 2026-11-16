@@ -10,6 +10,7 @@ import ListView from './components/ListView';
 import ReaderModal from './components/ReaderModal';
 import AddBookModal from './components/AddBookModal';
 import CloudBackupModal from './components/CloudBackupModal';
+import CookbookView from './components/CookbookView';
 
 // Curated Authentic Family Christmas Library (Placeholders Removed)
 const INITIAL_BOOKS = [
@@ -297,6 +298,27 @@ export default function App() {
   const [isReaderOpen, setIsReaderOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [addModalCategory, setAddModalCategory] = useState('story');
+  const [isCookbookOpen, setIsCookbookOpen] = useState(false);
+  const [cookbookInitialRecipe, setCookbookInitialRecipe] = useState(null);
+
+  // URL Hash Routing for Dedicated Cookbook View (#/cookbook, #/cookbook?recipe=slug)
+  useEffect(() => {
+    const handleUrlRoute = () => {
+      const hash = window.location.hash || '';
+      const search = window.location.search || '';
+      if (hash.includes('cookbook') || search.includes('cookbook=1')) {
+        setIsAtBookshelf(true);
+        setIsCookbookOpen(true);
+        const match = hash.match(/recipe=([^&]+)/);
+        if (match && match[1]) {
+          setCookbookInitialRecipe(decodeURIComponent(match[1]));
+        }
+      }
+    };
+    handleUrlRoute();
+    window.addEventListener('hashchange', handleUrlRoute);
+    return () => window.removeEventListener('hashchange', handleUrlRoute);
+  }, []);
 
   const handleUnlock = (e) => {
     e?.preventDefault();
@@ -785,22 +807,56 @@ export default function App() {
                       </div>
 
                       {/* Action Buttons */}
-                      <div className="pt-4 flex flex-col sm:flex-row gap-3 items-center">
-                        <button
-                          onClick={() => setIsReaderOpen(true)}
-                          className="w-full sm:flex-1 py-3.5 px-6 bg-gradient-to-r from-amber-700 via-amber-600 to-amber-700 hover:from-amber-600 hover:to-amber-500 text-amber-50 rounded-2xl text-sm font-semibold shadow-[0_8px_20px_rgba(180,83,9,0.4)] border border-amber-400/30 transition-all flex items-center justify-center gap-2 transform active:scale-95"
-                        >
-                          <span className="text-lg">📖</span>
-                          <span>Open Storybook & Read</span>
-                        </button>
+                      <div className="pt-4 flex flex-col gap-3">
+                        {selectedBook.id === 'cookbook_erin' || selectedBook.category === 'cookbook' ? (
+                          <div className="w-full flex flex-col gap-2.5">
+                            <button
+                              onClick={() => {
+                                setIsCookbookOpen(true);
+                                setSelectedBook(null);
+                                window.location.hash = '#/cookbook';
+                              }}
+                              className="w-full py-4 px-6 bg-gradient-to-r from-amber-700 via-amber-600 to-amber-700 hover:from-amber-600 hover:to-amber-500 text-amber-50 rounded-2xl text-sm font-semibold shadow-[0_10px_25px_rgba(180,83,9,0.5)] border border-amber-400/30 transition-all flex items-center justify-center gap-2 transform active:scale-95"
+                            >
+                              <span className="text-xl">🥧</span>
+                              <span className="font-bold">Open Interactive Cookbook & Recipes</span>
+                            </button>
+                            <div className="flex items-center justify-center gap-4 text-xs font-sans text-stone-400 pt-1">
+                              <button
+                                onClick={() => setIsReaderOpen(true)}
+                                className="hover:text-amber-200 underline"
+                              >
+                                View Classic Page Flip Scan
+                              </button>
+                              <span>•</span>
+                              <a
+                                href={selectedBook.pdfUrl || '/strom_family_cookbook_cleaned.pdf'}
+                                download="strom_family_cookbook_cleaned.pdf"
+                                className="hover:text-amber-200 underline"
+                              >
+                                Download Full PDF
+                              </a>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="w-full flex flex-col sm:flex-row gap-3 items-center">
+                            <button
+                              onClick={() => setIsReaderOpen(true)}
+                              className="w-full sm:flex-1 py-3.5 px-6 bg-gradient-to-r from-amber-700 via-amber-600 to-amber-700 hover:from-amber-600 hover:to-amber-500 text-amber-50 rounded-2xl text-sm font-semibold shadow-[0_8px_20px_rgba(180,83,9,0.4)] border border-amber-400/30 transition-all flex items-center justify-center gap-2 transform active:scale-95"
+                            >
+                              <span className="text-lg">📖</span>
+                              <span>Open Storybook & Read</span>
+                            </button>
 
-                        <button
-                          onClick={() => handleDeleteBook(selectedBook.id)}
-                          className="w-full sm:w-auto px-4 py-3.5 bg-stone-900/60 hover:bg-red-950/50 text-stone-400 hover:text-red-300 border border-stone-800 hover:border-red-900/60 rounded-2xl text-xs font-medium transition"
-                          title="Remove from shelf"
-                        >
-                          Remove
-                        </button>
+                            <button
+                              onClick={() => handleDeleteBook(selectedBook.id)}
+                              className="w-full sm:w-auto px-4 py-3.5 bg-stone-900/60 hover:bg-red-950/50 text-stone-400 hover:text-red-300 border border-stone-800 hover:border-red-900/60 rounded-2xl text-xs font-medium transition"
+                              title="Remove from shelf"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -843,6 +899,22 @@ export default function App() {
         books={books}
         onBooksRestored={handleBooksRestored}
       />
+
+      {/* Dedicated Interactive Kitchen Cookbook View (#/cookbook) */}
+      <AnimatePresence>
+        {isCookbookOpen && (
+          <CookbookView
+            initialRecipeId={cookbookInitialRecipe}
+            onClose={() => {
+              setIsCookbookOpen(false);
+              setCookbookInitialRecipe(null);
+              if (window.location.hash.includes('cookbook')) {
+                window.history.pushState(null, '', window.location.pathname + window.location.search);
+              }
+            }}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

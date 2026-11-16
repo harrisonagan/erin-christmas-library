@@ -176,6 +176,21 @@ export default function ReaderModal({ book, onClose, onUpdateBook }) {
             </div>
           )}
 
+          {/* Switch to Interactive Kitchen Mode if Cookbook */}
+          {(book.id === 'cookbook_erin' || book.category === 'cookbook') && (
+            <button
+              onClick={() => {
+                onClose();
+                window.location.hash = '#/cookbook';
+              }}
+              className="px-3.5 py-1.5 bg-gradient-to-r from-amber-700 to-amber-800 hover:from-amber-600 text-white border border-amber-500/40 rounded-lg text-xs font-sans font-semibold transition flex items-center gap-1.5 shadow"
+              title="Switch to Interactive Kitchen Cookbook & Recipes"
+            >
+              <span>🥧</span>
+              <span>Kitchen Mode</span>
+            </button>
+          )}
+
           {/* Download Original PDF if available */}
           {book.pdfUrl && (
             <a
