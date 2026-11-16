@@ -141,11 +141,15 @@ export async function saveBookToCloud(book) {
   const data = {
     id: String(book.id),
     title: book.title || '',
-    author: book.author || '',
+    author: book.author || 'Unknown',
     category: book.category || 'story',
     cover: book.cover || '',
     coverStoragePath: book.coverStoragePath || null,
     notes: book.notes || '',
+    isMouseBook: Boolean(book.isMouseBook),
+    isMagazine: Boolean(book.isMagazine),
+    badge: book.badge || null,
+    userEdited: Boolean(book.userEdited),
     updatedAt: Date.now(),
     createdAt: book.createdAt || Date.now(),
   };

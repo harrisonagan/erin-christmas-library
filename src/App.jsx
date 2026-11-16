@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { pb, getBookCoverUrl } from './lib/pocketbase';
 import { saveBooksToIndexedDB, getBooksFromIndexedDB } from './lib/idbStorage';
-import { isFirebaseConfigured, subscribeToBooksFromCloud, deleteBookFromCloud } from './lib/firebase';
+import { isFirebaseConfigured, subscribeToBooksFromCloud, deleteBookFromCloud, saveBookToCloud } from './lib/firebase';
 import CabinLanding from './components/CabinLanding';
-import SpineBookshelf from './components/SpineBookshelf';
+import SpineBookshelf, { isMouseBookItem, isMagazineItem } from './components/SpineBookshelf';
 import CoverGalleryView from './components/CoverGalleryView';
 import ListView from './components/ListView';
 import ReaderModal from './components/ReaderModal';
@@ -12,13 +12,14 @@ import AddBookModal from './components/AddBookModal';
 import CloudBackupModal from './components/CloudBackupModal';
 import CookbookView from './components/CookbookView';
 
-// Curated Authentic Family Christmas Library (Placeholders Removed)
+// Curated Authentic Family Christmas Library (109 Volumes from Family Collection)
 const INITIAL_BOOKS = [
   { 
     id: '1', 
     title: 'Mice Skating', 
     author: 'Annie Silvestro', 
     category: 'story',
+    isMouseBook: true,
     cover: '/covers/mice-skating.jpg',
     notes: 'Illustrated by Teagan White • A cozy winter favorite',
     pages: [] 
@@ -70,7 +71,7 @@ const INITIAL_BOOKS = [
   },
   { 
     id: 'santa_in_michigan', 
-    title: 'Santa is coming to Michigan', 
+    title: 'Santa is Coming to Michigan', 
     author: 'Steve Smallman', 
     category: 'story',
     cover: '/covers/santa-is-coming-to-michigan.webp',
@@ -98,10 +99,10 @@ const INITIAL_BOOKS = [
   { 
     id: 'the_newborn_king', 
     title: 'The Newborn King', 
-    author: 'Bendon Publishing', 
+    author: 'Unknown', 
     category: 'story',
     cover: '/covers/the-newborn-king.webp',
-    notes: 'A Treasured Keepsake Board Book • The holy birth of Christ',
+    notes: 'Bendon Publishing • A Treasured Keepsake Board Book • The holy birth of Christ',
     pages: [] 
   },
   { 
@@ -119,25 +120,25 @@ const INITIAL_BOOKS = [
     author: 'David A. Carter', 
     category: 'story',
     cover: '/covers/the-12-bugs-of-christmas.webp',
-    notes: 'A Pop-up Holiday Celebration • Whimsical bugs singing holiday cheer',
+    notes: 'A Pop-up Christmas Counting Book • Whimsical bugs singing holiday cheer',
     pages: [] 
   },
   { 
     id: 'the_nutcracker_golden', 
     title: 'The Nutcracker', 
-    author: 'Rita Balducci & Sheilah Beckett', 
+    author: 'Unknown', 
     category: 'story',
     cover: '/covers/the-nutcracker-golden.webp',
-    notes: 'A Little Golden Book Classic • Clara, the Nutcracker, and the Mouse King',
+    notes: 'A Little Golden Book Classic (#460-16) • Clara, the Nutcracker, and the Mouse King',
     pages: [] 
   },
   { 
     id: 'the_littlest_christmas_elf', 
     title: 'The Littlest Christmas Elf', 
-    author: 'Brandi Dougherty', 
+    author: 'Unknown', 
     category: 'story',
     cover: '/covers/the-littlest-christmas-elf.webp',
-    notes: 'Illustrated by Kirsten Richards • Little Golden Book • Oliver the helpful elf',
+    notes: 'A Little Golden Book (#459-00) • Oliver the helpful Christmas elf',
     pages: [] 
   },
   { 
@@ -146,7 +147,7 @@ const INITIAL_BOOKS = [
     author: 'Lucy Brownridge', 
     category: 'story',
     cover: '/covers/cat-family-christmas.webp',
-    notes: 'Illustrated by Eunyoung Seo • Cozy feline holiday countdown',
+    notes: 'Illustrated by Eunyoung Seo • Lift-the-flap advent book with over 140 flaps',
     pages: [] 
   },
   { 
@@ -164,7 +165,7 @@ const INITIAL_BOOKS = [
     author: 'P.D. Eastman and Roy McKie', 
     category: 'story',
     cover: '/covers/snow.webp',
-    notes: 'Beginner Books • A fun-filled snowy day adventure',
+    notes: 'I Can Read Beginner Books • A fun-filled snowy day adventure',
     pages: [] 
   },
   { 
@@ -173,7 +174,7 @@ const INITIAL_BOOKS = [
     author: 'Stan and Jan Berenstain', 
     category: 'story',
     cover: '/covers/the-bears-christmas.webp',
-    notes: "Papa Bear tries out small bear's new holiday sports gear",
+    notes: "Beginner Books • Papa Bear tries out Small Bear's new Christmas sled, skates, and skis",
     pages: [] 
   },
   { 
@@ -182,13 +183,13 @@ const INITIAL_BOOKS = [
     author: 'Marc Brown', 
     category: 'story',
     cover: '/covers/dws-perfect-present.webp',
-    notes: "Arthur's little sister searches for the perfect gift",
+    notes: "Featuring Arthur • Arthur's little sister searches for the perfect Christmas gift",
     pages: [] 
   },
   { 
     id: 'the_nutcracker_popup', 
     title: 'The Nutcracker: A Christmas Pop-up', 
-    author: 'Classic Holiday Keepsake', 
+    author: 'Unknown', 
     category: 'story',
     cover: '/covers/the-nutcracker-popup.webp',
     notes: 'Three-dimensional holiday pop-up edition with magical scenes',
@@ -196,11 +197,11 @@ const INITIAL_BOOKS = [
   },
   { 
     id: 'the_christmas_promise', 
-    title: 'The Christmas Promise', 
+    title: 'Christmas Promises', 
     author: 'Lee G. Smith', 
     category: 'story',
     cover: '/covers/the-christmas-promise.webp',
-    notes: 'Illustrated by Ron Dicianni • A touching promise of hope and love',
+    notes: 'Illustrated by Bill Stroble • A touching Christmas story of hope and love',
     pages: [] 
   },
   { 
@@ -208,9 +209,883 @@ const INITIAL_BOOKS = [
     title: 'The Mouse in the Manger', 
     author: 'Rev. Gennaro L. Gentile', 
     category: 'story',
+    isMouseBook: true,
     cover: '/covers/the-mouse-in-the-manger.webp',
-    notes: 'A heartwarming Christmas Eve tale of a humble mouse at the manger',
+    notes: 'Art by Vernon McKissack • A heartwarming Christmas Eve tale of a humble mouse at the manger',
     pages: [] 
+  },
+  {
+    id: 'richard_scarrys_christmas_mice',
+    title: "Richard Scarry's Christmas Mice",
+    author: 'Richard Scarry',
+    category: 'story',
+    isMouseBook: true,
+    cover: '/covers/richard-scarrys-christmas-mice.webp',
+    notes: 'A Little Golden Book Classic • Holiday adventures with Richard Scarry\'s cheerful mice',
+    pages: []
+  },
+  {
+    id: 'frosty_the_snowman',
+    title: 'Frosty the Snowman',
+    author: 'Jack Rollins and Steve Nelson',
+    category: 'story',
+    cover: '/covers/frosty-the-snowman.webp',
+    notes: 'Classic illustrated holiday songbook of Frosty the Snowman',
+    pages: []
+  },
+  {
+    id: 'this_little_reindeers_first_christmas',
+    title: "This Little Reindeer's First Christmas",
+    author: 'Unknown',
+    category: 'story',
+    cover: '/covers/this-little-reindeers-first-christmas.webp',
+    notes: "Sweet holiday board book following a little reindeer's first Christmas",
+    pages: []
+  },
+  {
+    id: 'peace_on_earth',
+    title: 'Peace on Earth',
+    author: 'Jonny Marx',
+    category: 'story',
+    cover: '/covers/peace-on-earth.webp',
+    notes: 'Illustrated by Lindsey Sagar • Heartwarming holiday storybook',
+    pages: []
+  },
+  {
+    id: 'biscuits_pet_and_play_christmas',
+    title: "Biscuit's Pet & Play Christmas",
+    author: 'Alyssa Satin Capucilli',
+    category: 'story',
+    cover: '/covers/biscuits-pet-and-play-christmas.webp',
+    notes: 'A Touch & Feel Book • Festive holiday fun with Biscuit the puppy',
+    pages: []
+  },
+  {
+    id: 'christmas_pop_up_peekaboo',
+    title: 'Christmas Pop-Up Peekaboo!',
+    author: 'Unknown',
+    category: 'story',
+    cover: '/covers/christmas-pop-up-peekaboo.webp',
+    notes: 'DK Publishing • Pop-up surprise under every festive flap!',
+    pages: []
+  },
+  {
+    id: 'the_twelve_days_of_christmas_brett',
+    title: 'The Twelve Days of Christmas',
+    author: 'Jan Brett',
+    category: 'story',
+    cover: '/covers/the-twelve-days-of-christmas-brett.webp',
+    notes: 'Adapted and lavishly illustrated by Jan Brett',
+    pages: []
+  },
+  {
+    id: 'room_for_a_little_one',
+    title: 'Room for a Little One: A Christmas Tale',
+    author: 'Martin Waddell',
+    category: 'story',
+    cover: '/covers/room-for-a-little-one.webp',
+    notes: 'Illustrated by Jason Cockcroft • A gentle Nativity tale by the stable warmth',
+    pages: []
+  },
+  {
+    id: 'the_story_of_christmas_pingry',
+    title: 'The Story of Christmas',
+    author: 'Patricia A. Pingry',
+    category: 'story',
+    cover: '/covers/the-story-of-christmas.webp',
+    notes: 'Illustrated by Rebecca Thornburgh • Board book introduction to the first Christmas',
+    pages: []
+  },
+  {
+    id: 'the_brave_little_puppy',
+    title: 'The Brave Little Puppy',
+    author: 'Lori Evert',
+    category: 'story',
+    cover: '/covers/the-brave-little-puppy.webp',
+    notes: 'A Wish Book • Photographs by Per Breiehagen • From the creators of The Christmas Wish',
+    pages: []
+  },
+  {
+    id: 'christmas_in_the_manger',
+    title: 'Christmas in the Manger',
+    author: 'Nola Buck',
+    category: 'story',
+    cover: '/covers/christmas-in-the-manger.webp',
+    notes: 'Illustrated by Felicia Bond • Gentle Nativity board book for little hands',
+    pages: []
+  },
+  {
+    id: 'can_you_see_what_i_see_christmas',
+    title: 'Can You See What I See? Christmas',
+    author: 'Walter Wick',
+    category: 'story',
+    cover: '/covers/can-you-see-what-i-see-christmas.webp',
+    notes: 'Scholastic • Search-and-find holiday photograph puzzles by Walter Wick',
+    pages: []
+  },
+  {
+    id: 'very_hungry_caterpillars_snowy_hide_and_seek',
+    title: "The Very Hungry Caterpillar's Snowy Hide & Seek",
+    author: 'Eric Carle',
+    category: 'story',
+    cover: '/covers/very-hungry-caterpillars-snowy-hide-and-seek.webp',
+    notes: 'World of Eric Carle • A finger trail lift-the-flap winter book',
+    pages: []
+  },
+  {
+    id: 'rudolph_helps_out',
+    title: 'Rudolph the Red-Nosed Reindeer: Rudolph Helps Out',
+    author: 'Unknown',
+    category: 'story',
+    cover: '/covers/rudolph-helps-out.webp',
+    notes: 'Classic Rudolph holiday board book adventure',
+    pages: []
+  },
+  {
+    id: 'little_blue_trucks_christmas',
+    title: "Little Blue Truck's Christmas",
+    author: 'Alice Schertle',
+    category: 'story',
+    cover: '/covers/little-blue-trucks-christmas.webp',
+    notes: 'Illustrated by Jill McElmurry • Delivering Christmas trees with twinkling lights!',
+    pages: []
+  },
+  {
+    id: 'touch_and_feel_christmas',
+    title: 'Touch and Feel Christmas',
+    author: 'Unknown',
+    category: 'story',
+    cover: '/covers/touch-and-feel-christmas.webp',
+    notes: 'Shoebox Touch and Feel Holiday Board Book',
+    pages: []
+  },
+  {
+    id: 'rudolph_wonderful_winter',
+    title: 'Rudolph the Red-Nosed Reindeer: Wonderful Winter',
+    author: 'Unknown',
+    category: 'story',
+    cover: '/covers/rudolph-wonderful-winter.webp',
+    notes: 'Classic Rudolph snowy winter board book',
+    pages: []
+  },
+  {
+    id: 'marys_baby',
+    title: "Mary's Baby",
+    author: 'Jane Chapman',
+    category: 'story',
+    cover: '/covers/marys-baby.webp',
+    notes: 'Scholastic • A tender Nativity story of baby Jesus',
+    pages: []
+  },
+  {
+    id: 'berenstain_bears_very_first_christmas',
+    title: 'The Berenstain Bears: The Very First Christmas',
+    author: 'Jan & Mike Berenstain',
+    category: 'story',
+    cover: '/covers/berenstain-bears-very-first-christmas.webp',
+    notes: 'Living Lights • A Faith Story celebrating the Christmas Nativity',
+    pages: []
+  },
+  {
+    id: 'the_night_before_jesus',
+    title: 'The Night Before Jesus',
+    author: 'Herbert Brokering',
+    category: 'story',
+    cover: '/covers/the-night-before-jesus.webp',
+    notes: 'Poetic Christmas reflection by Herbert Brokering',
+    pages: []
+  },
+  {
+    id: 'story_orchestra_the_nutcracker',
+    title: 'The Story Orchestra: The Nutcracker',
+    author: 'Jessica Courtney-Tickle',
+    category: 'story',
+    cover: '/covers/story-orchestra-the-nutcracker.webp',
+    notes: "Illustrated by Jessica Courtney-Tickle • Musical sound book playing Tchaikovsky's Nutcracker",
+    pages: []
+  },
+  {
+    id: 'happy_day_christmas',
+    title: 'A Happy Day Book: Christmas',
+    author: 'Unknown',
+    category: 'story',
+    cover: '/covers/happy-day-christmas.webp',
+    notes: "A Happy Day Book • Vintage holiday children's keepsake",
+    pages: []
+  },
+  {
+    id: 'a_carol_for_christmas',
+    title: 'A Carol for Christmas',
+    author: 'Ann Tompert',
+    category: 'story',
+    cover: '/covers/a-carol-for-christmas.webp',
+    notes: 'Illustrated by Laura Kelly • A heartwarming Christmas story of music and faith',
+    pages: []
+  },
+  {
+    id: 'construction_site_on_christmas_night',
+    title: 'Construction Site on Christmas Night',
+    author: 'Sherri Duskey Rinker',
+    category: 'story',
+    cover: '/covers/construction-site-on-christmas-night.webp',
+    notes: 'Illustrated by AG Ford • From the author of Goodnight, Goodnight, Construction Site',
+    pages: []
+  },
+  {
+    id: 'the_best_christmas_pageant_ever',
+    title: 'The Best Christmas Pageant Ever',
+    author: 'Barbara Robinson',
+    category: 'story',
+    cover: '/covers/the-best-christmas-pageant-ever.webp',
+    notes: 'Avon Camelot Vintage Paperback • The hilarious and touching Herdman family Christmas pageant',
+    pages: []
+  },
+  {
+    id: 'the_gingerbread_man',
+    title: 'The Gingerbread Man',
+    author: 'Gail Yerrill',
+    category: 'story',
+    cover: '/covers/the-gingerbread-man.webp',
+    notes: 'Illustrated by Gail Yerrill • Classic holiday fairy tale',
+    pages: []
+  },
+  {
+    id: 'christmas_with_the_mousekins',
+    title: 'Christmas with the Mousekins',
+    author: 'Maggie Smith',
+    category: 'story',
+    isMouseBook: true,
+    cover: '/covers/christmas-with-the-mousekins.webp',
+    notes: 'A Story with Crafts, Recipes, Poems and More! • Cozy holiday fun with the Mousekin family',
+    pages: []
+  },
+  {
+    id: 'corduroys_christmas',
+    title: "Corduroy's Christmas",
+    author: 'Don Freeman',
+    category: 'story',
+    cover: '/covers/corduroys-christmas.webp',
+    notes: 'A Lift-the-Flap Book • Pictures by Lisa McCue • Based on the character created by Don Freeman',
+    pages: []
+  },
+  {
+    id: 'gingerbread_mouse',
+    title: 'Gingerbread Mouse',
+    author: 'Katy Bratun',
+    category: 'story',
+    isMouseBook: true,
+    cover: '/covers/gingerbread-mouse.webp',
+    notes: 'Written and illustrated by Katy Bratun • A mouse builds a cozy gingerbread house on Christmas Eve',
+    pages: []
+  },
+  {
+    id: 'pick_a_pine_tree',
+    title: 'Pick a Pine Tree',
+    author: 'Patricia Toht',
+    category: 'story',
+    cover: '/covers/pick-a-pine-tree.webp',
+    notes: 'Illustrated by Jarvis • Joyful rhyming celebration of decorating the Christmas tree',
+    pages: []
+  },
+  {
+    id: 'the_muttcracker',
+    title: 'The Muttcracker',
+    author: 'Anna Kemp',
+    category: 'story',
+    cover: '/covers/the-muttcracker.webp',
+    notes: "Illustrated by Sara Ogilvie • From the creators of Dogs Don't Do Ballet",
+    pages: []
+  },
+  {
+    id: 'christmas_crafts',
+    title: 'Christmas Crafts',
+    author: 'Jean Eick',
+    category: 'story',
+    cover: '/covers/christmas-crafts.webp',
+    notes: 'Festive holiday projects and handmade decorations for children',
+    pages: []
+  },
+  {
+    id: 'christmas_in_the_stable',
+    title: 'Christmas in the Stable',
+    author: 'Astrid Lindgren',
+    category: 'story',
+    cover: '/covers/christmas-in-the-stable.webp',
+    notes: 'Illustrated by Harald Wiberg • Classic Swedish storytelling of the first Christmas',
+    pages: []
+  },
+  {
+    id: 'brave_irene',
+    title: 'Brave Irene',
+    author: 'William Steig',
+    category: 'story',
+    cover: '/covers/brave-irene.webp',
+    notes: 'New York Times Best Illustrated Book • A courageous girl braves a fierce winter snowstorm',
+    pages: []
+  },
+  {
+    id: 'night_before_christmas_fujikawa',
+    title: 'The Night Before Christmas (Gyo Fujikawa)',
+    author: 'Clement C. Moore',
+    category: 'story',
+    cover: '/covers/night-before-christmas-fujikawa.webp',
+    notes: 'Pictures by Gyo Fujikawa • Beloved vintage illustrated edition',
+    pages: []
+  },
+  {
+    id: 'santa_mouse_where_are_you',
+    title: 'Santa Mouse, Where Are You?',
+    author: 'Michael Brown',
+    category: 'story',
+    isMouseBook: true,
+    cover: '/covers/santa-mouse-where-are-you.webp',
+    notes: 'Illustrated by Elfrieda De Witt • Beloved sequel to Santa Mouse',
+    pages: []
+  },
+  {
+    id: 'mouse_family_christmas',
+    title: 'Mouse Family Christmas',
+    author: 'Deborah Underwood',
+    category: 'story',
+    isMouseBook: true,
+    cover: '/covers/mouse-family-christmas.webp',
+    notes: 'Illustrated by Leah Hong • Sweet holiday preparations with the Mouse family',
+    pages: []
+  },
+  {
+    id: 'the_mice_before_christmas',
+    title: 'The Mice Before Christmas',
+    author: 'Anne L. Watson',
+    category: 'story',
+    isMouseBook: true,
+    cover: '/covers/the-mice-before-christmas.webp',
+    notes: 'Illustrated by Wendy Edelson • Miniature woodland mice prepare for St. Nicholas',
+    pages: []
+  },
+  {
+    id: 'santa_mouse',
+    title: 'Santa Mouse',
+    author: 'Michael Brown',
+    category: 'story',
+    isMouseBook: true,
+    cover: '/covers/santa-mouse.webp',
+    notes: 'We have 2 copies of this book in our holiday collection! • Illustrated by Elfrieda De Witt',
+    pages: []
+  },
+  {
+    id: 'the_little_christmas_elf',
+    title: 'The Little Christmas Elf',
+    author: 'Unknown',
+    category: 'story',
+    cover: '/covers/the-little-christmas-elf.webp',
+    notes: 'A Little Golden Book • Classic holiday elf tale',
+    pages: []
+  },
+  {
+    id: 'hilary_knights_twelve_days_of_christmas',
+    title: "Hilary Knight's The Twelve Days of Christmas",
+    author: 'Hilary Knight',
+    category: 'story',
+    cover: '/covers/hilary-knights-twelve-days-of-christmas.webp',
+    notes: 'Whimsical classic illustrations by the artist of Eloise',
+    pages: []
+  },
+  {
+    id: 'santa_is_coming_to_indianapolis',
+    title: 'Santa is Coming to Indianapolis',
+    author: 'Steve Smallman',
+    category: 'story',
+    cover: '/covers/santa-is-coming-to-indianapolis.webp',
+    notes: 'Illustrated by Robert Dunn and Katherine Kirkland • Featuring the Indianapolis Motor Speedway',
+    pages: []
+  },
+  {
+    id: 'the_animals_christmas_eve',
+    title: "The Animals' Christmas Eve",
+    author: 'Unknown',
+    category: 'story',
+    cover: '/covers/the-animals-christmas-eve.webp',
+    notes: 'A Little Golden Book Classic • Woodland and barnyard animals celebrate Christmas Eve',
+    pages: []
+  },
+  {
+    id: 'the_biggest_snowman_ever',
+    title: 'The Biggest Snowman Ever',
+    author: 'Steven Kroll',
+    category: 'story',
+    isMouseBook: true,
+    cover: '/covers/the-biggest-snowman-ever.webp',
+    notes: 'Illustrated by Jeni Bassett • Two little mice team up to build the biggest snowman in Mouseville!',
+    pages: []
+  },
+  {
+    id: 'the_first_christmas_popup',
+    title: 'The First Christmas: A Christmas Pop-up',
+    author: 'Unknown',
+    category: 'story',
+    cover: '/covers/the-first-christmas-popup.webp',
+    notes: 'Three-dimensional pop-up Nativity keepsake book',
+    pages: []
+  },
+  {
+    id: 'night_before_christmas_santore',
+    title: 'The Night Before Christmas (Classic Edition)',
+    author: 'Clement C. Moore',
+    category: 'story',
+    cover: '/covers/night-before-christmas-santore.webp',
+    notes: 'Illustrated by Charles Santore • #1 New York Times Bestselling Edition',
+    pages: []
+  },
+  {
+    id: 'merry_christmas_mouse',
+    title: 'Merry Christmas, Mouse!',
+    author: 'Laura Numeroff',
+    category: 'story',
+    isMouseBook: true,
+    cover: '/covers/merry-christmas-mouse.webp',
+    notes: 'Illustrated by Felicia Bond • From the creators of If You Give a Mouse a Cookie',
+    pages: []
+  },
+  {
+    id: 'christmas_from_heaven',
+    title: 'Christmas from Heaven',
+    author: 'Tom Brokaw',
+    category: 'story',
+    cover: '/covers/christmas-from-heaven.webp',
+    notes: 'Illustrated by Robert T. Barrett • Mormon Tabernacle Choir • The True Story of the Berlin Candy Bomber',
+    pages: []
+  },
+  {
+    id: 'the_polar_express',
+    title: 'The Polar Express',
+    author: 'Chris Van Allsburg',
+    category: 'story',
+    cover: '/covers/the-polar-express.webp',
+    notes: 'Caldecott Medal Winner • Houghton Mifflin Company • All aboard the magical Christmas Eve train to the North Pole',
+    pages: [
+      { id: 'polar_express_title', pageNumber: 1, image: '/covers/the-polar-express-title.webp' }
+    ]
+  },
+  {
+    id: 'why_christmas_trees_arent_perfect',
+    title: "Why Christmas Trees Aren't Perfect",
+    author: 'Richard H. Schneider',
+    category: 'story',
+    cover: '/covers/why-christmas-trees-arent-perfect.webp',
+    notes: "Illustrated by Elizabeth J. Miles • A tale of Little Pine's selfless kindness in the royal forest",
+    pages: []
+  },
+  {
+    id: 'how_the_grinch_stole_christmas',
+    title: 'How the Grinch Stole Christmas!',
+    author: 'Dr. Seuss',
+    category: 'story',
+    cover: '/covers/how-the-grinch-stole-christmas.webp',
+    notes: 'Classic holiday favorite from Whoville by Dr. Seuss',
+    pages: []
+  },
+  {
+    id: 'merry_christmas_curious_george',
+    title: 'Merry Christmas, Curious George',
+    author: 'Margret and H.A. Rey',
+    category: 'story',
+    cover: '/covers/merry-christmas-curious-george.webp',
+    notes: "Curious George celebrates Christmas at the children's hospital",
+    pages: []
+  },
+  {
+    id: 'christmas_in_the_country',
+    title: 'Christmas in the Country',
+    author: 'Cynthia Rylant & Diane Goode',
+    category: 'story',
+    cover: '/covers/christmas-in-the-country.webp',
+    notes: 'Nostalgic memories of a cozy country Christmas with grandparents',
+    pages: []
+  },
+  {
+    id: 'rudolph_1939_facsimile',
+    title: 'Rudolph the Red-Nosed Reindeer (1939 Facsimile)',
+    author: 'Robert L. May',
+    category: 'story',
+    cover: '/covers/rudolph-1939-facsimile.webp',
+    notes: 'Illustrated by Denver Gillen • Original 1939 Montgomery Ward Edition Facsimile (Applewood Books)',
+    pages: [
+      { id: 'rudolph_1939_title', pageNumber: 1, image: '/covers/rudolph-1939-title.webp' }
+    ]
+  },
+  {
+    id: 'the_bear_who_slept_through_christmas',
+    title: 'The Bear Who Slept Through Christmas',
+    author: 'Unknown',
+    category: 'story',
+    cover: '/covers/the-bear-who-slept-through-christmas.webp',
+    notes: "Ideals Publishing • Featuring Ted E. Bear's search for the true meaning of Christmas",
+    pages: []
+  },
+  {
+    id: 'the_berenstain_bears_christmas_tree',
+    title: "The Berenstain Bears' Christmas Tree",
+    author: 'Stan and Jan Berenstain',
+    category: 'story',
+    cover: '/covers/the-berenstain-bears-christmas-tree.webp',
+    notes: "Papa Bear searches the forest for the Grizzly family's Christmas tree",
+    pages: []
+  },
+  {
+    id: 'a_christmas_carol_popup',
+    title: 'A Christmas Carol: A Christmas Pop-up',
+    author: 'Unknown',
+    category: 'story',
+    cover: '/covers/a-christmas-carol-popup.webp',
+    notes: "Three-dimensional holiday pop-up adaptation of Charles Dickens' classic",
+    pages: []
+  },
+  {
+    id: 'the_berenstain_bears_joy_of_giving',
+    title: 'The Berenstain Bears and the Joy of Giving',
+    author: 'Jan & Mike Berenstain',
+    category: 'story',
+    cover: '/covers/the-berenstain-bears-joy-of-giving.webp',
+    notes: 'Living Lights • A Faith Story • Brother and Sister Bear discover the joy of giving',
+    pages: []
+  },
+  {
+    id: 'christmas_comes_to_monster_mountain',
+    title: 'Christmas Comes to Monster Mountain',
+    author: 'Unknown',
+    category: 'story',
+    cover: '/covers/christmas-comes-to-monster-mountain.webp',
+    notes: 'Ideals Publishing • Featuring Ted E. Bear in a snowy mountain adventure',
+    pages: []
+  },
+  {
+    id: 'the_baby_jesus',
+    title: 'The Baby Jesus',
+    author: 'Dr. Mary Alice Jones',
+    category: 'story',
+    cover: '/covers/the-baby-jesus.webp',
+    notes: 'Checkerboard Press (#086) • A First Religious Book • Vintage Nativity keepsake',
+    pages: []
+  },
+  {
+    id: 'christmas_joys',
+    title: 'Christmas Joys',
+    author: 'Unknown',
+    category: 'story',
+    cover: '/covers/christmas-joys.webp',
+    notes: 'A Rand McNally Junior Elf Book (#8206 • 49¢) • Vintage holiday storybook',
+    pages: []
+  },
+  {
+    id: 'night_before_christmas_golden',
+    title: 'The Night Before Christmas (Little Golden Book)',
+    author: 'Unknown',
+    category: 'story',
+    cover: '/covers/night-before-christmas-golden.webp',
+    notes: 'A Little Golden Book Vintage Edition',
+    pages: []
+  },
+  {
+    id: 'jingle_bells_golden',
+    title: 'Jingle Bells',
+    author: 'Unknown',
+    category: 'story',
+    cover: '/covers/jingle-bells-golden.webp',
+    notes: 'A Little Golden Book Vintage Edition (#58-31) • Festive sleigh ride adventure',
+    pages: []
+  },
+  {
+    id: 'rudolph_little_golden_book',
+    title: 'Rudolph the Red-Nosed Reindeer (Little Golden Book)',
+    author: 'Unknown',
+    category: 'story',
+    cover: '/covers/rudolph-little-golden-book.webp',
+    notes: 'A Little Golden Book Vintage Edition (#331 • 29¢)',
+    pages: []
+  },
+  {
+    id: 'the_snowman_golden',
+    title: 'The Snowman',
+    author: 'Unknown',
+    category: 'story',
+    cover: '/covers/the-snowman-golden.webp',
+    notes: 'A Little Golden Book (#00451) • Magical winter snowman story',
+    pages: []
+  },
+  {
+    id: 'christmas_miracle_of_jonathan_toomey',
+    title: 'The Christmas Miracle of Jonathan Toomey',
+    author: 'Susan Wojciechowski',
+    category: 'story',
+    cover: '/covers/christmas-miracle-of-jonathan-toomey.webp',
+    notes: 'Illustrated by P.J. Lynch • A master woodcarver carves a Nativity set that heals his heart',
+    pages: []
+  },
+  {
+    id: 'twas_the_night_before_christmas_1937',
+    title: "'Twas the Night Before Christmas (1937 Vintage)",
+    author: 'Clement Clarke Moore',
+    category: 'story',
+    cover: '/covers/twas-the-night-before-christmas-1937.webp',
+    notes: 'Illustrated by Thelma Gooch • 1937 Grosset & Dunlap Heirloom Edition',
+    pages: [
+      { id: 'twas_1937_title', pageNumber: 1, image: '/covers/twas-the-night-before-christmas-1937-title.webp' }
+    ]
+  },
+  {
+    id: 'the_small_one',
+    title: 'The Small One',
+    author: 'Charles Tazewell',
+    category: 'story',
+    cover: '/covers/the-small-one.webp',
+    notes: 'A Story for Those Who Like Christmas and Small Donkeys • The gentle donkey who carried Mary to Bethlehem',
+    pages: []
+  },
+  {
+    id: 'christmas_customs_and_traditions',
+    title: 'Christmas Customs and Traditions: Their History and Significance',
+    author: 'Clement A. Miles',
+    category: 'story',
+    cover: '/covers/christmas-customs-and-traditions.webp',
+    notes: 'With 21 Illustrations • Classic historical treasury of Christmas folklore and traditions',
+    pages: []
+  },
+  {
+    id: 'twelve_days_of_christmas_golden',
+    title: 'The Twelve Days of Christmas: A Christmas Carol',
+    author: 'Unknown',
+    category: 'story',
+    cover: '/covers/twelve-days-of-christmas-golden.webp',
+    notes: 'A Little Golden Book (#454-09) • Classic illustrated carol',
+    pages: []
+  },
+  {
+    id: 'jolly_old_santa_claus_ideals',
+    title: 'Jolly Old Santa Claus (Ideals)',
+    author: 'Unknown',
+    category: 'story',
+    isMagazine: true,
+    badge: 'Vintage Holiday Magazine',
+    cover: '/covers/jolly-old-santa-claus-ideals.webp',
+    notes: 'Vintage Holiday Magazine • Ideals Publishing ($2.50 Issue) • Illustrated holiday poetry, stories, and nostalgia',
+    pages: []
+  },
+  {
+    id: 'the_jolly_christmas_postman',
+    title: 'The Jolly Christmas Postman',
+    author: 'Janet & Allan Ahlberg',
+    category: 'story',
+    cover: '/covers/the-jolly-christmas-postman.webp',
+    notes: 'Interactive storybook with real holiday letters and cards for fairy-tale characters',
+    pages: []
+  },
+  {
+    id: 'arthurs_christmas',
+    title: "Arthur's Christmas",
+    author: 'Marc Brown',
+    category: 'story',
+    cover: '/covers/arthurs-christmas.webp',
+    notes: 'An Arthur Adventure • Arthur tries to find the perfect Christmas gift for Santa',
+    pages: []
+  },
+  {
+    id: 'the_christmas_mouse',
+    title: 'The Christmas Mouse',
+    author: 'Toby Forward & Ruth Brown',
+    category: 'story',
+    isMouseBook: true,
+    cover: '/covers/the-christmas-mouse.webp',
+    notes: 'Written by Toby Forward • Illustrated by Ruth Brown • A lonely mouse finds Christmas warmth',
+    pages: []
+  },
+  {
+    id: 'one_christmas_wish',
+    title: 'One Christmas Wish',
+    author: 'Katherine Rundell',
+    category: 'story',
+    cover: '/covers/one-christmas-wish.webp',
+    notes: 'Illustrated by Emily Sutton • Bloomsbury • Christmas Eve ornaments come to life',
+    pages: []
+  },
+  {
+    id: 'the_santa_claus_book_golden_shape',
+    title: 'The Santa Claus Book',
+    author: 'Unknown',
+    category: 'story',
+    cover: '/covers/the-santa-claus-book-golden-shape.webp',
+    notes: 'A Golden Shape Book (#5920) • Vintage die-cut Santa Claus storybook',
+    pages: []
+  },
+  {
+    id: 'i_spy_christmas',
+    title: 'I Spy Christmas: A Book of Picture Riddles',
+    author: 'Jean Marzollo',
+    category: 'story',
+    cover: '/covers/i-spy-christmas.webp',
+    notes: 'Photographs by Walter Wick • Riddles by Jean Marzollo • Scholastic New Challenges Edition',
+    pages: []
+  },
+  {
+    id: 'jingle_the_christmas_clown',
+    title: 'Jingle, the Christmas Clown',
+    author: 'Tomie dePaola',
+    category: 'story',
+    cover: '/covers/jingle-the-christmas-clown.webp',
+    notes: 'Written and illustrated by Tomie dePaola • A tiny Italian circus brings joy on Christmas Eve',
+    pages: []
+  },
+  {
+    id: 'a_merry_mouse_christmas_abc',
+    title: 'A Merry Mouse Christmas ABC',
+    author: 'Priscilla Hillman',
+    category: 'story',
+    isMouseBook: true,
+    cover: '/covers/a-merry-mouse-christmas-abc.webp',
+    notes: 'Charming alphabet of Victorian mice celebrating Christmas from A to Z',
+    pages: []
+  },
+  {
+    id: 'jan_bretts_christmas_treasury',
+    title: "Jan Brett's Christmas Treasury",
+    author: 'Jan Brett',
+    category: 'story',
+    cover: '/covers/jan-bretts-christmas-treasury.webp',
+    notes: 'Seven beloved Jan Brett holiday classics collected in one heirloom volume',
+    pages: []
+  },
+  {
+    id: 'santa_claus_and_the_dormouse',
+    title: 'Santa Claus and the Dormouse',
+    author: 'Eleonore Schmid',
+    category: 'story',
+    isMouseBook: true,
+    cover: '/covers/santa-claus-and-the-dormouse.webp',
+    notes: 'Written and illustrated by Eleonore Schmid • A curious dormouse wakes up to discover Christmas',
+    pages: []
+  },
+  {
+    id: 'the_magic_of_christmas',
+    title: 'The Magic of Christmas',
+    author: 'Claire Freedman',
+    category: 'story',
+    cover: '/covers/the-magic-of-christmas.webp',
+    notes: 'Illustrated by Gail Yerrill • Woodland friends share the wonder of Christmas Eve',
+    pages: []
+  },
+  {
+    id: 'the_christmas_wish',
+    title: 'The Christmas Wish',
+    author: 'Lori Evert',
+    category: 'story',
+    cover: '/covers/the-christmas-wish.webp',
+    notes: "Photographs by Per Breiehagen • New York Times Bestseller • Anja's magical Nordic quest to find Santa",
+    pages: []
+  },
+  {
+    id: 'mortimers_christmas_manger',
+    title: "Mortimer's Christmas Manger",
+    author: 'Karma Wilson',
+    category: 'story',
+    isMouseBook: true,
+    cover: '/covers/mortimers-christmas-manger.webp',
+    notes: 'Illustrated by Jane Chapman • A little mouse makes room in the Nativity manger for Baby Jesus',
+    pages: []
+  },
+  {
+    id: 'the_witchs_christmas',
+    title: "The Witch's Christmas",
+    author: 'Norman Bridwell',
+    category: 'story',
+    cover: '/covers/the-witchs-christmas.webp',
+    notes: 'Vintage Scholastic Paperback (TW 1793 • 50¢) • From the creator of Clifford the Big Red Dog',
+    pages: []
+  },
+  {
+    id: 'christmas_comes_to_mrs_mouse',
+    title: 'Christmas Comes to Mrs. Mouse',
+    author: 'Peggy Burton',
+    category: 'story',
+    isMouseBook: true,
+    cover: '/covers/christmas-comes-to-mrs-mouse.webp',
+    notes: 'A cozy woodland mouse tale of holiday hospitality',
+    pages: []
+  },
+  {
+    id: 'indian_christmas',
+    title: 'Indian Christmas: Essays, Memories, Hymns',
+    author: 'Jerry Pinto and Madhulika Liddle',
+    category: 'story',
+    cover: '/covers/indian-christmas.webp',
+    notes: 'Edited and with Introductions by Jerry Pinto and Madhulika Liddle • Rich anthology of Christmas traditions across India',
+    pages: []
+  },
+  {
+    id: 'treasury_of_christmas_songs_and_carols',
+    title: 'A Treasury of Christmas Songs and Carols',
+    author: 'Henry W. Simon',
+    category: 'story',
+    cover: '/covers/treasury-of-christmas-songs-and-carols.webp',
+    notes: "The Easton Press Collector's Edition • Bound in Genuine Leather • Edited and annotated by Henry W. Simon",
+    pages: [
+      { id: 'treasury_songs_title', pageNumber: 1, image: '/covers/treasury-of-christmas-songs-and-carols-title.webp' }
+    ]
+  },
+  {
+    id: 'christmas_annual_1946',
+    title: 'Christmas: An American Annual of Christmas Literature and Art (1946)',
+    author: 'Randolph E. Haugan',
+    category: 'story',
+    isMagazine: true,
+    badge: 'Vintage Holiday Magazine',
+    cover: '/covers/christmas-annual-vol-16.webp',
+    notes: 'Vintage Holiday Magazine • Augsburg Publishing House • Includes "Winter\'s Approach" watercolor by Garnet Hazard',
+    pages: [
+      { id: 'annual_16_title', pageNumber: 1, image: '/covers/christmas-annual-vol-16-title.webp' }
+    ]
+  },
+  {
+    id: 'christmas_annual_vol_41',
+    title: 'Christmas: An American Annual of Christmas Literature and Art (Vol. 41)',
+    author: 'Randolph E. Haugan',
+    category: 'story',
+    isMagazine: true,
+    badge: 'Vintage Holiday Magazine',
+    cover: '/covers/christmas-annual-vol-41.webp',
+    notes: 'Vintage Holiday Magazine • Volume Forty-One (1971) • Edited by Randolph E. Haugan • Augsburg Publishing House, Minneapolis',
+    pages: [
+      { id: 'annual_41_title', pageNumber: 1, image: '/covers/christmas-annual-vol-41-title.webp' }
+    ]
+  },
+  {
+    id: 'christmas_annual_vol_47',
+    title: 'Christmas: An American Annual of Christmas Literature and Art (Vol. 47)',
+    author: 'Randolph E. Haugan',
+    category: 'story',
+    isMagazine: true,
+    badge: 'Vintage Holiday Magazine',
+    cover: '/covers/christmas-annual-vol-47.webp',
+    notes: 'Vintage Holiday Magazine • Volume Forty-Seven (1977) • Edited by Randolph E. Haugan • Augsburg Publishing House, Minneapolis',
+    pages: [
+      { id: 'annual_47_title', pageNumber: 1, image: '/covers/christmas-annual-vol-47-title.webp' }
+    ]
+  },
+  {
+    id: 'turkey_claus',
+    title: 'Turkey Claus',
+    author: 'Wendi Silvano',
+    category: 'story',
+    cover: '/covers/turkey-claus.webp',
+    notes: 'Illustrated by Lee Harper • Turkey disguises himself to visit Santa at the North Pole!',
+    pages: []
+  },
+  {
+    id: 'reindeer_of_the_year_sequins',
+    title: 'Reindeer of the Year',
+    author: 'Unknown',
+    category: 'story',
+    cover: '/covers/reindeer-of-the-year.webp',
+    notes: 'With two-way reversible sequins! • Interactive holiday board book',
+    pages: []
   },
   // Family Photo Albums
   {
@@ -237,6 +1112,15 @@ const INITIAL_BOOKS = [
       image: `/cookbook/page_${String(i + 1).padStart(2, '0')}.webp`,
     })),
   },
+  {
+    id: 'twelve_days_of_christmas_cookbook',
+    title: 'The Twelve Days of Christmas Cookbook',
+    author: 'Suzanne Huntley',
+    category: 'cookbook',
+    cover: '/covers/twelve-days-of-christmas-cookbook.webp',
+    notes: 'Praised by James Beard: "To a lover of the Christmas traditions, this book is a joy. All the recipes awaken memories of wondrous smells and tastes of the season."',
+    pages: [],
+  },
 ];
 
 export default function App() {
@@ -253,7 +1137,7 @@ export default function App() {
   const [passcodeInput, setPasscodeInput] = useState('');
   const [passcodeError, setPasscodeError] = useState('');
   const [rememberDevice, setRememberDevice] = useState(false);
-  const [currentSecretPasscode, setCurrentSecretPasscode] = useState(() => {
+  const [currentSecretPasscode] = useState(() => {
     try {
       return localStorage.getItem('erin_library_passcode') || '1225';
     } catch {
@@ -263,20 +1147,39 @@ export default function App() {
 
   const [isAtBookshelf, setIsAtBookshelf] = useState(false);
   const [viewMode, setViewMode] = useState('spines'); // 'spines' | 'covers' | 'list'
+  const [activeFilter, setActiveFilter] = useState('all'); // 'all' | 'story' | 'mouse' | 'magazine' | 'album' | 'cookbook'
   const [searchQuery, setSearchQuery] = useState('');
   const [isCloudModalOpen, setIsCloudModalOpen] = useState(false);
   const [isCloudConnected, setIsCloudConnected] = useState(isFirebaseConfigured());
+
+  // Inline Book Edit state inside Detail Modal
+  const [isEditingBook, setIsEditingBook] = useState(false);
+  const [editTitle, setEditTitle] = useState('');
+  const [editAuthor, setEditAuthor] = useState('');
+  const [editNotes, setEditNotes] = useState('');
+  const [editCategory, setEditCategory] = useState('story');
+  const [editIsMouse, setEditIsMouse] = useState(false);
+  const [editIsMagazine, setEditIsMagazine] = useState(false);
 
   const LEGACY_PLACEHOLDERS = new Set(['2','3','4','5','6','7','8','9','10','11','12','13','14','album_2024','album_2023']);
 
   const upgradeBuiltInBooks = (list) => {
     const initMap = new Map(INITIAL_BOOKS.map((b) => [b.id, b]));
     return list.map((b) => {
-      if (b.id === 'cookbook_erin' && (!b.pages || b.pages.length === 0 || b.cover?.includes('unsplash') || b.cover?.includes('photo-1508746829417'))) {
-        const fresh = initMap.get('cookbook_erin');
-        return { ...b, ...fresh };
+      const fresh = initMap.get(b.id);
+      if (!fresh) return b;
+      if (b.userEdited) {
+        return {
+          ...fresh,
+          ...b,
+          pages: b.pages && b.pages.length > 0 ? b.pages : fresh.pages,
+        };
       }
-      return b;
+      return {
+        ...b,
+        ...fresh,
+        pages: b.pages && b.pages.length > 0 ? b.pages : fresh.pages,
+      };
     });
   };
 
@@ -285,7 +1188,6 @@ export default function App() {
       const saved = localStorage.getItem('erin_christmas_books');
       if (saved) {
         const parsed = JSON.parse(saved);
-        // Clean out legacy placeholders & upgrade built-in books
         const cleaned = upgradeBuiltInBooks(parsed.filter(b => !LEGACY_PLACEHOLDERS.has(String(b.id))));
         const existingIds = new Set(cleaned.map((b) => b.id));
         const missing = INITIAL_BOOKS.filter((b) => !existingIds.has(b.id));
@@ -377,10 +1279,12 @@ export default function App() {
       const unsubscribe = subscribeToBooksFromCloud((cloudBooks) => {
         if (cloudBooks && Array.isArray(cloudBooks)) {
           setBooks((current) => {
-            const cloudIds = new Set(cloudBooks.map((b) => b.id));
-            // Keep all current books (starter books + local additions) that aren't in the cloud yet
-            const nonCloud = current.filter((b) => !cloudIds.has(b.id) && !LEGACY_PLACEHOLDERS.has(String(b.id)));
-            const merged = [...cloudBooks, ...nonCloud];
+            const upgradedCloud = upgradeBuiltInBooks(cloudBooks.filter((b) => !LEGACY_PLACEHOLDERS.has(String(b.id))));
+            const cloudIds = new Set(upgradedCloud.map((b) => b.id));
+            const nonCloud = upgradeBuiltInBooks(
+              current.filter((b) => !cloudIds.has(b.id) && !LEGACY_PLACEHOLDERS.has(String(b.id)))
+            );
+            const merged = [...upgradedCloud, ...nonCloud];
             saveBooksToIndexedDB(merged);
             return merged;
           });
@@ -392,20 +1296,56 @@ export default function App() {
     }
   }, [isCloudConnected]);
 
-  // 3. Save to IndexedDB whenever books change (survives phone refreshes & has gigabytes of storage)
+  // 3. Save to IndexedDB whenever books change
   useEffect(() => {
     saveBooksToIndexedDB(books);
     try {
       localStorage.setItem('erin_christmas_books', JSON.stringify(books));
-    } catch (e) {
-      // Expected if base64 images exceed 5MB quota; IndexedDB already saved it safely!
-    }
+    } catch (e) {}
   }, [books]);
 
   const filteredBooks = books.filter((b) =>
     (b.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (b.author || '').toLowerCase().includes(searchQuery.toLowerCase())
+    (b.author || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (b.notes || '').toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleSelectBook = (book) => {
+    setSelectedBook(book);
+    setIsEditingBook(false);
+    setEditTitle(book.title || '');
+    setEditAuthor(book.author || 'Unknown');
+    setEditNotes(book.notes || '');
+    setEditCategory(book.category || 'story');
+    setEditIsMouse(isMouseBookItem(book));
+    setEditIsMagazine(isMagazineItem(book));
+  };
+
+  const handleSaveBookEdits = async (e) => {
+    e?.preventDefault();
+    if (!selectedBook) return;
+    const updated = {
+      ...selectedBook,
+      title: editTitle.trim() || selectedBook.title,
+      author: editAuthor.trim() || 'Unknown',
+      notes: editNotes.trim(),
+      category: editCategory,
+      isMouseBook: editIsMouse,
+      isMagazine: editIsMagazine,
+      badge: editIsMagazine ? 'Vintage Holiday Magazine' : null,
+      userEdited: true,
+    };
+    setSelectedBook(updated);
+    setBooks((prev) => prev.map((b) => (b.id === updated.id ? updated : b)));
+    setIsEditingBook(false);
+    if (isFirebaseConfigured()) {
+      try {
+        await saveBookToCloud(updated);
+      } catch (err) {
+        console.warn('Cloud update error:', err);
+      }
+    }
+  };
 
   const handleBookAdded = (newBook) => {
     setBooks((prev) => [newBook, ...prev]);
@@ -555,10 +1495,10 @@ export default function App() {
                 <div className="flex items-center gap-3">
                   <input
                     type="text"
-                    placeholder="Search books..."
+                    placeholder="Search books or authors..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="px-3.5 py-1.5 bg-stone-950/80 border border-stone-800 rounded-lg text-xs text-amber-100 focus:outline-none focus:border-amber-700 w-44 font-sans placeholder:text-stone-500"
+                    className="px-3.5 py-1.5 bg-stone-950/80 border border-stone-800 rounded-lg text-xs text-amber-100 focus:outline-none focus:border-amber-700 w-48 font-sans placeholder:text-stone-500"
                   />
 
                   <div className="flex bg-stone-950/80 p-0.5 rounded-lg border border-stone-800 font-sans text-xs">
@@ -663,7 +1603,7 @@ export default function App() {
                 <div className="flex items-center gap-2">
                   <input
                     type="text"
-                    placeholder="Search..."
+                    placeholder="Search books..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="flex-1 px-3 py-1.5 bg-stone-950/80 border border-stone-800 rounded-lg text-xs text-amber-100 focus:outline-none focus:border-amber-700 font-sans placeholder:text-stone-500"
@@ -716,7 +1656,9 @@ export default function App() {
               {viewMode === 'spines' && (
                 <SpineBookshelf
                   books={filteredBooks}
-                  onSelectBook={(book) => setSelectedBook(book)}
+                  externalFilter={activeFilter}
+                  onFilterChange={setActiveFilter}
+                  onSelectBook={handleSelectBook}
                   onAddBook={(cat) => {
                     setAddModalCategory(cat || 'story');
                     setIsAddModalOpen(true);
@@ -727,7 +1669,9 @@ export default function App() {
               {viewMode === 'covers' && (
                 <CoverGalleryView
                   books={filteredBooks}
-                  onSelectBook={(book) => setSelectedBook(book)}
+                  activeFilter={activeFilter}
+                  onFilterChange={setActiveFilter}
+                  onSelectBook={handleSelectBook}
                   onAddBook={() => {
                     setAddModalCategory('story');
                     setIsAddModalOpen(true);
@@ -738,7 +1682,9 @@ export default function App() {
               {viewMode === 'list' && (
                 <ListView
                   books={filteredBooks}
-                  onSelectBook={(book) => setSelectedBook(book)}
+                  activeFilter={activeFilter}
+                  onFilterChange={setActiveFilter}
+                  onSelectBook={handleSelectBook}
                   onDeleteBook={handleDeleteBook}
                 />
               )}
@@ -782,33 +1728,135 @@ export default function App() {
                     </div>
 
                     {/* Book Details & Reading Actions */}
-                    <div className="flex-1 text-center md:text-left flex flex-col justify-between self-stretch">
-                      <div>
-                        <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-950/60 border border-amber-900/50 rounded-full text-[11px] font-mono text-amber-300/90 mb-3">
-                          <span>🎄</span>
-                          <span>Erin's Holiday Collection</span>
-                        </div>
+                    <div className="flex-1 text-center md:text-left flex flex-col justify-between self-stretch w-full">
+                      {!isEditingBook ? (
+                        <div>
+                          <div className="flex items-center justify-center md:justify-start flex-wrap gap-2 mb-3">
+                            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-950/60 border border-amber-900/50 rounded-full text-[11px] font-mono text-amber-300/90">
+                              <span>🎄</span>
+                              <span>Erin's Holiday Collection</span>
+                            </div>
 
-                        <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-amber-100 tracking-wide leading-tight mb-2">
-                          {selectedBook.title}
-                        </h3>
+                            {isMagazineItem(selectedBook) && (
+                              <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-900/70 border border-amber-400/50 rounded-full text-[11px] font-sans font-semibold text-amber-100 shadow">
+                                <span>📜</span>
+                                <span>Vintage Holiday Magazine</span>
+                              </div>
+                            )}
 
-                        <p className="text-stone-300 text-sm sm:text-base font-sans font-medium mb-4">
-                          By <span className="text-amber-200">{selectedBook.author}</span>
-                        </p>
-
-                        {selectedBook.notes && (
-                          <div className="text-amber-200/90 text-sm sm:text-base italic bg-amber-950/30 border border-amber-900/40 p-4 rounded-2xl mb-6 font-serif leading-relaxed text-left">
-                            <span className="text-amber-400 font-serif text-lg mr-1">“</span>
-                            {selectedBook.notes}
-                            <span className="text-amber-400 font-serif text-lg ml-1">”</span>
+                            {isMouseBookItem(selectedBook) && (
+                              <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-stone-900/90 border border-amber-600/50 rounded-full text-[11px] font-sans font-semibold text-amber-200 shadow">
+                                <span>🐭</span>
+                                <span>Mouse Book</span>
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </div>
+
+                          <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-amber-100 tracking-wide leading-tight mb-2">
+                            {selectedBook.title}
+                          </h3>
+
+                          <div className="flex items-center justify-center md:justify-start gap-2.5 mb-4">
+                            <p className="text-stone-300 text-sm sm:text-base font-sans font-medium">
+                              By <span className="text-amber-200">{selectedBook.author || 'Unknown'}</span>
+                            </p>
+                            <button
+                              onClick={() => setIsEditingBook(true)}
+                              className="px-2.5 py-0.5 rounded-lg bg-stone-900 hover:bg-amber-950 border border-stone-700 hover:border-amber-700 text-[11px] text-amber-300/90 transition"
+                              title="Edit title, author, notes, or tags"
+                            >
+                              ✏️ Edit Details
+                            </button>
+                          </div>
+
+                          {selectedBook.notes && (
+                            <div className="text-amber-200/90 text-sm sm:text-base italic bg-amber-950/30 border border-amber-900/40 p-4 rounded-2xl mb-6 font-serif leading-relaxed text-left">
+                              <span className="text-amber-400 font-serif text-lg mr-1">“</span>
+                              {selectedBook.notes}
+                              <span className="text-amber-400 font-serif text-lg ml-1">”</span>
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        /* Inline Book Metadata Editor */
+                        <form onSubmit={handleSaveBookEdits} className="space-y-3 text-left bg-stone-950/70 p-4 rounded-2xl border border-amber-900/50 mb-4">
+                          <div className="flex items-center justify-between border-b border-stone-800 pb-2 mb-2">
+                            <span className="text-xs font-semibold uppercase tracking-wider text-amber-300">Edit Book Details</span>
+                            <button
+                              type="button"
+                              onClick={() => setIsEditingBook(false)}
+                              className="text-xs text-stone-400 hover:text-stone-200"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+
+                          <div>
+                            <label className="block text-[11px] text-stone-400 mb-1">Book Title</label>
+                            <input
+                              type="text"
+                              value={editTitle}
+                              onChange={(e) => setEditTitle(e.target.value)}
+                              className="w-full px-3 py-2 bg-stone-900 border border-stone-700 rounded-xl text-sm text-amber-100 focus:outline-none focus:border-amber-500"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-[11px] text-stone-400 mb-1">Author (use "Unknown" if unlisted)</label>
+                            <input
+                              type="text"
+                              value={editAuthor}
+                              onChange={(e) => setEditAuthor(e.target.value)}
+                              className="w-full px-3 py-2 bg-stone-900 border border-stone-700 rounded-xl text-sm text-amber-100 focus:outline-none focus:border-amber-500"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-[11px] text-stone-400 mb-1">Notes / Edition Details</label>
+                            <textarea
+                              rows={2}
+                              value={editNotes}
+                              onChange={(e) => setEditNotes(e.target.value)}
+                              className="w-full px-3 py-2 bg-stone-900 border border-stone-700 rounded-xl text-xs text-amber-100 focus:outline-none focus:border-amber-500"
+                            />
+                          </div>
+
+                          <div className="flex flex-wrap items-center gap-4 pt-1">
+                            <label className="flex items-center gap-2 text-xs text-amber-200 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={editIsMouse}
+                                onChange={(e) => setEditIsMouse(e.target.checked)}
+                                className="rounded bg-stone-900 border-stone-700 text-amber-600"
+                              />
+                              <span>🐭 Mouse Book</span>
+                            </label>
+
+                            <label className="flex items-center gap-2 text-xs text-amber-200 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={editIsMagazine}
+                                onChange={(e) => setEditIsMagazine(e.target.checked)}
+                                className="rounded bg-stone-900 border-stone-700 text-amber-600"
+                              />
+                              <span>📜 Vintage Holiday Magazine</span>
+                            </label>
+                          </div>
+
+                          <div className="pt-2 flex justify-end gap-2">
+                            <button
+                              type="submit"
+                              className="px-4 py-2 bg-amber-700 hover:bg-amber-600 text-white rounded-xl text-xs font-semibold shadow transition"
+                            >
+                              Save Changes ✓
+                            </button>
+                          </div>
+                        </form>
+                      )}
 
                       {/* Action Buttons */}
                       <div className="pt-4 flex flex-col gap-3">
-                        {selectedBook.id === 'cookbook_erin' || selectedBook.category === 'cookbook' ? (
+                        {selectedBook.id === 'cookbook_erin' ? (
                           <div className="w-full flex flex-col gap-2.5">
                             <button
                               onClick={() => {
@@ -845,7 +1893,11 @@ export default function App() {
                               className="w-full sm:flex-1 py-3.5 px-6 bg-gradient-to-r from-amber-700 via-amber-600 to-amber-700 hover:from-amber-600 hover:to-amber-500 text-amber-50 rounded-2xl text-sm font-semibold shadow-[0_8px_20px_rgba(180,83,9,0.4)] border border-amber-400/30 transition-all flex items-center justify-center gap-2 transform active:scale-95"
                             >
                               <span className="text-lg">📖</span>
-                              <span>Open Storybook & Read</span>
+                              <span>
+                                {selectedBook.pages && selectedBook.pages.length > 0
+                                  ? `Open & View Inside Page (${selectedBook.pages.length})`
+                                  : 'Open Storybook & Read'}
+                              </span>
                             </button>
 
                             <button

@@ -1,7 +1,23 @@
 import React from 'react';
 import { getBookCoverUrl } from '../lib/pocketbase';
+import { isMouseBookItem, isMagazineItem } from './SpineBookshelf';
 
-export default function CoverGalleryView({ books = [], onSelectBook, onAddBook }) {
+export default function CoverGalleryView({ books = [], onSelectBook, onAddBook, activeFilter = 'all', onFilterChange }) {
+  const storyCount = books.filter((b) => (b.category === 'story' || !b.category) && !isMagazineItem(b)).length;
+  const mouseCount = books.filter((b) => isMouseBookItem(b)).length;
+  const magCount = books.filter((b) => isMagazineItem(b)).length;
+  const albumCount = books.filter((b) => b.category === 'album').length;
+  const cookbookCount = books.filter((b) => b.category === 'cookbook').length;
+
+  const displayedBooks = books.filter((b) => {
+    if (activeFilter === 'mouse') return isMouseBookItem(b);
+    if (activeFilter === 'magazine') return isMagazineItem(b);
+    if (activeFilter === 'story') return (b.category === 'story' || !b.category) && !isMagazineItem(b);
+    if (activeFilter === 'album') return b.category === 'album';
+    if (activeFilter === 'cookbook') return b.category === 'cookbook';
+    return true;
+  });
+
   if (books.length === 0) {
     return (
       <div className="text-center py-24 text-amber-200/70 font-sans">
@@ -19,10 +35,40 @@ export default function CoverGalleryView({ books = [], onSelectBook, onAddBook }
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-8">
+    <div className="max-w-6xl mx-auto px-6 py-6">
+      {/* Category & Mouse Books Filter Bar */}
+      {onFilterChange && (
+        <div className="flex items-center justify-center flex-wrap gap-2 mb-10 font-serif text-xs">
+          {[
+            { id: 'all', label: `All (${books.length})` },
+            { id: 'story', label: `Storybooks (${storyCount})` },
+            { id: 'mouse', label: `🐭 Mouse Books (${mouseCount})` },
+            { id: 'magazine', label: `📜 Vintage Magazines (${magCount})` },
+            { id: 'album', label: `Photo Albums (${albumCount})` },
+            { id: 'cookbook', label: `Cookbooks (${cookbookCount})` },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => onFilterChange(tab.id)}
+              className={`px-3.5 py-1.5 rounded-full border transition ${
+                activeFilter === tab.id
+                  ? 'bg-amber-800/90 border-amber-400/60 text-amber-50 font-bold shadow'
+                  : 'bg-[#1b120ce0] border-amber-950/70 text-amber-200/70 hover:text-amber-100'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      )}
+
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-8 gap-y-16 items-end">
-        {books.map((book) => {
+        {displayedBooks.map((book) => {
           const coverUrl = getBookCoverUrl(book) || book.cover;
+          const isMouse = isMouseBookItem(book);
+          const isMag = isMagazineItem(book);
+          const isSantaMouse = book.id === 'santa_mouse';
+
           return (
             <div
               key={book.id}
@@ -30,15 +76,35 @@ export default function CoverGalleryView({ books = [], onSelectBook, onAddBook }
               className="group relative cursor-pointer flex flex-col items-center"
             >
               {/* Realistic 3D Book with Spine Edge and Shadow */}
-              <div className="relative w-36 sm:w-40 h-52 sm:h-56 rounded-r-md rounded-l-sm shadow-[0_14px_28px_rgba(0,0,0,0.85),-4px_0_12px_rgba(0,0,0,0.5)] overflow-hidden border border-amber-950/40 group-hover:-translate-y-2.5 group-hover:shadow-[0_22px_36px_rgba(0,0,0,0.95)] transition-all duration-300">
+              <div className="relative w-36 sm:w-40 h-52 sm:h-56 rounded-r-md rounded-l-sm shadow-[0_14px_28px_rgba(0,0,0,0.85),-4px_0_12px_rgba(0,0,0,0.5)] overflow-hidden border border-amber-950/40 group-hover:-translate-y-2.5 group-hover:shadow-[0_22px_36px_rgba(0,0,0,0.95)] transition-all duration-300 bg-[#140c08]">
                 {/* Book Spine Highlight */}
                 <div className="absolute left-0 top-0 bottom-0 w-3.5 bg-gradient-to-r from-black/50 via-white/10 to-transparent z-10 pointer-events-none" />
-                
+
+                {/* Top Corner Badges */}
+                <div className="absolute top-2 right-2 z-20 flex flex-col items-end gap-1 pointer-events-none">
+                  {isMag && (
+                    <span className="px-1.5 py-0.5 rounded bg-amber-950/95 border border-amber-400/50 text-[8.5px] font-sans font-semibold text-amber-200 shadow">
+                      📜 Vintage Magazine
+                    </span>
+                  )}
+                  {isMouse && (
+                    <span className="px-1.5 py-0.5 rounded bg-stone-950/90 border border-amber-500/40 text-[8.5px] font-sans font-semibold text-amber-200 shadow">
+                      🐭 Mouse
+                    </span>
+                  )}
+                  {isSantaMouse && (
+                    <span className="px-1.5 py-0.5 rounded bg-emerald-950/95 border border-emerald-400/50 text-[8.5px] font-sans font-semibold text-emerald-200 shadow">
+                      2 Copies
+                    </span>
+                  )}
+                </div>
+
                 {coverUrl ? (
                   <img
                     src={coverUrl}
                     alt={book.title}
                     className="w-full h-full object-cover"
+                    loading="lazy"
                   />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-b from-stone-800 to-stone-900 flex items-center justify-center p-3 text-center">
@@ -48,11 +114,11 @@ export default function CoverGalleryView({ books = [], onSelectBook, onAddBook }
               </div>
 
               {/* Title & Author */}
-              <h3 className="mt-3 text-xs font-serif font-bold text-amber-100 text-center line-clamp-1 max-w-[150px] group-hover:text-amber-300 transition">
+              <h3 className="mt-3 text-xs font-serif font-bold text-amber-100 text-center line-clamp-1 max-w-[155px] group-hover:text-amber-300 transition">
                 {book.title}
               </h3>
               <p className="text-[11px] text-amber-200/50 text-center line-clamp-1">
-                {book.author}
+                {book.author || 'Unknown'}
               </p>
 
               {/* Wooden Shelf Plank Below Row */}

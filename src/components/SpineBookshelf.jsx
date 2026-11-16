@@ -50,30 +50,75 @@ function MangerIcon({ className = "w-3.5 h-3.5 sm:w-4 sm:h-4" }) {
   );
 }
 
+// Helper to check if a book is a Mouse book
+export function isMouseBookItem(b) {
+  if (!b) return false;
+  if (b.isMouseBook) return true;
+  const text = `${b.title || ''} ${b.notes || ''}`.toLowerCase();
+  return /\b(mouse|mice|mousekins|dormouse)\b/.test(text);
+}
+
+// Helper to check if a book is a Vintage Holiday Magazine / Annual
+export function isMagazineItem(b) {
+  if (!b) return false;
+  if (b.isMagazine || b.category === 'magazine') return true;
+  const text = `${b.title || ''} ${b.notes || ''} ${b.badge || ''}`.toLowerCase();
+  return text.includes('vintage holiday magazine') || text.includes('american annual of christmas');
+}
+
 // Helper to select 1 or 2 random books to display face-out on each shelf tier
 function pickRandomFaceOut(allBooks) {
   if (!allBooks || allBooks.length === 0) return new Set();
 
   const selected = new Set();
-  const story = allBooks.filter((b) => b.category === 'story' || (!b.category && b.id !== 'album_santa' && b.id !== 'cookbook_erin' && !b.title?.toLowerCase().includes('santa') && !b.title?.toLowerCase().includes('photo') && !b.title?.toLowerCase().includes('cook')));
-  const albums = allBooks.filter((b) => b.category === 'album' || b.id === 'album_santa' || b.title?.toLowerCase().includes('santa') || b.title?.toLowerCase().includes('photo'));
-  const cookbooks = allBooks.filter((b) => b.category === 'cookbook' || b.id === 'cookbook_erin' || b.title?.toLowerCase().includes('cook'));
+  const story = allBooks.filter(
+    (b) =>
+      !isMagazineItem(b) &&
+      (b.category === 'story' ||
+        (!b.category &&
+          b.id !== 'album_santa' &&
+          b.id !== 'cookbook_erin' &&
+          !b.title?.toLowerCase().includes('pictures with santa') &&
+          !b.title?.toLowerCase().includes('cook')))
+  );
+  const magazines = allBooks.filter((b) => isMagazineItem(b));
+  const albums = allBooks.filter(
+    (b) =>
+      b.category === 'album' ||
+      b.id === 'album_santa' ||
+      b.title?.toLowerCase().includes('pictures with santa')
+  );
+  const cookbooks = allBooks.filter(
+    (b) =>
+      b.category === 'cookbook' ||
+      b.id === 'cookbook_erin' ||
+      b.title?.toLowerCase().includes('cook')
+  );
 
-  // Storybooks: pick 1 or 2 books to face out, spaced apart on the shelf
-  if (story.length >= 6) {
-    const mid = Math.floor(story.length / 2);
-    const firstHalf = story.slice(1, mid);
-    const secondHalf = story.slice(mid, -1);
-    if (firstHalf.length > 0) {
-      const b1 = firstHalf[Math.floor(Math.random() * firstHalf.length)];
-      if (b1) selected.add(b1.id);
+  // Storybooks: pick 1 or 2 books per 24-book shelf tier
+  const tierSize = 24;
+  for (let start = 0; start < story.length; start += tierSize) {
+    const chunk = story.slice(start, start + tierSize);
+    if (chunk.length >= 6) {
+      const mid = Math.floor(chunk.length / 2);
+      const firstHalf = chunk.slice(1, mid);
+      const secondHalf = chunk.slice(mid, -1);
+      if (firstHalf.length > 0) {
+        const b1 = firstHalf[Math.floor(Math.random() * firstHalf.length)];
+        if (b1) selected.add(b1.id);
+      }
+      if (secondHalf.length > 0) {
+        const b2 = secondHalf[Math.floor(Math.random() * secondHalf.length)];
+        if (b2) selected.add(b2.id);
+      }
+    } else if (chunk.length > 0) {
+      selected.add(chunk[Math.floor(Math.random() * chunk.length)].id);
     }
-    if (secondHalf.length > 0) {
-      const b2 = secondHalf[Math.floor(Math.random() * secondHalf.length)];
-      if (b2) selected.add(b2.id);
-    }
-  } else if (story.length > 0) {
-    selected.add(story[Math.floor(Math.random() * story.length)].id);
+  }
+
+  // Vintage Magazines: pick 1 to show face out
+  if (magazines.length > 0) {
+    selected.add(magazines[Math.floor(Math.random() * magazines.length)].id);
   }
 
   // Photo Albums: pick 1 album to show face out (e.g. Pictures with Santa)
@@ -94,9 +139,20 @@ function pickRandomFaceOut(allBooks) {
   return selected;
 }
 
-export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) {
+export default function SpineBookshelf({ books = [], onSelectBook, onAddBook, externalFilter = 'all', onFilterChange }) {
   const [hoveredBook, setHoveredBook] = useState(null);
-  const [activeTab, setActiveTab] = useState('all'); // 'all' | 'story' | 'album' | 'cookbook'
+  const [activeTab, setActiveTab] = useState(externalFilter || 'all'); // 'all' | 'story' | 'mouse' | 'magazine' | 'album' | 'cookbook'
+
+  useEffect(() => {
+    if (externalFilter && externalFilter !== activeTab) {
+      setActiveTab(externalFilter);
+    }
+  }, [externalFilter]);
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    if (onFilterChange) onFilterChange(tab);
+  };
 
   // Clean up legacy orientation setting from localStorage
   useEffect(() => {
@@ -136,10 +192,12 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
   const styledBooks = books.map((b, idx) => {
     const isAlbum = b.category === 'album' || b.id === 'album_santa' || (!b.category && (b.title?.toLowerCase().includes('pictures with santa') || b.title?.toLowerCase().includes('photo')));
     const isCookbook = b.category === 'cookbook' || b.id === 'cookbook_erin' || (!b.category && b.title?.toLowerCase().includes('cook'));
+    const isMagazine = isMagazineItem(b);
+    const isMouse = isMouseBookItem(b);
 
     // Substantial, realistic library spine heights and generous widths
-    const heights = isAlbum ? [254, 260, 250] : isCookbook ? [246, 252] : [228, 218, 238, 214, 232, 222, 240, 220];
-    const widths = isAlbum ? [90, 94, 88] : isCookbook ? [88, 92] : [74, 80, 70, 82, 76, 72, 78, 74];
+    const heights = isAlbum ? [254, 260, 250] : isCookbook ? [246, 252] : isMagazine ? [248, 254, 244] : [228, 218, 238, 214, 232, 222, 240, 220];
+    const widths = isAlbum ? [90, 94, 88] : isCookbook ? [88, 92] : isMagazine ? [82, 86, 80] : [74, 80, 70, 82, 76, 72, 78, 74];
 
     // Rich heritage bookcloth & morocco leather gradients
     const colors = isAlbum ? [
@@ -149,6 +207,10 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
     ] : isCookbook ? [
       'from-[#462310] via-[#2f1609] to-[#1c0c04]', // Warm Cinnamon Leather
       'from-[#4c1c13] via-[#33110b] to-[#1d0805]', // Aged Cranberry
+    ] : isMagazine ? [
+      'from-[#522814] via-[#38190b] to-[#210d05]', // Antique Parchment Leather
+      'from-[#5c161c] via-[#3f0d12] to-[#240609]', // Augsburg Crimson
+      'from-[#1a3a26] via-[#102719] to-[#07140c]', // Heirloom Holly Green
     ] : [
       'from-[#5c161c] via-[#3f0d12] to-[#240609]', // Antique Crimson Leather
       'from-[#163824] via-[#0e2719] to-[#07150c]', // British Racing Pine
@@ -165,20 +227,30 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
     return {
       ...b,
       category: b.category || detectedCategory,
-      isHighlighted: idx === 0 || isAlbum || isCookbook || Boolean(b.notes),
+      isMagazine,
+      isMouseBook: isMouse,
+      isHighlighted: idx === 0 || isAlbum || isCookbook || isMagazine || Boolean(b.notes),
       color: colors[idx % colors.length],
       height: heights[idx % heights.length],
       width: widths[idx % widths.length],
       foil: idx % 2 === 0 ? 'gold' : 'silver',
-      emblem: isAlbum ? '🎅' : isCookbook ? '🥧' : '✦',
+      emblem: isAlbum ? '🎅' : isCookbook ? '🥧' : isMagazine ? '📜' : isMouse ? '🐭' : '✦',
     };
   });
 
-  const storybooks = styledBooks.filter((b) => b.category === 'story');
-  const storybooksTier1 = storybooks.length > 12 ? storybooks.slice(0, Math.ceil(storybooks.length / 2)) : storybooks;
-  const storybooksTier2 = storybooks.length > 12 ? storybooks.slice(Math.ceil(storybooks.length / 2)) : [];
+  const storybooks = styledBooks.filter((b) => b.category === 'story' && !b.isMagazine);
+  const mouseBooks = styledBooks.filter((b) => b.isMouseBook);
+  const vintageMagazines = styledBooks.filter((b) => b.isMagazine);
   const photoAlbums = styledBooks.filter((b) => b.category === 'album');
   const cookbooks = styledBooks.filter((b) => b.category === 'cookbook');
+
+  // Split storybooks into balanced shelves (~24 per shelf tier)
+  const storyShelves = [];
+  const tierCapacity = 24;
+  for (let i = 0; i < storybooks.length; i += tierCapacity) {
+    storyShelves.push(storybooks.slice(i, i + tierCapacity));
+  }
+  const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
 
   const renderShelfRow = (items, romanNumeral, shelfLabel, addCategoryPrompt = null) => {
     return (
@@ -469,9 +541,9 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
       {/* ========================================================= */}
       <div className="flex items-center justify-between flex-wrap gap-3 mb-4 sm:mb-5 px-1 select-none z-20">
         {/* Category Tabs */}
-        <div className="flex items-center justify-center flex-wrap gap-x-5 sm:gap-x-7 gap-y-1.5 font-serif text-[11px] sm:text-xs uppercase tracking-[0.22em]">
+        <div className="flex items-center justify-center flex-wrap gap-x-4 sm:gap-x-6 gap-y-1.5 font-serif text-[10.5px] sm:text-xs uppercase tracking-[0.2em]">
           <button
-            onClick={() => setActiveTab('all')}
+            onClick={() => handleTabChange('all')}
             className={`transition-all duration-200 pb-1 ${
               activeTab === 'all'
                 ? 'text-amber-100 font-bold border-b-2 border-amber-400 drop-shadow-[0_2px_8px_rgba(251,191,36,0.6)]'
@@ -484,7 +556,7 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
           <span className="text-amber-700/50 select-none">•</span>
 
           <button
-            onClick={() => setActiveTab('story')}
+            onClick={() => handleTabChange('story')}
             className={`transition-all duration-200 pb-1 ${
               activeTab === 'story'
                 ? 'text-amber-100 font-bold border-b-2 border-amber-400 drop-shadow-[0_2px_8px_rgba(251,191,36,0.6)]'
@@ -497,7 +569,35 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
           <span className="text-amber-700/50 select-none">•</span>
 
           <button
-            onClick={() => setActiveTab('album')}
+            onClick={() => handleTabChange('mouse')}
+            className={`transition-all duration-200 pb-1 flex items-center gap-1 ${
+              activeTab === 'mouse'
+                ? 'text-amber-100 font-bold border-b-2 border-amber-400 drop-shadow-[0_2px_8px_rgba(251,191,36,0.6)]'
+                : 'text-amber-200/60 hover:text-amber-100 border-b-2 border-transparent'
+            }`}
+          >
+            <span>🐭</span>
+            <span>Mouse Books ({mouseBooks.length})</span>
+          </button>
+
+          <span className="text-amber-700/50 select-none">•</span>
+
+          <button
+            onClick={() => handleTabChange('magazine')}
+            className={`transition-all duration-200 pb-1 flex items-center gap-1 ${
+              activeTab === 'magazine'
+                ? 'text-amber-100 font-bold border-b-2 border-amber-400 drop-shadow-[0_2px_8px_rgba(251,191,36,0.6)]'
+                : 'text-amber-200/60 hover:text-amber-100 border-b-2 border-transparent'
+            }`}
+          >
+            <span>📜</span>
+            <span>Vintage Magazines ({vintageMagazines.length})</span>
+          </button>
+
+          <span className="text-amber-700/50 select-none">•</span>
+
+          <button
+            onClick={() => handleTabChange('album')}
             className={`transition-all duration-200 pb-1 ${
               activeTab === 'album'
                 ? 'text-amber-100 font-bold border-b-2 border-amber-400 drop-shadow-[0_2px_8px_rgba(251,191,36,0.6)]'
@@ -510,7 +610,7 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
           <span className="text-amber-700/50 select-none">•</span>
 
           <button
-            onClick={() => setActiveTab('cookbook')}
+            onClick={() => handleTabChange('cookbook')}
             className={`transition-all duration-200 pb-1 ${
               activeTab === 'cookbook'
                 ? 'text-amber-100 font-bold border-b-2 border-amber-400 drop-shadow-[0_2px_8px_rgba(251,191,36,0.6)]'
@@ -590,81 +690,96 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
         {/* Shelves Layout */}
         {activeTab === 'all' ? (
           <>
-            {storybooksTier2.length > 0 ? (
-              <>
-                {renderShelfRow(storybooksTier1, 'I', 'Holiday Storybooks • Shelf I', {
+            {storyShelves.map((tierBooks, idx) =>
+              renderShelfRow(
+                tierBooks,
+                romanNumerals[idx] || String(idx + 1),
+                storyShelves.length > 1
+                  ? `Holiday Storybooks • Shelf ${romanNumerals[idx] || idx + 1}`
+                  : 'Holiday Storybooks',
+                idx === storyShelves.length - 1
+                  ? {
+                      category: 'story',
+                      label: 'Add Book',
+                      icon: '📖',
+                    }
+                  : null
+              )
+            )}
+            {vintageMagazines.length > 0 &&
+              renderShelfRow(
+                vintageMagazines,
+                romanNumerals[storyShelves.length] || 'V',
+                'Vintage Holiday Magazines & Annuals',
+                {
                   category: 'story',
-                  label: 'Add Book',
-                  icon: '📖'
-                })}
-                {renderShelfRow(storybooksTier2, 'II', 'Holiday Storybooks • Shelf II', {
-                  category: 'story',
-                  label: 'Add Book',
-                  icon: '📖'
-                })}
-                {renderShelfRow(photoAlbums, 'III', 'Family Photo Albums & Santa Keepsakes', {
-                  category: 'album',
-                  label: 'Add Album',
-                  icon: '🎅'
-                })}
-                {renderShelfRow(cookbooks, 'IV', "Erin's Family Recipes & Traditions", {
-                  category: 'cookbook',
-                  label: 'Add Recipe',
-                  icon: '🥧'
-                })}
-              </>
-            ) : (
-              <>
-                {renderShelfRow(storybooks, 'I', 'Holiday Storybooks', {
-                  category: 'story',
-                  label: 'Add Book',
-                  icon: '📖'
-                })}
-                {renderShelfRow(photoAlbums, 'II', 'Family Photo Albums & Santa Keepsakes', {
-                  category: 'album',
-                  label: 'Add Album',
-                  icon: '🎅'
-                })}
-                {renderShelfRow(cookbooks, 'III', "Erin's Family Recipes & Traditions", {
-                  category: 'cookbook',
-                  label: 'Add Recipe',
-                  icon: '🥧'
-                })}
-              </>
+                  label: 'Add Issue',
+                  icon: '📜',
+                }
+              )}
+            {renderShelfRow(
+              photoAlbums,
+              romanNumerals[storyShelves.length + (vintageMagazines.length > 0 ? 1 : 0)] || 'VI',
+              'Family Photo Albums & Santa Keepsakes',
+              {
+                category: 'album',
+                label: 'Add Album',
+                icon: '🎅',
+              }
+            )}
+            {renderShelfRow(
+              cookbooks,
+              romanNumerals[storyShelves.length + (vintageMagazines.length > 0 ? 2 : 1)] || 'VII',
+              "Erin's Family Recipes & Traditions",
+              {
+                category: 'cookbook',
+                label: 'Add Recipe',
+                icon: '🥧',
+              }
             )}
           </>
         ) : activeTab === 'story' ? (
-          storybooksTier2.length > 0 ? (
-            <>
-              {renderShelfRow(storybooksTier1, 'I', 'Holiday Storybooks • Shelf I', {
-                category: 'story',
-                label: 'Add Book',
-                icon: '📖'
-              })}
-              {renderShelfRow(storybooksTier2, 'II', 'Holiday Storybooks • Shelf II', {
-                category: 'story',
-                label: 'Add Book',
-                icon: '📖'
-              })}
-            </>
-          ) : (
-            renderShelfRow(storybooks, 'I', 'Holiday Storybooks Collection', {
-              category: 'story',
-              label: 'Add Book',
-              icon: '📖'
-            })
-          )
+          <>
+            {storyShelves.map((tierBooks, idx) =>
+              renderShelfRow(
+                tierBooks,
+                romanNumerals[idx] || String(idx + 1),
+                storyShelves.length > 1
+                  ? `Holiday Storybooks • Shelf ${romanNumerals[idx] || idx + 1}`
+                  : 'Holiday Storybooks Collection',
+                idx === storyShelves.length - 1
+                  ? {
+                      category: 'story',
+                      label: 'Add Book',
+                      icon: '📖',
+                    }
+                  : null
+              )
+            )}
+          </>
+        ) : activeTab === 'mouse' ? (
+          renderShelfRow(mouseBooks, 'I', '🐭 Holiday Mouse Books Collection', {
+            category: 'story',
+            label: 'Add Book',
+            icon: '🐭',
+          })
+        ) : activeTab === 'magazine' ? (
+          renderShelfRow(vintageMagazines, 'I', '📜 Vintage Holiday Magazines & Annuals', {
+            category: 'story',
+            label: 'Add Issue',
+            icon: '📜',
+          })
         ) : activeTab === 'album' ? (
           renderShelfRow(photoAlbums, 'II', 'Family Photo Albums & Santa Keepsakes', {
             category: 'album',
             label: 'Add Album',
-            icon: '🎅'
+            icon: '🎅',
           })
         ) : (
           renderShelfRow(cookbooks, 'III', "Erin's Family Holiday Cookbooks", {
             category: 'cookbook',
             label: 'Add Recipe',
-            icon: '🥧'
+            icon: '🥧',
           })
         )}
       </div>
@@ -688,14 +803,21 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
             </div>
 
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-1.5 mb-0.5">
+              <div className="flex items-center flex-wrap gap-1.5 mb-0.5">
                 <span className="text-[9px] font-serif uppercase tracking-[0.15em] px-2 py-0.5 bg-amber-950/80 border border-amber-800/40 rounded text-amber-200">
-                  {hoveredBook.category === 'album'
+                  {hoveredBook.isMagazine
+                    ? '📜 Vintage Holiday Magazine'
+                    : hoveredBook.category === 'album'
                     ? 'Photo Album'
                     : hoveredBook.category === 'cookbook'
                     ? 'Family Cookbook'
                     : 'Holiday Storybook'}
                 </span>
+                {hoveredBook.isMouseBook && (
+                  <span className="text-[9px] font-serif uppercase tracking-[0.12em] px-2 py-0.5 bg-amber-900/70 border border-amber-600/50 rounded text-amber-100">
+                    🐭 Mouse Book
+                  </span>
+                )}
               </div>
               <h4 className="text-base font-serif font-bold text-amber-100 line-clamp-1">{hoveredBook.title}</h4>
               <p className="text-xs text-amber-200/70 line-clamp-1">By {hoveredBook.author}</p>
