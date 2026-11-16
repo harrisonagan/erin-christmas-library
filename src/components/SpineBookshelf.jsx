@@ -232,7 +232,7 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
       {/* ========================================================= */}
       {/* CLASSICAL LIBRARY DIRECTORY TABS                          */}
       {/* ========================================================= */}
-      <div className="flex items-center justify-center flex-wrap gap-x-6 sm:gap-x-8 gap-y-2 mb-14 sm:mb-18 font-serif text-[11px] sm:text-xs uppercase tracking-[0.24em] select-none z-20">
+      <div className="flex items-center justify-center flex-wrap gap-x-6 sm:gap-x-8 gap-y-2 mb-4 sm:mb-5 font-serif text-[11px] sm:text-xs uppercase tracking-[0.24em] select-none z-20">
         <button
           onClick={() => setActiveTab('all')}
           className={`transition-all duration-200 pb-1.5 ${
@@ -285,7 +285,7 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
       </div>
 
       {/* ========================================================= */}
-      {/* WOODEN BOOKCASE CABINET FRAMED BY REALISTIC PINE GARLAND  */}
+      {/* WOODEN BOOKCASE CABINET (With Inlaid Painted Gift Ribbon)  */}
       {/* ========================================================= */}
       <div 
         className="relative rounded-t-xl rounded-b-xl border-x-4 sm:border-x-8 border-[#321a0c] shadow-[inset_0_0_50px_rgba(0,0,0,0.92),0_25px_60px_rgba(0,0,0,0.95)] pt-6 sm:pt-8 pb-2"
@@ -294,36 +294,42 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook }) 
           backgroundImage: 'repeating-linear-gradient(to right, rgba(0,0,0,0.35) 0px, rgba(0,0,0,0.35) 1px, transparent 1px, transparent 38px), radial-gradient(ellipse at 50% 30%, #1f120a 0%, #0d0603 100%)',
         }}
       >
-        {/* Carved Wood Crown Molding Top Header */}
-        <div className="absolute -top-3 inset-x-0 h-5 sm:h-6 bg-gradient-to-b from-[#4f2a15] via-[#351b0d] to-[#1e0e06] rounded-t-xl border-t-2 border-[#794121] shadow-[0_10px_25px_rgba(0,0,0,0.9)] z-20 pointer-events-none">
-          <div className="absolute inset-x-0 top-0 h-[1px] bg-amber-300/30" />
-        </div>
+        {/* Carved Wood Crown Molding with Attached Painted Holiday Wrapping Ribbon */}
+        <div className="relative -mt-6 sm:-mt-8 mb-5 w-full h-8 sm:h-9 bg-gradient-to-b from-[#4f2a15] via-[#351b0d] to-[#1e0e06] rounded-t-xl border-t-2 border-[#794121] border-b border-black/80 shadow-[0_8px_18px_rgba(0,0,0,0.9)] flex items-center justify-center px-4 sm:px-8 select-none">
+          {/* Subtle wood grain highlight */}
+          <div className="absolute inset-x-0 top-0 h-[1px] bg-amber-300/30 pointer-events-none" />
 
-        {/* 1. PHOTOREALISTIC TOP PINE GARLAND (WITH PINECONES & LIGHTS) */}
-        <div className="absolute -top-12 sm:-top-16 inset-x-0 w-full flex justify-center pointer-events-none z-30 select-none">
-          <img
-            src={`${import.meta.env.BASE_URL}garland-top.png`}
-            alt="Photorealistic Christmas Pine Garland with Pinecones"
-            className="w-full max-w-[1040px] h-auto object-contain filter drop-shadow-[0_14px_22px_rgba(0,0,0,0.95)]"
-          />
-        </div>
+          {/* ========================================================= */}
+          {/* INLAID PAINTED HOLIDAY WRAPPING PAPER RIBBON              */}
+          {/* ========================================================= */}
+          <div className="relative w-full max-w-2xl h-4 sm:h-5 bg-gradient-to-r from-[#631118] via-[#8c1c25] to-[#631118] rounded-sm border-y border-dashed border-amber-300/50 shadow-[0_2px_5px_rgba(0,0,0,0.85),inset_0_1px_2px_rgba(255,255,255,0.18)] flex items-center justify-between px-2.5 sm:px-4 overflow-hidden">
+            {/* Fine holiday gift wrap diagonal gold pinstripes */}
+            <div 
+              className="absolute inset-0 opacity-20 pointer-events-none" 
+              style={{
+                backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 7px, rgba(251,191,36,0.5) 7px, rgba(251,191,36,0.5) 9px)'
+              }}
+            />
 
-        {/* 2. PHOTOREALISTIC LEFT CASCADING GARLAND DOWN THE SIDE */}
-        <div className="absolute -top-2 -left-5 sm:-left-9 w-20 sm:w-28 h-auto pointer-events-none z-30 select-none">
-          <img
-            src={`${import.meta.env.BASE_URL}garland-side-left.png`}
-            alt="Cascading Pine Garland Left"
-            className="w-full h-auto filter drop-shadow-[0_12px_22px_rgba(0,0,0,0.92)]"
-          />
-        </div>
+            {/* Left Brass Tack / Upholstery Stud attaching ribbon to wood */}
+            <div className="relative z-10 w-2 h-2 rounded-full bg-gradient-to-br from-amber-200 via-amber-400 to-amber-700 shadow-[0_1px_2px_rgba(0,0,0,0.9)] border border-amber-900/60 flex-shrink-0" />
 
-        {/* 3. PHOTOREALISTIC RIGHT CASCADING GARLAND DOWN THE SIDE */}
-        <div className="absolute -top-2 -right-5 sm:-right-9 w-20 sm:w-28 h-auto pointer-events-none z-30 select-none">
-          <img
-            src={`${import.meta.env.BASE_URL}garland-side-right.png`}
-            alt="Cascading Pine Garland Right"
-            className="w-full h-auto filter drop-shadow-[0_12px_22px_rgba(0,0,0,0.92)]"
-          />
+            {/* Painted Gold Stencil Details across Ribbon */}
+            <div className="relative z-10 flex items-center justify-around w-full px-2 sm:px-6 text-[8px] sm:text-[9.5px] text-amber-200/90 font-serif tracking-widest pointer-events-none drop-shadow-[0_1px_1px_rgba(0,0,0,0.95)]">
+              <span>✦</span>
+              <span className="hidden sm:inline text-amber-300/60 text-[8px]">❄</span>
+              <span className="text-amber-300/70">🌿</span>
+              <span className="text-amber-100 font-medium tracking-[0.22em] uppercase text-[7.5px] sm:text-[8.5px]">
+                Holiday Keepsakes
+              </span>
+              <span className="text-amber-300/70">🌿</span>
+              <span className="hidden sm:inline text-amber-300/60 text-[8px]">❄</span>
+              <span>✦</span>
+            </div>
+
+            {/* Right Brass Tack / Upholstery Stud attaching ribbon to wood */}
+            <div className="relative z-10 w-2 h-2 rounded-full bg-gradient-to-br from-amber-200 via-amber-400 to-amber-700 shadow-[0_1px_2px_rgba(0,0,0,0.9)] border border-amber-900/60 flex-shrink-0" />
+          </div>
         </div>
 
         {/* Interior Bookcase Upright Shadows */}
