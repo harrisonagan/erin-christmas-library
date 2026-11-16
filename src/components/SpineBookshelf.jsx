@@ -538,9 +538,9 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook, ex
       {/* ========================================================= */}
       {/* CLASSICAL LIBRARY DIRECTORY TABS & DISPLAY CONTROLS       */}
       {/* ========================================================= */}
-      <div className="flex items-center justify-between flex-wrap gap-3 mb-8 sm:mb-12 px-1 select-none z-20">
+      <div className="flex items-center justify-between flex-wrap gap-3 mb-10 sm:mb-14 px-1 select-none z-20">
         {/* Category Tabs */}
-        <div className="flex items-center justify-center flex-wrap gap-x-4 sm:gap-x-6 gap-y-1.5 font-serif text-[10.5px] sm:text-xs uppercase tracking-[0.2em]">
+        <div className="flex items-center justify-center flex-wrap gap-x-4 sm:gap-x-6 gap-y-1.5 font-serif text-[10.5px] sm:text-xs uppercase tracking-[0.2em] max-w-xl sm:max-w-2xl mx-auto">
           <button
             onClick={() => handleTabChange('all')}
             className={`transition-all duration-200 pb-1 ${

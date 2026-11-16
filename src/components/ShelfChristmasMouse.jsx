@@ -156,7 +156,7 @@ export default function ShelfChristmasMouse({ className = '' }) {
         <img
           src={mouseImage}
           alt="Vintage Christmas Keepsake Mouse perched on the top shelf holding a gingerbread cookie"
-          className="w-[64px] sm:w-[74px] h-auto object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.85)] filter contrast-[1.04] brightness-[1.02]"
+          className="w-[56px] sm:w-[66px] h-auto object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.85)] filter contrast-[1.04] brightness-[1.02]"
           loading="eager"
           onError={(e) => {
             e.currentTarget.onerror = null;
@@ -165,7 +165,7 @@ export default function ShelfChristmasMouse({ className = '' }) {
         />
 
         {/* Realistic Wooden Shelf Contact Shadow underneath green felt slippers */}
-        <div className="w-14 sm:w-16 h-2 bg-black/85 blur-xs rounded-full pointer-events-none -mt-1 -z-10" />
+        <div className="w-12 sm:w-14 h-2 bg-black/85 blur-xs rounded-full pointer-events-none -mt-1 -z-10" />
       </motion.div>
     </div>
   );
