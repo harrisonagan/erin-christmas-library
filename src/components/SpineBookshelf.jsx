@@ -269,7 +269,7 @@ export default function SpineBookshelf({ books = [], onSelectBook, onAddBook, ex
         <div className="absolute inset-x-0 bottom-7 h-60 bg-gradient-to-t from-black/90 via-black/50 to-transparent pointer-events-none -z-10" />
 
         {/* Books standing side-by-side on the shelf */}
-        <div className="w-full overflow-x-auto pb-1.5 scrollbar-none px-4 sm:px-8">
+        <div className="w-full overflow-x-auto pt-5 sm:pt-6 -mt-3 sm:-mt-4 pb-1.5 scrollbar-none px-4 sm:px-8">
           <div 
             className={`flex items-end w-max min-w-full gap-2.5 sm:gap-4 px-3 sm:px-6 ${
               items.length <= 4 ? 'justify-center' : 'justify-start'
