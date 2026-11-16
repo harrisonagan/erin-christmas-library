@@ -59,6 +59,7 @@ export default function ListView({ books = [], onSelectBook, onDeleteBook, activ
           const coverUrl = getBookCoverUrl(book) || book.cover;
           const isMouse = isMouseBookItem(book);
           const isMag = isMagazineItem(book);
+          const isCookbook = book.category === 'cookbook' || book.id === 'cookbook_erin' || book.id === 'twelve_days_of_christmas_cookbook';
           return (
             <div
               key={book.id}
@@ -67,11 +68,11 @@ export default function ListView({ books = [], onSelectBook, onDeleteBook, activ
             >
               <div className="flex items-center gap-4 min-w-0">
                 <span className="text-stone-500 font-mono text-xs w-6 text-right flex-shrink-0">{idx + 1}</span>
-                <div className="w-12 h-16 rounded overflow-hidden shadow border border-amber-950/60 flex-shrink-0 bg-stone-900">
+                <div className="w-12 h-16 rounded overflow-hidden shadow border border-amber-950/60 flex-shrink-0 bg-stone-900 flex items-center justify-center">
                   {coverUrl ? (
                     <img
                       src={coverUrl}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                       alt=""
                       loading="lazy"
                     />
@@ -82,6 +83,11 @@ export default function ListView({ books = [], onSelectBook, onDeleteBook, activ
                 <div className="min-w-0">
                   <div className="flex items-center flex-wrap gap-2">
                     <h4 className="text-sm sm:text-base font-serif font-bold text-amber-100">{book.title}</h4>
+                    {isCookbook && (
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-900/90 border border-amber-400/50 text-amber-100 font-medium">
+                        🥧 Cookbook
+                      </span>
+                    )}
                     {isMag && (
                       <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-950/90 border border-amber-500/40 text-amber-200 font-medium">
                         📜 Vintage Holiday Magazine

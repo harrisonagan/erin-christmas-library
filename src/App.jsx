@@ -20,7 +20,7 @@ const INITIAL_BOOKS = [
     author: 'Annie Silvestro', 
     category: 'story',
     isMouseBook: true,
-    cover: '/covers/mice-skating.jpg',
+    cover: '/covers/mice-skating.webp?v=3',
     notes: 'Illustrated by Teagan White • A cozy winter favorite',
     pages: [] 
   },
@@ -29,7 +29,7 @@ const INITIAL_BOOKS = [
     title: "Santa's Moose", 
     author: 'Syd Hoff', 
     category: 'story',
-    cover: '/covers/santas-moose.webp?v=2',
+    cover: '/covers/santas-moose.webp?v=3',
     notes: 'An Early I Can Read Book • A classic holiday tale',
     pages: [] 
   },
@@ -38,7 +38,7 @@ const INITIAL_BOOKS = [
     title: 'The Mitten', 
     author: 'Jan Brett', 
     category: 'story',
-    cover: '/covers/the-mitten.webp?v=2',
+    cover: '/covers/the-mitten.webp?v=3',
     notes: 'Adapted and illustrated by Jan Brett • Ukrainian Folktale',
     pages: [] 
   },
@@ -47,7 +47,7 @@ const INITIAL_BOOKS = [
     title: 'One Snowy Night', 
     author: 'M. Christina Butler', 
     category: 'story',
-    cover: '/covers/one-snowy-night.webp?v=2',
+    cover: '/covers/one-snowy-night.webp?v=3',
     notes: 'Illustrated by Tina Macnaughton • A Touch-and-Feel Book',
     pages: [] 
   },
@@ -56,7 +56,7 @@ const INITIAL_BOOKS = [
     title: 'The Night Before Christmas', 
     author: 'Clement C. Moore', 
     category: 'story',
-    cover: '/covers/the-night-before-christmas.webp?v=2',
+    cover: '/covers/the-night-before-christmas.webp?v=3',
     notes: 'Illustrations by Tom Browning • Read every Christmas Eve',
     pages: [] 
   },
@@ -65,7 +65,7 @@ const INITIAL_BOOKS = [
     title: 'Chickadees In December', 
     author: 'Bill O. Smith', 
     category: 'story',
-    cover: '/covers/chickadees-in-december.webp?v=2',
+    cover: '/covers/chickadees-in-december.webp?v=3',
     notes: 'Illustrated by Charles R. Murphy • Heartwarming winter story',
     pages: [] 
   },
@@ -74,7 +74,7 @@ const INITIAL_BOOKS = [
     title: 'Santa is Coming to Michigan', 
     author: 'Steve Smallman', 
     category: 'story',
-    cover: '/covers/santa-is-coming-to-michigan.webp?v=2',
+    cover: '/covers/santa-is-coming-to-michigan.webp?v=3',
     notes: 'Illustrated by Robert Dunn and Jim Mitchell • Great Lakes holiday adventure',
     pages: [] 
   },
@@ -83,7 +83,7 @@ const INITIAL_BOOKS = [
     title: "Mr. Willowby's Christmas Tree", 
     author: 'Robert Barry', 
     category: 'story',
-    cover: '/covers/mr-willowbys-christmas-tree.webp?v=2',
+    cover: '/covers/mr-willowbys-christmas-tree.webp?v=3',
     notes: "A Dell Yearling Classic • When Mr. Willowby's tree is too tall, the top is chopped off and shared with everyone in the forest",
     pages: [] 
   },
@@ -92,7 +92,7 @@ const INITIAL_BOOKS = [
     title: 'The Very First Christmas', 
     author: "The Beginner's Bible", 
     category: 'story',
-    cover: '/covers/the-very-first-christmas.webp?v=2',
+    cover: '/covers/the-very-first-christmas.webp?v=3',
     notes: 'The Nativity story for young readers • Baby Jesus born in Bethlehem',
     pages: [] 
   },
@@ -101,7 +101,7 @@ const INITIAL_BOOKS = [
     title: 'The Newborn King', 
     author: 'Unknown', 
     category: 'story',
-    cover: '/covers/the-newborn-king.webp?v=2',
+    cover: '/covers/the-newborn-king.webp?v=3',
     notes: 'Bendon Publishing • A Treasured Keepsake Board Book • The holy birth of Christ',
     pages: [] 
   },
@@ -110,7 +110,7 @@ const INITIAL_BOOKS = [
     title: 'The Big Snow', 
     author: 'Berta and Elmer Hader', 
     category: 'story',
-    cover: '/covers/the-big-snow.webp?v=2',
+    cover: '/covers/the-big-snow.webp?v=3',
     notes: 'Winner of the Caldecott Medal • Woodland creatures preparing for winter',
     pages: [] 
   },
@@ -119,7 +119,7 @@ const INITIAL_BOOKS = [
     title: 'The 12 Bugs of Christmas', 
     author: 'David A. Carter', 
     category: 'story',
-    cover: '/covers/the-12-bugs-of-christmas.webp?v=2',
+    cover: '/covers/the-12-bugs-of-christmas.webp?v=3',
     notes: 'A Pop-up Christmas Counting Book • Whimsical bugs singing holiday cheer',
     pages: [] 
   },
@@ -128,7 +128,7 @@ const INITIAL_BOOKS = [
     title: 'The Nutcracker', 
     author: 'Unknown', 
     category: 'story',
-    cover: '/covers/the-nutcracker-golden.webp?v=2',
+    cover: '/covers/the-nutcracker-golden.webp?v=3',
     notes: 'A Little Golden Book Classic (#460-16) • Clara, the Nutcracker, and the Mouse King',
     pages: [] 
   },
@@ -137,7 +137,7 @@ const INITIAL_BOOKS = [
     title: 'The Littlest Christmas Elf', 
     author: 'Unknown', 
     category: 'story',
-    cover: '/covers/the-littlest-christmas-elf.webp?v=2',
+    cover: '/covers/the-littlest-christmas-elf.webp?v=3',
     notes: 'A Little Golden Book (#459-00) • Oliver the helpful Christmas elf',
     pages: [] 
   },
@@ -146,7 +146,7 @@ const INITIAL_BOOKS = [
     title: 'Cat Family Christmas', 
     author: 'Lucy Brownridge', 
     category: 'story',
-    cover: '/covers/cat-family-christmas.webp?v=2',
+    cover: '/covers/cat-family-christmas.webp?v=3',
     notes: 'Illustrated by Eunyoung Seo • Lift-the-flap advent book with over 140 flaps',
     pages: [] 
   },
@@ -155,7 +155,7 @@ const INITIAL_BOOKS = [
     title: 'The Christmas Fox', 
     author: 'Anik McGrory', 
     category: 'story',
-    cover: '/covers/the-christmas-fox.webp?v=2',
+    cover: '/covers/the-christmas-fox.webp?v=3',
     notes: 'A gentle snowy forest tale of welcoming baby Jesus',
     pages: [] 
   },
@@ -164,7 +164,7 @@ const INITIAL_BOOKS = [
     title: 'Snow', 
     author: 'P.D. Eastman and Roy McKie', 
     category: 'story',
-    cover: '/covers/snow.webp?v=2',
+    cover: '/covers/snow.webp?v=3',
     notes: 'I Can Read Beginner Books • A fun-filled snowy day adventure',
     pages: [] 
   },
@@ -173,7 +173,7 @@ const INITIAL_BOOKS = [
     title: "The Bears' Christmas", 
     author: 'Stan and Jan Berenstain', 
     category: 'story',
-    cover: '/covers/the-bears-christmas.webp?v=2',
+    cover: '/covers/the-bears-christmas.webp?v=3',
     notes: "Beginner Books • Papa Bear tries out Small Bear's new Christmas sled, skates, and skis",
     pages: [] 
   },
@@ -182,7 +182,7 @@ const INITIAL_BOOKS = [
     title: "D.W.'s Perfect Present", 
     author: 'Marc Brown', 
     category: 'story',
-    cover: '/covers/dws-perfect-present.webp?v=2',
+    cover: '/covers/dws-perfect-present.webp?v=3',
     notes: "Featuring Arthur • Arthur's little sister searches for the perfect Christmas gift",
     pages: [] 
   },
@@ -191,7 +191,7 @@ const INITIAL_BOOKS = [
     title: 'The Nutcracker: A Christmas Pop-up', 
     author: 'Unknown', 
     category: 'story',
-    cover: '/covers/the-nutcracker-popup.webp?v=2',
+    cover: '/covers/the-nutcracker-popup.webp?v=3',
     notes: 'Three-dimensional holiday pop-up edition with magical scenes',
     pages: [] 
   },
@@ -200,7 +200,7 @@ const INITIAL_BOOKS = [
     title: 'Christmas Promises', 
     author: 'Lee G. Smith', 
     category: 'story',
-    cover: '/covers/the-christmas-promise.webp?v=2',
+    cover: '/covers/the-christmas-promise.webp?v=3',
     notes: 'Illustrated by Bill Stroble • A touching Christmas story of hope and love',
     pages: [] 
   },
@@ -210,7 +210,7 @@ const INITIAL_BOOKS = [
     author: 'Rev. Gennaro L. Gentile', 
     category: 'story',
     isMouseBook: true,
-    cover: '/covers/the-mouse-in-the-manger.webp?v=2',
+    cover: '/covers/the-mouse-in-the-manger.webp?v=3',
     notes: 'Art by Vernon McKissack • A heartwarming Christmas Eve tale of a humble mouse at the manger',
     pages: [] 
   },
@@ -220,7 +220,7 @@ const INITIAL_BOOKS = [
     author: 'Richard Scarry',
     category: 'story',
     isMouseBook: true,
-    cover: '/covers/richard-scarrys-christmas-mice.webp?v=2',
+    cover: '/covers/richard-scarrys-christmas-mice.webp?v=3',
     notes: 'A Little Golden Book Classic • Holiday adventures with Richard Scarry\'s cheerful mice',
     pages: []
   },
@@ -229,7 +229,7 @@ const INITIAL_BOOKS = [
     title: 'Frosty the Snowman',
     author: 'Jack Rollins and Steve Nelson',
     category: 'story',
-    cover: '/covers/frosty-the-snowman.webp?v=2',
+    cover: '/covers/frosty-the-snowman.webp?v=3',
     notes: 'Classic illustrated holiday songbook of Frosty the Snowman',
     pages: []
   },
@@ -238,7 +238,7 @@ const INITIAL_BOOKS = [
     title: "This Little Reindeer's First Christmas",
     author: 'Unknown',
     category: 'story',
-    cover: '/covers/this-little-reindeers-first-christmas.webp?v=2',
+    cover: '/covers/this-little-reindeers-first-christmas.webp?v=3',
     notes: "Sweet holiday board book following a little reindeer's first Christmas",
     pages: []
   },
@@ -247,7 +247,7 @@ const INITIAL_BOOKS = [
     title: 'Peace on Earth',
     author: 'Jonny Marx',
     category: 'story',
-    cover: '/covers/peace-on-earth.webp?v=2',
+    cover: '/covers/peace-on-earth.webp?v=3',
     notes: 'Illustrated by Lindsey Sagar • Heartwarming holiday storybook',
     pages: []
   },
@@ -256,7 +256,7 @@ const INITIAL_BOOKS = [
     title: "Biscuit's Pet & Play Christmas",
     author: 'Alyssa Satin Capucilli',
     category: 'story',
-    cover: '/covers/biscuits-pet-and-play-christmas.webp?v=2',
+    cover: '/covers/biscuits-pet-and-play-christmas.webp?v=3',
     notes: 'A Touch & Feel Book • Festive holiday fun with Biscuit the puppy',
     pages: []
   },
@@ -265,7 +265,7 @@ const INITIAL_BOOKS = [
     title: 'Christmas Pop-Up Peekaboo!',
     author: 'Unknown',
     category: 'story',
-    cover: '/covers/christmas-pop-up-peekaboo.webp?v=2',
+    cover: '/covers/christmas-pop-up-peekaboo.webp?v=3',
     notes: 'DK Publishing • Pop-up surprise under every festive flap!',
     pages: []
   },
@@ -274,7 +274,7 @@ const INITIAL_BOOKS = [
     title: 'The Twelve Days of Christmas',
     author: 'Jan Brett',
     category: 'story',
-    cover: '/covers/the-twelve-days-of-christmas-brett.webp?v=2',
+    cover: '/covers/the-twelve-days-of-christmas-brett.webp?v=3',
     notes: 'Adapted and lavishly illustrated by Jan Brett',
     pages: []
   },
@@ -283,7 +283,7 @@ const INITIAL_BOOKS = [
     title: 'Room for a Little One: A Christmas Tale',
     author: 'Martin Waddell',
     category: 'story',
-    cover: '/covers/room-for-a-little-one.webp?v=2',
+    cover: '/covers/room-for-a-little-one.webp?v=3',
     notes: 'Illustrated by Jason Cockcroft • A gentle Nativity tale by the stable warmth',
     pages: []
   },
@@ -292,7 +292,7 @@ const INITIAL_BOOKS = [
     title: 'The Story of Christmas',
     author: 'Patricia A. Pingry',
     category: 'story',
-    cover: '/covers/the-story-of-christmas.webp?v=2',
+    cover: '/covers/the-story-of-christmas.webp?v=3',
     notes: 'Illustrated by Rebecca Thornburgh • Board book introduction to the first Christmas',
     pages: []
   },
@@ -301,7 +301,7 @@ const INITIAL_BOOKS = [
     title: 'The Brave Little Puppy',
     author: 'Lori Evert',
     category: 'story',
-    cover: '/covers/the-brave-little-puppy.webp?v=2',
+    cover: '/covers/the-brave-little-puppy.webp?v=3',
     notes: 'A Wish Book • Photographs by Per Breiehagen • From the creators of The Christmas Wish',
     pages: []
   },
@@ -310,7 +310,7 @@ const INITIAL_BOOKS = [
     title: 'Christmas in the Manger',
     author: 'Nola Buck',
     category: 'story',
-    cover: '/covers/christmas-in-the-manger.webp?v=2',
+    cover: '/covers/christmas-in-the-manger.webp?v=3',
     notes: 'Illustrated by Felicia Bond • Gentle Nativity board book for little hands',
     pages: []
   },
@@ -319,7 +319,7 @@ const INITIAL_BOOKS = [
     title: 'Can You See What I See? Christmas',
     author: 'Walter Wick',
     category: 'story',
-    cover: '/covers/can-you-see-what-i-see-christmas.webp?v=2',
+    cover: '/covers/can-you-see-what-i-see-christmas.webp?v=3',
     notes: 'Scholastic • Search-and-find holiday photograph puzzles by Walter Wick',
     pages: []
   },
@@ -328,7 +328,7 @@ const INITIAL_BOOKS = [
     title: "The Very Hungry Caterpillar's Snowy Hide & Seek",
     author: 'Eric Carle',
     category: 'story',
-    cover: '/covers/very-hungry-caterpillars-snowy-hide-and-seek.webp?v=2',
+    cover: '/covers/very-hungry-caterpillars-snowy-hide-and-seek.webp?v=3',
     notes: 'World of Eric Carle • A finger trail lift-the-flap winter book',
     pages: []
   },
@@ -337,7 +337,7 @@ const INITIAL_BOOKS = [
     title: 'Rudolph the Red-Nosed Reindeer: Rudolph Helps Out',
     author: 'Unknown',
     category: 'story',
-    cover: '/covers/rudolph-helps-out.webp?v=2',
+    cover: '/covers/rudolph-helps-out.webp?v=3',
     notes: 'Classic Rudolph holiday board book adventure',
     pages: []
   },
@@ -346,7 +346,7 @@ const INITIAL_BOOKS = [
     title: "Little Blue Truck's Christmas",
     author: 'Alice Schertle',
     category: 'story',
-    cover: '/covers/little-blue-trucks-christmas.webp?v=2',
+    cover: '/covers/little-blue-trucks-christmas.webp?v=3',
     notes: 'Illustrated by Jill McElmurry • Delivering Christmas trees with twinkling lights!',
     pages: []
   },
@@ -355,7 +355,7 @@ const INITIAL_BOOKS = [
     title: 'Touch and Feel Christmas',
     author: 'Unknown',
     category: 'story',
-    cover: '/covers/touch-and-feel-christmas.webp?v=2',
+    cover: '/covers/touch-and-feel-christmas.webp?v=3',
     notes: 'Shoebox Touch and Feel Holiday Board Book',
     pages: []
   },
@@ -364,7 +364,7 @@ const INITIAL_BOOKS = [
     title: 'Rudolph the Red-Nosed Reindeer: Wonderful Winter',
     author: 'Unknown',
     category: 'story',
-    cover: '/covers/rudolph-wonderful-winter.webp?v=2',
+    cover: '/covers/rudolph-wonderful-winter.webp?v=3',
     notes: 'Classic Rudolph snowy winter board book',
     pages: []
   },
@@ -373,7 +373,7 @@ const INITIAL_BOOKS = [
     title: "Mary's Baby",
     author: 'Jane Chapman',
     category: 'story',
-    cover: '/covers/marys-baby.webp?v=2',
+    cover: '/covers/marys-baby.webp?v=3',
     notes: 'Scholastic • A tender Nativity story of baby Jesus',
     pages: []
   },
@@ -382,7 +382,7 @@ const INITIAL_BOOKS = [
     title: 'The Berenstain Bears: The Very First Christmas',
     author: 'Jan & Mike Berenstain',
     category: 'story',
-    cover: '/covers/berenstain-bears-very-first-christmas.webp?v=2',
+    cover: '/covers/berenstain-bears-very-first-christmas.webp?v=3',
     notes: 'Living Lights • A Faith Story celebrating the Christmas Nativity',
     pages: []
   },
@@ -391,7 +391,7 @@ const INITIAL_BOOKS = [
     title: 'The Night Before Jesus',
     author: 'Herbert Brokering',
     category: 'story',
-    cover: '/covers/the-night-before-jesus.webp?v=2',
+    cover: '/covers/the-night-before-jesus.webp?v=3',
     notes: 'Poetic Christmas reflection by Herbert Brokering',
     pages: []
   },
@@ -400,7 +400,7 @@ const INITIAL_BOOKS = [
     title: 'The Story Orchestra: The Nutcracker',
     author: 'Jessica Courtney-Tickle',
     category: 'story',
-    cover: '/covers/story-orchestra-the-nutcracker.webp?v=2',
+    cover: '/covers/story-orchestra-the-nutcracker.webp?v=3',
     notes: "Illustrated by Jessica Courtney-Tickle • Musical sound book playing Tchaikovsky's Nutcracker",
     pages: []
   },
@@ -409,7 +409,7 @@ const INITIAL_BOOKS = [
     title: 'A Happy Day Book: Christmas',
     author: 'Unknown',
     category: 'story',
-    cover: '/covers/happy-day-christmas.webp?v=2',
+    cover: '/covers/happy-day-christmas.webp?v=3',
     notes: "A Happy Day Book • Vintage holiday children's keepsake",
     pages: []
   },
@@ -418,7 +418,7 @@ const INITIAL_BOOKS = [
     title: 'A Carol for Christmas',
     author: 'Ann Tompert',
     category: 'story',
-    cover: '/covers/a-carol-for-christmas.webp?v=2',
+    cover: '/covers/a-carol-for-christmas.webp?v=3',
     notes: 'Illustrated by Laura Kelly • A heartwarming Christmas story of music and faith',
     pages: []
   },
@@ -427,7 +427,7 @@ const INITIAL_BOOKS = [
     title: 'Construction Site on Christmas Night',
     author: 'Sherri Duskey Rinker',
     category: 'story',
-    cover: '/covers/construction-site-on-christmas-night.webp?v=2',
+    cover: '/covers/construction-site-on-christmas-night.webp?v=3',
     notes: 'Illustrated by AG Ford • From the author of Goodnight, Goodnight, Construction Site',
     pages: []
   },
@@ -436,7 +436,7 @@ const INITIAL_BOOKS = [
     title: 'The Best Christmas Pageant Ever',
     author: 'Barbara Robinson',
     category: 'story',
-    cover: '/covers/the-best-christmas-pageant-ever.webp?v=2',
+    cover: '/covers/the-best-christmas-pageant-ever.webp?v=3',
     notes: 'Avon Camelot Vintage Paperback • The hilarious and touching Herdman family Christmas pageant',
     pages: []
   },
@@ -445,7 +445,7 @@ const INITIAL_BOOKS = [
     title: 'The Gingerbread Man',
     author: 'Gail Yerrill',
     category: 'story',
-    cover: '/covers/the-gingerbread-man.webp?v=2',
+    cover: '/covers/the-gingerbread-man.webp?v=3',
     notes: 'Illustrated by Gail Yerrill • Classic holiday fairy tale',
     pages: []
   },
@@ -455,7 +455,7 @@ const INITIAL_BOOKS = [
     author: 'Maggie Smith',
     category: 'story',
     isMouseBook: true,
-    cover: '/covers/christmas-with-the-mousekins.webp?v=2',
+    cover: '/covers/christmas-with-the-mousekins.webp?v=3',
     notes: 'A Story with Crafts, Recipes, Poems and More! • Cozy holiday fun with the Mousekin family',
     pages: []
   },
@@ -464,7 +464,7 @@ const INITIAL_BOOKS = [
     title: "Corduroy's Christmas",
     author: 'Don Freeman',
     category: 'story',
-    cover: '/covers/corduroys-christmas.webp?v=2',
+    cover: '/covers/corduroys-christmas.webp?v=3',
     notes: 'A Lift-the-Flap Book • Pictures by Lisa McCue • Based on the character created by Don Freeman',
     pages: []
   },
@@ -474,7 +474,7 @@ const INITIAL_BOOKS = [
     author: 'Katy Bratun',
     category: 'story',
     isMouseBook: true,
-    cover: '/covers/gingerbread-mouse.webp?v=2',
+    cover: '/covers/gingerbread-mouse.webp?v=3',
     notes: 'Written and illustrated by Katy Bratun • A mouse builds a cozy gingerbread house on Christmas Eve',
     pages: []
   },
@@ -483,7 +483,7 @@ const INITIAL_BOOKS = [
     title: 'Pick a Pine Tree',
     author: 'Patricia Toht',
     category: 'story',
-    cover: '/covers/pick-a-pine-tree.webp?v=2',
+    cover: '/covers/pick-a-pine-tree.webp?v=3',
     notes: 'Illustrated by Jarvis • Joyful rhyming celebration of decorating the Christmas tree',
     pages: []
   },
@@ -492,7 +492,7 @@ const INITIAL_BOOKS = [
     title: 'The Muttcracker',
     author: 'Anna Kemp',
     category: 'story',
-    cover: '/covers/the-muttcracker.webp?v=2',
+    cover: '/covers/the-muttcracker.webp?v=3',
     notes: "Illustrated by Sara Ogilvie • From the creators of Dogs Don't Do Ballet",
     pages: []
   },
@@ -501,7 +501,7 @@ const INITIAL_BOOKS = [
     title: 'Christmas Crafts',
     author: 'Jean Eick',
     category: 'story',
-    cover: '/covers/christmas-crafts.webp?v=2',
+    cover: '/covers/christmas-crafts.webp?v=3',
     notes: 'Festive holiday projects and handmade decorations for children',
     pages: []
   },
@@ -510,7 +510,7 @@ const INITIAL_BOOKS = [
     title: 'Christmas in the Stable',
     author: 'Astrid Lindgren',
     category: 'story',
-    cover: '/covers/christmas-in-the-stable.webp?v=2',
+    cover: '/covers/christmas-in-the-stable.webp?v=3',
     notes: 'Illustrated by Harald Wiberg • Classic Swedish storytelling of the first Christmas',
     pages: []
   },
@@ -519,7 +519,7 @@ const INITIAL_BOOKS = [
     title: 'Brave Irene',
     author: 'William Steig',
     category: 'story',
-    cover: '/covers/brave-irene.webp?v=2',
+    cover: '/covers/brave-irene.webp?v=3',
     notes: 'New York Times Best Illustrated Book • A courageous girl braves a fierce winter snowstorm',
     pages: []
   },
@@ -528,7 +528,7 @@ const INITIAL_BOOKS = [
     title: 'The Night Before Christmas (Gyo Fujikawa)',
     author: 'Clement C. Moore',
     category: 'story',
-    cover: '/covers/night-before-christmas-fujikawa.webp?v=2',
+    cover: '/covers/night-before-christmas-fujikawa.webp?v=3',
     notes: 'Pictures by Gyo Fujikawa • Beloved vintage illustrated edition',
     pages: []
   },
@@ -538,7 +538,7 @@ const INITIAL_BOOKS = [
     author: 'Michael Brown',
     category: 'story',
     isMouseBook: true,
-    cover: '/covers/santa-mouse-where-are-you.webp?v=2',
+    cover: '/covers/santa-mouse-where-are-you.webp?v=3',
     notes: 'Illustrated by Elfrieda De Witt • Beloved sequel to Santa Mouse',
     pages: []
   },
@@ -548,7 +548,7 @@ const INITIAL_BOOKS = [
     author: 'Deborah Underwood',
     category: 'story',
     isMouseBook: true,
-    cover: '/covers/mouse-family-christmas.webp?v=2',
+    cover: '/covers/mouse-family-christmas.webp?v=3',
     notes: 'Illustrated by Leah Hong • Sweet holiday preparations with the Mouse family',
     pages: []
   },
@@ -558,7 +558,7 @@ const INITIAL_BOOKS = [
     author: 'Anne L. Watson',
     category: 'story',
     isMouseBook: true,
-    cover: '/covers/the-mice-before-christmas.webp?v=2',
+    cover: '/covers/the-mice-before-christmas.webp?v=3',
     notes: 'Illustrated by Wendy Edelson • Miniature woodland mice prepare for St. Nicholas',
     pages: []
   },
@@ -568,7 +568,7 @@ const INITIAL_BOOKS = [
     author: 'Michael Brown',
     category: 'story',
     isMouseBook: true,
-    cover: '/covers/santa-mouse.webp?v=2',
+    cover: '/covers/santa-mouse.webp?v=3',
     notes: 'We have 2 copies of this book in our holiday collection! • Illustrated by Elfrieda De Witt',
     pages: []
   },
@@ -577,7 +577,7 @@ const INITIAL_BOOKS = [
     title: 'The Little Christmas Elf',
     author: 'Unknown',
     category: 'story',
-    cover: '/covers/the-little-christmas-elf.webp?v=2',
+    cover: '/covers/the-little-christmas-elf.webp?v=3',
     notes: 'A Little Golden Book • Classic holiday elf tale',
     pages: []
   },
@@ -586,7 +586,7 @@ const INITIAL_BOOKS = [
     title: "Hilary Knight's The Twelve Days of Christmas",
     author: 'Hilary Knight',
     category: 'story',
-    cover: '/covers/hilary-knights-twelve-days-of-christmas.webp?v=2',
+    cover: '/covers/hilary-knights-twelve-days-of-christmas.webp?v=3',
     notes: 'Whimsical classic illustrations by the artist of Eloise',
     pages: []
   },
@@ -595,7 +595,7 @@ const INITIAL_BOOKS = [
     title: 'Santa is Coming to Indianapolis',
     author: 'Steve Smallman',
     category: 'story',
-    cover: '/covers/santa-is-coming-to-indianapolis.webp?v=2',
+    cover: '/covers/santa-is-coming-to-indianapolis.webp?v=3',
     notes: 'Illustrated by Robert Dunn and Katherine Kirkland • Featuring the Indianapolis Motor Speedway',
     pages: []
   },
@@ -604,7 +604,7 @@ const INITIAL_BOOKS = [
     title: "The Animals' Christmas Eve",
     author: 'Unknown',
     category: 'story',
-    cover: '/covers/the-animals-christmas-eve.webp?v=2',
+    cover: '/covers/the-animals-christmas-eve.webp?v=3',
     notes: 'A Little Golden Book Classic • Woodland and barnyard animals celebrate Christmas Eve',
     pages: []
   },
@@ -614,7 +614,7 @@ const INITIAL_BOOKS = [
     author: 'Steven Kroll',
     category: 'story',
     isMouseBook: true,
-    cover: '/covers/the-biggest-snowman-ever.webp?v=2',
+    cover: '/covers/the-biggest-snowman-ever.webp?v=3',
     notes: 'Illustrated by Jeni Bassett • Two little mice team up to build the biggest snowman in Mouseville!',
     pages: []
   },
@@ -623,7 +623,7 @@ const INITIAL_BOOKS = [
     title: 'The First Christmas: A Christmas Pop-up',
     author: 'Unknown',
     category: 'story',
-    cover: '/covers/the-first-christmas-popup.webp?v=2',
+    cover: '/covers/the-first-christmas-popup.webp?v=3',
     notes: 'Three-dimensional pop-up Nativity keepsake book',
     pages: []
   },
@@ -632,7 +632,7 @@ const INITIAL_BOOKS = [
     title: 'The Night Before Christmas (Classic Edition)',
     author: 'Clement C. Moore',
     category: 'story',
-    cover: '/covers/night-before-christmas-santore.webp?v=2',
+    cover: '/covers/night-before-christmas-santore.webp?v=3',
     notes: 'Illustrated by Charles Santore • #1 New York Times Bestselling Edition',
     pages: []
   },
@@ -642,7 +642,7 @@ const INITIAL_BOOKS = [
     author: 'Laura Numeroff',
     category: 'story',
     isMouseBook: true,
-    cover: '/covers/merry-christmas-mouse.webp?v=2',
+    cover: '/covers/merry-christmas-mouse.webp?v=3',
     notes: 'Illustrated by Felicia Bond • From the creators of If You Give a Mouse a Cookie',
     pages: []
   },
@@ -651,7 +651,7 @@ const INITIAL_BOOKS = [
     title: 'Christmas from Heaven',
     author: 'Tom Brokaw',
     category: 'story',
-    cover: '/covers/christmas-from-heaven.webp?v=2',
+    cover: '/covers/christmas-from-heaven.webp?v=3',
     notes: 'Illustrated by Robert T. Barrett • Mormon Tabernacle Choir • The True Story of the Berlin Candy Bomber',
     pages: []
   },
@@ -660,10 +660,10 @@ const INITIAL_BOOKS = [
     title: 'The Polar Express',
     author: 'Chris Van Allsburg',
     category: 'story',
-    cover: '/covers/the-polar-express.webp?v=2',
+    cover: '/covers/the-polar-express.webp?v=3',
     notes: 'Caldecott Medal Winner • Houghton Mifflin Company • All aboard the magical Christmas Eve train to the North Pole',
     pages: [
-      { id: 'polar_express_title', pageNumber: 1, image: '/covers/the-polar-express-title.webp?v=2' }
+      { id: 'polar_express_title', pageNumber: 1, image: '/covers/the-polar-express-title.webp?v=3' }
     ]
   },
   {
@@ -671,7 +671,7 @@ const INITIAL_BOOKS = [
     title: "Why Christmas Trees Aren't Perfect",
     author: 'Richard H. Schneider',
     category: 'story',
-    cover: '/covers/why-christmas-trees-arent-perfect.webp?v=2',
+    cover: '/covers/why-christmas-trees-arent-perfect.webp?v=3',
     notes: "Illustrated by Elizabeth J. Miles • A tale of Little Pine's selfless kindness in the royal forest",
     pages: []
   },
@@ -680,7 +680,7 @@ const INITIAL_BOOKS = [
     title: 'How the Grinch Stole Christmas!',
     author: 'Dr. Seuss',
     category: 'story',
-    cover: '/covers/how-the-grinch-stole-christmas.webp?v=2',
+    cover: '/covers/how-the-grinch-stole-christmas.webp?v=3',
     notes: 'Classic holiday favorite from Whoville by Dr. Seuss',
     pages: []
   },
@@ -689,7 +689,7 @@ const INITIAL_BOOKS = [
     title: 'Merry Christmas, Curious George',
     author: 'Margret and H.A. Rey',
     category: 'story',
-    cover: '/covers/merry-christmas-curious-george.webp?v=2',
+    cover: '/covers/merry-christmas-curious-george.webp?v=3',
     notes: "Curious George celebrates Christmas at the children's hospital",
     pages: []
   },
@@ -698,7 +698,7 @@ const INITIAL_BOOKS = [
     title: 'Christmas in the Country',
     author: 'Cynthia Rylant & Diane Goode',
     category: 'story',
-    cover: '/covers/christmas-in-the-country.webp?v=2',
+    cover: '/covers/christmas-in-the-country.webp?v=3',
     notes: 'Nostalgic memories of a cozy country Christmas with grandparents',
     pages: []
   },
@@ -707,10 +707,10 @@ const INITIAL_BOOKS = [
     title: 'Rudolph the Red-Nosed Reindeer (1939 Facsimile)',
     author: 'Robert L. May',
     category: 'story',
-    cover: '/covers/rudolph-1939-facsimile.webp?v=2',
+    cover: '/covers/rudolph-1939-facsimile.webp?v=3',
     notes: 'Illustrated by Denver Gillen • Original 1939 Montgomery Ward Edition Facsimile (Applewood Books)',
     pages: [
-      { id: 'rudolph_1939_title', pageNumber: 1, image: '/covers/rudolph-1939-title.webp?v=2' }
+      { id: 'rudolph_1939_title', pageNumber: 1, image: '/covers/rudolph-1939-title.webp?v=3' }
     ]
   },
   {
@@ -718,7 +718,7 @@ const INITIAL_BOOKS = [
     title: 'The Bear Who Slept Through Christmas',
     author: 'Unknown',
     category: 'story',
-    cover: '/covers/the-bear-who-slept-through-christmas.webp?v=2',
+    cover: '/covers/the-bear-who-slept-through-christmas.webp?v=3',
     notes: "Ideals Publishing • Featuring Ted E. Bear's search for the true meaning of Christmas",
     pages: []
   },
@@ -727,7 +727,7 @@ const INITIAL_BOOKS = [
     title: "The Berenstain Bears' Christmas Tree",
     author: 'Stan and Jan Berenstain',
     category: 'story',
-    cover: '/covers/the-berenstain-bears-christmas-tree.webp?v=2',
+    cover: '/covers/the-berenstain-bears-christmas-tree.webp?v=3',
     notes: "Papa Bear searches the forest for the Grizzly family's Christmas tree",
     pages: []
   },
@@ -736,7 +736,7 @@ const INITIAL_BOOKS = [
     title: 'A Christmas Carol: A Christmas Pop-up',
     author: 'Unknown',
     category: 'story',
-    cover: '/covers/a-christmas-carol-popup.webp?v=2',
+    cover: '/covers/a-christmas-carol-popup.webp?v=3',
     notes: "Three-dimensional holiday pop-up adaptation of Charles Dickens' classic",
     pages: []
   },
@@ -745,7 +745,7 @@ const INITIAL_BOOKS = [
     title: 'The Berenstain Bears and the Joy of Giving',
     author: 'Jan & Mike Berenstain',
     category: 'story',
-    cover: '/covers/the-berenstain-bears-joy-of-giving.webp?v=2',
+    cover: '/covers/the-berenstain-bears-joy-of-giving.webp?v=3',
     notes: 'Living Lights • A Faith Story • Brother and Sister Bear discover the joy of giving',
     pages: []
   },
@@ -754,7 +754,7 @@ const INITIAL_BOOKS = [
     title: 'Christmas Comes to Monster Mountain',
     author: 'Unknown',
     category: 'story',
-    cover: '/covers/christmas-comes-to-monster-mountain.webp?v=2',
+    cover: '/covers/christmas-comes-to-monster-mountain.webp?v=3',
     notes: 'Ideals Publishing • Featuring Ted E. Bear in a snowy mountain adventure',
     pages: []
   },
@@ -763,7 +763,7 @@ const INITIAL_BOOKS = [
     title: 'The Baby Jesus',
     author: 'Dr. Mary Alice Jones',
     category: 'story',
-    cover: '/covers/the-baby-jesus.webp?v=2',
+    cover: '/covers/the-baby-jesus.webp?v=3',
     notes: 'Checkerboard Press (#086) • A First Religious Book • Vintage Nativity keepsake',
     pages: []
   },
@@ -772,7 +772,7 @@ const INITIAL_BOOKS = [
     title: 'Christmas Joys',
     author: 'Unknown',
     category: 'story',
-    cover: '/covers/christmas-joys.webp?v=2',
+    cover: '/covers/christmas-joys.webp?v=3',
     notes: 'A Rand McNally Junior Elf Book (#8206 • 49¢) • Vintage holiday storybook',
     pages: []
   },
@@ -781,7 +781,7 @@ const INITIAL_BOOKS = [
     title: 'The Night Before Christmas (Little Golden Book)',
     author: 'Unknown',
     category: 'story',
-    cover: '/covers/night-before-christmas-golden.webp?v=2',
+    cover: '/covers/night-before-christmas-golden.webp?v=3',
     notes: 'A Little Golden Book Vintage Edition',
     pages: []
   },
@@ -790,7 +790,7 @@ const INITIAL_BOOKS = [
     title: 'Jingle Bells',
     author: 'Unknown',
     category: 'story',
-    cover: '/covers/jingle-bells-golden.webp?v=2',
+    cover: '/covers/jingle-bells-golden.webp?v=3',
     notes: 'A Little Golden Book Vintage Edition (#58-31) • Festive sleigh ride adventure',
     pages: []
   },
@@ -799,7 +799,7 @@ const INITIAL_BOOKS = [
     title: 'Rudolph the Red-Nosed Reindeer (Little Golden Book)',
     author: 'Unknown',
     category: 'story',
-    cover: '/covers/rudolph-little-golden-book.webp?v=2',
+    cover: '/covers/rudolph-little-golden-book.webp?v=3',
     notes: 'A Little Golden Book Vintage Edition (#331 • 29¢)',
     pages: []
   },
@@ -808,7 +808,7 @@ const INITIAL_BOOKS = [
     title: 'The Snowman',
     author: 'Unknown',
     category: 'story',
-    cover: '/covers/the-snowman-golden.webp?v=2',
+    cover: '/covers/the-snowman-golden.webp?v=3',
     notes: 'A Little Golden Book (#00451) • Magical winter snowman story',
     pages: []
   },
@@ -817,7 +817,7 @@ const INITIAL_BOOKS = [
     title: 'The Christmas Miracle of Jonathan Toomey',
     author: 'Susan Wojciechowski',
     category: 'story',
-    cover: '/covers/christmas-miracle-of-jonathan-toomey.webp?v=2',
+    cover: '/covers/christmas-miracle-of-jonathan-toomey.webp?v=3',
     notes: 'Illustrated by P.J. Lynch • A master woodcarver carves a Nativity set that heals his heart',
     pages: []
   },
@@ -826,10 +826,10 @@ const INITIAL_BOOKS = [
     title: "'Twas the Night Before Christmas (1937 Vintage)",
     author: 'Clement Clarke Moore',
     category: 'story',
-    cover: '/covers/twas-the-night-before-christmas-1937.webp?v=2',
+    cover: '/covers/twas-the-night-before-christmas-1937.webp?v=3',
     notes: 'Illustrated by Thelma Gooch • 1937 Grosset & Dunlap Heirloom Edition',
     pages: [
-      { id: 'twas_1937_title', pageNumber: 1, image: '/covers/twas-the-night-before-christmas-1937-title.webp?v=2' }
+      { id: 'twas_1937_title', pageNumber: 1, image: '/covers/twas-the-night-before-christmas-1937-title.webp?v=3' }
     ]
   },
   {
@@ -837,7 +837,7 @@ const INITIAL_BOOKS = [
     title: 'The Small One',
     author: 'Charles Tazewell',
     category: 'story',
-    cover: '/covers/the-small-one.webp?v=2',
+    cover: '/covers/the-small-one.webp?v=3',
     notes: 'A Story for Those Who Like Christmas and Small Donkeys • The gentle donkey who carried Mary to Bethlehem',
     pages: []
   },
@@ -846,7 +846,7 @@ const INITIAL_BOOKS = [
     title: 'Christmas Customs and Traditions: Their History and Significance',
     author: 'Clement A. Miles',
     category: 'story',
-    cover: '/covers/christmas-customs-and-traditions.webp?v=2',
+    cover: '/covers/christmas-customs-and-traditions.webp?v=3',
     notes: 'With 21 Illustrations • Classic historical treasury of Christmas folklore and traditions',
     pages: []
   },
@@ -855,7 +855,7 @@ const INITIAL_BOOKS = [
     title: 'The Twelve Days of Christmas: A Christmas Carol',
     author: 'Unknown',
     category: 'story',
-    cover: '/covers/twelve-days-of-christmas-golden.webp?v=2',
+    cover: '/covers/twelve-days-of-christmas-golden.webp?v=3',
     notes: 'A Little Golden Book (#454-09) • Classic illustrated carol',
     pages: []
   },
@@ -866,7 +866,7 @@ const INITIAL_BOOKS = [
     category: 'story',
     isMagazine: true,
     badge: 'Vintage Holiday Magazine',
-    cover: '/covers/jolly-old-santa-claus-ideals.webp?v=2',
+    cover: '/covers/jolly-old-santa-claus-ideals.webp?v=3',
     notes: 'Vintage Holiday Magazine • Ideals Publishing ($2.50 Issue) • Illustrated holiday poetry, stories, and nostalgia',
     pages: []
   },
@@ -875,7 +875,7 @@ const INITIAL_BOOKS = [
     title: 'The Jolly Christmas Postman',
     author: 'Janet & Allan Ahlberg',
     category: 'story',
-    cover: '/covers/the-jolly-christmas-postman.webp?v=2',
+    cover: '/covers/the-jolly-christmas-postman.webp?v=3',
     notes: 'Interactive storybook with real holiday letters and cards for fairy-tale characters',
     pages: []
   },
@@ -884,7 +884,7 @@ const INITIAL_BOOKS = [
     title: "Arthur's Christmas",
     author: 'Marc Brown',
     category: 'story',
-    cover: '/covers/arthurs-christmas.webp?v=2',
+    cover: '/covers/arthurs-christmas.webp?v=3',
     notes: 'An Arthur Adventure • Arthur tries to find the perfect Christmas gift for Santa',
     pages: []
   },
@@ -894,7 +894,7 @@ const INITIAL_BOOKS = [
     author: 'Toby Forward & Ruth Brown',
     category: 'story',
     isMouseBook: true,
-    cover: '/covers/the-christmas-mouse.webp?v=2',
+    cover: '/covers/the-christmas-mouse.webp?v=3',
     notes: 'Written by Toby Forward • Illustrated by Ruth Brown • A lonely mouse finds Christmas warmth',
     pages: []
   },
@@ -903,7 +903,7 @@ const INITIAL_BOOKS = [
     title: 'One Christmas Wish',
     author: 'Katherine Rundell',
     category: 'story',
-    cover: '/covers/one-christmas-wish.webp?v=2',
+    cover: '/covers/one-christmas-wish.webp?v=3',
     notes: 'Illustrated by Emily Sutton • Bloomsbury • Christmas Eve ornaments come to life',
     pages: []
   },
@@ -912,7 +912,7 @@ const INITIAL_BOOKS = [
     title: 'The Santa Claus Book',
     author: 'Unknown',
     category: 'story',
-    cover: '/covers/the-santa-claus-book-golden-shape.webp?v=2',
+    cover: '/covers/the-santa-claus-book-golden-shape.webp?v=3',
     notes: 'A Golden Shape Book (#5920) • Vintage die-cut Santa Claus storybook',
     pages: []
   },
@@ -921,7 +921,7 @@ const INITIAL_BOOKS = [
     title: 'I Spy Christmas: A Book of Picture Riddles',
     author: 'Jean Marzollo',
     category: 'story',
-    cover: '/covers/i-spy-christmas.webp?v=2',
+    cover: '/covers/i-spy-christmas.webp?v=3',
     notes: 'Photographs by Walter Wick • Riddles by Jean Marzollo • Scholastic New Challenges Edition',
     pages: []
   },
@@ -930,7 +930,7 @@ const INITIAL_BOOKS = [
     title: 'Jingle, the Christmas Clown',
     author: 'Tomie dePaola',
     category: 'story',
-    cover: '/covers/jingle-the-christmas-clown.webp?v=2',
+    cover: '/covers/jingle-the-christmas-clown.webp?v=3',
     notes: 'Written and illustrated by Tomie dePaola • A tiny Italian circus brings joy on Christmas Eve',
     pages: []
   },
@@ -940,7 +940,7 @@ const INITIAL_BOOKS = [
     author: 'Priscilla Hillman',
     category: 'story',
     isMouseBook: true,
-    cover: '/covers/a-merry-mouse-christmas-abc.webp?v=2',
+    cover: '/covers/a-merry-mouse-christmas-abc.webp?v=3',
     notes: 'Charming alphabet of Victorian mice celebrating Christmas from A to Z',
     pages: []
   },
@@ -949,7 +949,7 @@ const INITIAL_BOOKS = [
     title: "Jan Brett's Christmas Treasury",
     author: 'Jan Brett',
     category: 'story',
-    cover: '/covers/jan-bretts-christmas-treasury.webp?v=2',
+    cover: '/covers/jan-bretts-christmas-treasury.webp?v=3',
     notes: 'Seven beloved Jan Brett holiday classics collected in one heirloom volume',
     pages: []
   },
@@ -959,7 +959,7 @@ const INITIAL_BOOKS = [
     author: 'Eleonore Schmid',
     category: 'story',
     isMouseBook: true,
-    cover: '/covers/santa-claus-and-the-dormouse.webp?v=2',
+    cover: '/covers/santa-claus-and-the-dormouse.webp?v=3',
     notes: 'Written and illustrated by Eleonore Schmid • A curious dormouse wakes up to discover Christmas',
     pages: []
   },
@@ -968,7 +968,7 @@ const INITIAL_BOOKS = [
     title: 'The Magic of Christmas',
     author: 'Claire Freedman',
     category: 'story',
-    cover: '/covers/the-magic-of-christmas.webp?v=2',
+    cover: '/covers/the-magic-of-christmas.webp?v=3',
     notes: 'Illustrated by Gail Yerrill • Woodland friends share the wonder of Christmas Eve',
     pages: []
   },
@@ -977,7 +977,7 @@ const INITIAL_BOOKS = [
     title: 'The Christmas Wish',
     author: 'Lori Evert',
     category: 'story',
-    cover: '/covers/the-christmas-wish.webp?v=2',
+    cover: '/covers/the-christmas-wish.webp?v=3',
     notes: "Photographs by Per Breiehagen • New York Times Bestseller • Anja's magical Nordic quest to find Santa",
     pages: []
   },
@@ -987,7 +987,7 @@ const INITIAL_BOOKS = [
     author: 'Karma Wilson',
     category: 'story',
     isMouseBook: true,
-    cover: '/covers/mortimers-christmas-manger.webp?v=2',
+    cover: '/covers/mortimers-christmas-manger.webp?v=3',
     notes: 'Illustrated by Jane Chapman • A little mouse makes room in the Nativity manger for Baby Jesus',
     pages: []
   },
@@ -996,7 +996,7 @@ const INITIAL_BOOKS = [
     title: "The Witch's Christmas",
     author: 'Norman Bridwell',
     category: 'story',
-    cover: '/covers/the-witchs-christmas.webp?v=2',
+    cover: '/covers/the-witchs-christmas.webp?v=3',
     notes: 'Vintage Scholastic Paperback (TW 1793 • 50¢) • From the creator of Clifford the Big Red Dog',
     pages: []
   },
@@ -1006,7 +1006,7 @@ const INITIAL_BOOKS = [
     author: 'Peggy Burton',
     category: 'story',
     isMouseBook: true,
-    cover: '/covers/christmas-comes-to-mrs-mouse.webp?v=2',
+    cover: '/covers/christmas-comes-to-mrs-mouse.webp?v=3',
     notes: 'A cozy woodland mouse tale of holiday hospitality',
     pages: []
   },
@@ -1015,7 +1015,7 @@ const INITIAL_BOOKS = [
     title: 'Indian Christmas: Essays, Memories, Hymns',
     author: 'Jerry Pinto and Madhulika Liddle',
     category: 'story',
-    cover: '/covers/indian-christmas.webp?v=2',
+    cover: '/covers/indian-christmas.webp?v=3',
     notes: 'Edited and with Introductions by Jerry Pinto and Madhulika Liddle • Rich anthology of Christmas traditions across India',
     pages: []
   },
@@ -1024,10 +1024,10 @@ const INITIAL_BOOKS = [
     title: 'A Treasury of Christmas Songs and Carols',
     author: 'Henry W. Simon',
     category: 'story',
-    cover: '/covers/treasury-of-christmas-songs-and-carols.webp?v=2',
+    cover: '/covers/treasury-of-christmas-songs-and-carols.webp?v=3',
     notes: "The Easton Press Collector's Edition • Bound in Genuine Leather • Edited and annotated by Henry W. Simon",
     pages: [
-      { id: 'treasury_songs_title', pageNumber: 1, image: '/covers/treasury-of-christmas-songs-and-carols-title.webp?v=2' }
+      { id: 'treasury_songs_title', pageNumber: 1, image: '/covers/treasury-of-christmas-songs-and-carols-title.webp?v=3' }
     ]
   },
   {
@@ -1037,10 +1037,10 @@ const INITIAL_BOOKS = [
     category: 'story',
     isMagazine: true,
     badge: 'Vintage Holiday Magazine',
-    cover: '/covers/christmas-annual-vol-16.webp?v=2',
+    cover: '/covers/christmas-annual-vol-16.webp?v=3',
     notes: 'Vintage Holiday Magazine • Augsburg Publishing House • Includes "Winter\'s Approach" watercolor by Garnet Hazard',
     pages: [
-      { id: 'annual_16_title', pageNumber: 1, image: '/covers/christmas-annual-vol-16-title.webp?v=2' }
+      { id: 'annual_16_title', pageNumber: 1, image: '/covers/christmas-annual-vol-16-title.webp?v=3' }
     ]
   },
   {
@@ -1050,10 +1050,10 @@ const INITIAL_BOOKS = [
     category: 'story',
     isMagazine: true,
     badge: 'Vintage Holiday Magazine',
-    cover: '/covers/christmas-annual-vol-41.webp?v=2',
+    cover: '/covers/christmas-annual-vol-41.webp?v=3',
     notes: 'Vintage Holiday Magazine • Volume Forty-One (1971) • Edited by Randolph E. Haugan • Augsburg Publishing House, Minneapolis',
     pages: [
-      { id: 'annual_41_title', pageNumber: 1, image: '/covers/christmas-annual-vol-41-title.webp?v=2' }
+      { id: 'annual_41_title', pageNumber: 1, image: '/covers/christmas-annual-vol-41-title.webp?v=3' }
     ]
   },
   {
@@ -1063,10 +1063,10 @@ const INITIAL_BOOKS = [
     category: 'story',
     isMagazine: true,
     badge: 'Vintage Holiday Magazine',
-    cover: '/covers/christmas-annual-vol-47.webp?v=2',
+    cover: '/covers/christmas-annual-vol-47.webp?v=3',
     notes: 'Vintage Holiday Magazine • Volume Forty-Seven (1977) • Edited by Randolph E. Haugan • Augsburg Publishing House, Minneapolis',
     pages: [
-      { id: 'annual_47_title', pageNumber: 1, image: '/covers/christmas-annual-vol-47-title.webp?v=2' }
+      { id: 'annual_47_title', pageNumber: 1, image: '/covers/christmas-annual-vol-47-title.webp?v=3' }
     ]
   },
   {
@@ -1074,7 +1074,7 @@ const INITIAL_BOOKS = [
     title: 'Turkey Claus',
     author: 'Wendi Silvano',
     category: 'story',
-    cover: '/covers/turkey-claus.webp?v=2',
+    cover: '/covers/turkey-claus.webp?v=3',
     notes: 'Illustrated by Lee Harper • Turkey disguises himself to visit Santa at the North Pole!',
     pages: []
   },
@@ -1083,7 +1083,7 @@ const INITIAL_BOOKS = [
     title: 'Reindeer of the Year',
     author: 'Unknown',
     category: 'story',
-    cover: '/covers/reindeer-of-the-year.webp?v=2',
+    cover: '/covers/reindeer-of-the-year.webp?v=3',
     notes: 'With two-way reversible sequins! • Interactive holiday board book',
     pages: []
   },
@@ -1103,7 +1103,8 @@ const INITIAL_BOOKS = [
     title: "Strom Family Cookbook",
     author: 'Down Home For Dinner • 1999 Reunion',
     category: 'cookbook',
-    cover: '/covers/strom-family-cookbook.webp?v=2',
+    badge: 'Cookbook',
+    cover: '/covers/strom-family-cookbook.webp?v=3',
     pdfUrl: '/strom_family_cookbook_cleaned.pdf',
     notes: 'Treasured family recipes, childhood memories & photos dedicated to Albion Sr. & Laura Strom 🥧 (Contributed by Erin, Sally, Peter, Virginia & family)',
     pages: Array.from({ length: 86 }, (_, i) => ({
@@ -1117,7 +1118,8 @@ const INITIAL_BOOKS = [
     title: 'The Twelve Days of Christmas Cookbook',
     author: 'Suzanne Huntley',
     category: 'cookbook',
-    cover: '/covers/twelve-days-of-christmas-cookbook.webp?v=2',
+    badge: 'Cookbook',
+    cover: '/covers/twelve-days-of-christmas-cookbook.webp?v=3',
     notes: 'Praised by James Beard: "To a lover of the Christmas traditions, this book is a joy. All the recipes awaken memories of wondrous smells and tastes of the season."',
     pages: [],
   },
@@ -1168,10 +1170,12 @@ export default function App() {
     return list.map((b) => {
       const fresh = initMap.get(b.id);
       if (!fresh) return b;
+      const shouldUseFreshCover = !b.cover || b.cover.startsWith('/covers/');
       if (b.userEdited) {
         return {
           ...fresh,
           ...b,
+          cover: shouldUseFreshCover ? fresh.cover : b.cover,
           pages: b.pages && b.pages.length > 0 ? b.pages : fresh.pages,
         };
       }
@@ -1510,7 +1514,7 @@ export default function App() {
                           : 'text-stone-400 hover:text-stone-200'
                       }`}
                     >
-                      <span>🪵</span> <span>Shelf</span>
+                      <span>🎄</span> <span>Shelf</span>
                     </button>
                     <button
                       onClick={() => setViewMode('covers')}
@@ -1615,9 +1619,9 @@ export default function App() {
                       className={`px-2.5 py-1 rounded-md transition ${
                         viewMode === 'spines' ? 'bg-amber-800 text-amber-100 font-semibold' : 'text-stone-400'
                       }`}
-                      title="Shelf Spines"
+                      title="Bookshelf View"
                     >
-                      🪵
+                      🎄
                     </button>
                     <button
                       onClick={() => setViewMode('covers')}
@@ -1715,14 +1719,14 @@ export default function App() {
                   <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
                     {/* Large, Beautiful 3D Book Cover */}
                     <div className="relative flex-shrink-0 group">
-                      <div className="relative w-56 sm:w-72 md:w-80 h-[330px] sm:h-[410px] md:h-[450px] rounded-r-xl rounded-l-sm shadow-[0_22px_45px_rgba(0,0,0,0.9),-8px_0_20px_rgba(0,0,0,0.6)] overflow-hidden border border-amber-950/60 bg-stone-900">
+                      <div className="relative w-56 sm:w-72 md:w-80 h-[330px] sm:h-[410px] md:h-[450px] rounded-r-xl rounded-l-sm shadow-[0_22px_45px_rgba(0,0,0,0.9),-8px_0_20px_rgba(0,0,0,0.6)] overflow-hidden border border-amber-950/60 bg-[#140c08] flex items-center justify-center">
                         {/* Realistic 3D Hardcover Spine Highlight */}
                         <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-black/60 via-white/15 to-transparent z-10 pointer-events-none" />
 
                         <img
                           src={getBookCoverUrl(selectedBook) || selectedBook.cover}
                           alt={selectedBook.title}
-                          className="w-full h-full object-cover select-none"
+                          className="w-full h-full object-contain select-none"
                         />
                       </div>
                     </div>
@@ -1736,6 +1740,13 @@ export default function App() {
                               <span>🎄</span>
                               <span>Erin's Holiday Collection</span>
                             </div>
+
+                            {(selectedBook.category === 'cookbook' || selectedBook.id === 'cookbook_erin' || selectedBook.id === 'twelve_days_of_christmas_cookbook') && (
+                              <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-900/80 border border-amber-400/60 rounded-full text-[11px] font-sans font-semibold text-amber-100 shadow">
+                                <span>🥧</span>
+                                <span>Cookbook</span>
+                              </div>
+                            )}
 
                             {isMagazineItem(selectedBook) && (
                               <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-900/70 border border-amber-400/50 rounded-full text-[11px] font-sans font-semibold text-amber-100 shadow">
