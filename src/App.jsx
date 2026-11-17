@@ -248,7 +248,7 @@ const INITIAL_BOOKS = [
     title: "This Little Reindeer's First Christmas",
     author: 'Unknown',
     category: 'story',
-    cover: '/covers/this-little-reindeers-first-christmas.webp?v=5',
+    cover: '/covers/this-little-reindeers-first-christmas.webp?v=6',
     notes: "Sweet holiday board book following a little reindeer's first Christmas",
     pages: []
   },
