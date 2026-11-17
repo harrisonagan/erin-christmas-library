@@ -1316,6 +1316,21 @@ export default function App() {
     } catch {}
   };
 
+  // Helper: silently back up any custom or user-edited books to Firebase Cloud in background
+  const syncLocalEditsToCloud = async (bookList) => {
+    if (!isFirebaseConfigured() || !Array.isArray(bookList)) return;
+    const initIdSet = new Set(INITIAL_BOOKS.map((b) => b.id));
+    for (const b of bookList) {
+      if (b && (b.userEdited || !initIdSet.has(b.id))) {
+        try {
+          await saveBookToCloud(b);
+        } catch (e) {
+          // Firestore offline persistence caches and syncs when online
+        }
+      }
+    }
+  };
+
   // 1. Load from IndexedDB on launch (immune to 5MB localStorage limit!)
   useEffect(() => {
     async function loadIndexedDBBooks() {
@@ -1329,8 +1344,23 @@ export default function App() {
             const missing = currentCleaned.filter((b) => !storedIds.has(b.id));
             const merged = [...cleaned, ...missing];
             saveBooksToIndexedDB(merged);
+            syncLocalEditsToCloud(merged);
             return merged;
           });
+        } else {
+          // LocalStorage fallback check
+          const localStr = localStorage.getItem('erin_christmas_books');
+          if (localStr) {
+            try {
+              const localParsed = JSON.parse(localStr);
+              if (Array.isArray(localParsed) && localParsed.length > 0) {
+                const cleaned = upgradeBuiltInBooks(localParsed.filter(b => !LEGACY_PLACEHOLDERS.has(String(b.id))));
+                setBooks(cleaned);
+                saveBooksToIndexedDB(cleaned);
+                syncLocalEditsToCloud(cleaned);
+              }
+            } catch (e) {}
+          }
         }
       } catch (err) {
         console.warn('Error reading from IndexedDB:', err);
@@ -1414,8 +1444,15 @@ export default function App() {
     }
   };
 
-  const handleBookAdded = (newBook) => {
+  const handleBookAdded = async (newBook) => {
     setBooks((prev) => [newBook, ...prev]);
+    if (isFirebaseConfigured() && newBook) {
+      try {
+        await saveBookToCloud(newBook);
+      } catch (err) {
+        console.warn('Background cloud backup error:', err);
+      }
+    }
   };
 
   const handleDeleteBook = async (bookId) => {
@@ -1591,15 +1628,6 @@ export default function App() {
                   </div>
 
                   <button
-                    onClick={() => setIsCloudModalOpen(true)}
-                    className="px-3 py-1.5 bg-stone-900/80 hover:bg-stone-800 border border-stone-800 rounded-lg text-xs font-sans text-stone-300 hover:text-amber-200 transition flex items-center gap-1.5"
-                    title="Cloud Sync & Backup"
-                  >
-                    <span>☁️</span>
-                    <span className="hidden lg:inline">{isCloudConnected ? 'Cloud Active' : 'Cloud Backup'}</span>
-                  </button>
-
-                  <button
                     onClick={() => setIsAddModalOpen(true)}
                     className="px-4 py-2 bg-gradient-to-r from-amber-700 to-amber-800 hover:from-amber-600 text-white rounded-xl text-xs font-sans font-medium transition shadow flex items-center gap-1.5"
                   >
@@ -1656,13 +1684,6 @@ export default function App() {
                   </h2>
 
                   <div className="flex items-center gap-1.5">
-                    <button
-                      onClick={() => setIsCloudModalOpen(true)}
-                      className="px-2 py-1 bg-stone-900 border border-stone-800 rounded-lg text-xs text-stone-300 hover:text-amber-200"
-                      title="Cloud Sync & Backup"
-                    >
-                      ☁️
-                    </button>
                     <button
                       onClick={() => setIsAddModalOpen(true)}
                       className="px-3 py-1 bg-gradient-to-r from-amber-700 to-amber-800 text-white rounded-lg text-xs font-sans font-semibold shadow flex items-center gap-1 active:scale-95"
