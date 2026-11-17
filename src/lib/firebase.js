@@ -122,7 +122,10 @@ export function saveFirebaseConfig(configObj) {
 }
 
 // Allowed Google accounts that can access Erin's Christmas Library
-export const ALLOWED_EMAILS = ['harrisonagan@gmail.com'];
+export const ALLOWED_EMAILS = [
+  'harrisonagan@gmail.com',
+  'erinagan90@gmail.com',
+];
 
 export function isAuthorizedUser(user) {
   if (!user || !user.email) return false;
