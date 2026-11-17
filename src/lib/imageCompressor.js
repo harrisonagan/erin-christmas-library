@@ -1,22 +1,20 @@
 /**
- * High-performance browser image compressor and uniform book cover cropper.
- * Standardizes all book covers to a uniform 1:1.4 aspect ratio (600x840px)
- * and compresses them down to web-optimized WebP files (~150-250KB).
+ * High-performance browser image compressor and precision book cover auto-cropper.
+ * Automatically trims surrounding wood/table surfaces and preserves natural book proportions.
  */
 
-export const TARGET_COVER_WIDTH = 600;
-export const TARGET_COVER_HEIGHT = 840; // Standard 1:1.4 book cover ratio
+export const TARGET_COVER_WIDTH = 780;
+export const TARGET_COVER_HEIGHT = 880;
 
 /**
- * Smart edge detector that automatically trims table surfaces and background borders.
- * Operates entirely on the browser canvas in ~15ms, providing instant auto-crop
- * even before network or AI requests finish.
+ * Smart multi-point edge detector that automatically slices off wood tables and background borders.
+ * Operates entirely on the browser canvas in ~15ms.
  */
 export async function autoTrimTableBorders(imageSource) {
   return new Promise((resolve) => {
     const handleImage = (img) => {
       try {
-        const sampleW = 200;
+        const sampleW = 240;
         const sampleH = Math.round((img.height / img.width) * sampleW);
 
         const canvas = document.createElement('canvas');
@@ -28,82 +26,88 @@ export async function autoTrimTableBorders(imageSource) {
         const imageData = ctx.getImageData(0, 0, sampleW, sampleH);
         const data = imageData.data;
 
-        // Sample background color from outer perimeter corners
-        const cornerIndices = [
-          (10 * sampleW + 10) * 4,
-          (10 * sampleW + (sampleW - 10)) * 4,
-          ((sampleH - 10) * sampleW + 10) * 4,
-          ((sampleH - 10) * sampleW + (sampleW - 10)) * 4,
-        ];
-
-        let avgR = 0, avgG = 0, avgB = 0;
-        for (const idx of cornerIndices) {
-          avgR += data[idx];
-          avgG += data[idx + 1];
-          avgB += data[idx + 2];
-        }
-        avgR /= 4; avgG /= 4; avgB /= 4;
-
-        const isBg = (x, y) => {
-          const idx = (y * sampleW + x) * 4;
-          const r = data[idx];
-          const g = data[idx + 1];
-          const b = data[idx + 2];
-          const diff = Math.abs(r - avgR) + Math.abs(g - avgG) + Math.abs(b - avgB);
-          return diff < 45; // Threshold for background table surface
+        const getRGB = (x, y) => {
+          const cx = Math.min(sampleW - 1, Math.max(0, Math.floor(x)));
+          const cy = Math.min(sampleH - 1, Math.max(0, Math.floor(y)));
+          const idx = (cy * sampleW + cx) * 4;
+          return [data[idx], data[idx + 1], data[idx + 2]];
         };
 
-        // Scan from top
+        // Sample outer perimeter points around the photo
+        const bgSamples = [];
+        for (const fx of [0.03, 0.18, 0.35, 0.5, 0.65, 0.82, 0.97]) {
+          bgSamples.push(getRGB(sampleW * fx, sampleH * 0.02));
+          bgSamples.push(getRGB(sampleW * fx, sampleH * 0.98));
+        }
+        for (const fy of [0.18, 0.35, 0.5, 0.65, 0.82]) {
+          bgSamples.push(getRGB(sampleW * 0.02, sampleH * fy));
+          bgSamples.push(getRGB(sampleW * 0.98, sampleH * fy));
+        }
+
+        const isBg = (x, y) => {
+          const [r, g, b] = getRGB(x, y);
+          // Warm wood table signature
+          if (r > g + 16 && g > b + 8 && r - b >= 28 && r >= 45 && r <= 190 && g <= 135 && b <= 95) {
+            for (const [sr, sg, sb] of bgSamples) {
+              if (Math.abs(r - sr) + Math.abs(g - sg) + Math.abs(b - sb) < 62) return true;
+            }
+          }
+          for (const [sr, sg, sb] of bgSamples) {
+            if (Math.abs(r - sr) + Math.abs(g - sg) + Math.abs(b - sb) < 46) return true;
+          }
+          return false;
+        };
+
         let top = 0;
-        while (top < sampleH * 0.3) {
-          let bgCount = 0;
-          for (let x = Math.floor(sampleW * 0.2); x < sampleW * 0.8; x += 4) {
+        while (top < sampleH * 0.35) {
+          let bgCount = 0, total = 0;
+          for (let x = Math.floor(sampleW * 0.18); x < sampleW * 0.82; x += 3) {
+            total++;
             if (isBg(x, top)) bgCount++;
           }
-          if (bgCount < (sampleW * 0.6) / 8) break;
+          if (bgCount / total < 0.38) break;
           top++;
         }
 
-        // Scan from bottom
         let bottom = sampleH - 1;
-        while (bottom > sampleH * 0.7) {
-          let bgCount = 0;
-          for (let x = Math.floor(sampleW * 0.2); x < sampleW * 0.8; x += 4) {
+        while (bottom > sampleH * 0.65) {
+          let bgCount = 0, total = 0;
+          for (let x = Math.floor(sampleW * 0.18); x < sampleW * 0.82; x += 3) {
+            total++;
             if (isBg(x, bottom)) bgCount++;
           }
-          if (bgCount < (sampleW * 0.6) / 8) break;
+          if (bgCount / total < 0.38) break;
           bottom--;
         }
 
-        // Scan from left
         let left = 0;
-        while (left < sampleW * 0.3) {
-          let bgCount = 0;
-          for (let y = Math.floor(sampleH * 0.2); y < sampleH * 0.8; y += 4) {
+        while (left < sampleW * 0.35) {
+          let bgCount = 0, total = 0;
+          for (let y = Math.floor(sampleH * 0.18); y < sampleH * 0.82; y += 3) {
+            total++;
             if (isBg(left, y)) bgCount++;
           }
-          if (bgCount < (sampleH * 0.6) / 8) break;
+          if (bgCount / total < 0.38) break;
           left++;
         }
 
-        // Scan from right
         let right = sampleW - 1;
-        while (right > sampleW * 0.7) {
-          let bgCount = 0;
-          for (let y = Math.floor(sampleH * 0.2); y < sampleH * 0.8; y += 4) {
+        while (right > sampleW * 0.65) {
+          let bgCount = 0, total = 0;
+          for (let y = Math.floor(sampleH * 0.18); y < sampleH * 0.82; y += 3) {
+            total++;
             if (isBg(right, y)) bgCount++;
           }
-          if (bgCount < (sampleH * 0.6) / 8) break;
+          if (bgCount / total < 0.38) break;
           right--;
         }
 
-        // Normalize coordinates to 0-1000 range
         const ymin = Math.floor((top / sampleH) * 1000);
         const ymax = Math.ceil((bottom / sampleH) * 1000);
         const xmin = Math.floor((left / sampleW) * 1000);
         const xmax = Math.ceil((right / sampleW) * 1000);
 
-        if ((ymax - ymin > 500) && (xmax - xmin > 500) && (ymin > 15 || ymax < 985 || xmin > 15 || xmax < 985)) {
+        if ((ymax - ymin > 420) && (xmax - xmin > 420) && (ymin > 12 || ymax < 988 || xmin > 12 || xmax < 988)) {
           resolve(cropToBoundingBox(img, [ymin, xmin, ymax, xmax]));
         } else {
           resolve(null);
@@ -142,9 +146,8 @@ export async function autoTrimTableBorders(imageSource) {
 }
 
 /**
- * Automatically crops an image to the exact rectangular book cover bounds detected by AI.
+ * Automatically crops an image to the exact rectangular book cover bounds.
  * box2d is expected as [ymin, xmin, ymax, xmax] on a normalized 0-1000 scale.
- * Slices off 100% of surrounding table surfaces, hands, and background clutter.
  */
 export async function cropToBoundingBox(imageSource, box2d) {
   if (!box2d || !Array.isArray(box2d) || box2d.length !== 4) return null;
@@ -153,10 +156,9 @@ export async function cropToBoundingBox(imageSource, box2d) {
 
   return new Promise((resolve, reject) => {
     const handleLoadedImage = (img) => {
-      // Calculate coordinates in pixel space
-      // Add slight 0.5% inward inset to guarantee no background table edge is visible
-      const insetX = (xmax - xmin) * 0.005;
-      const insetY = (ymax - ymin) * 0.005;
+      // 0.6% inward inset to guarantee no table edge bevel is visible
+      const insetX = (xmax - xmin) * 0.006;
+      const insetY = (ymax - ymin) * 0.006;
 
       const normXmin = Math.max(0, xmin + insetX);
       const normYmin = Math.max(0, ymin + insetY);
@@ -180,7 +182,6 @@ export async function cropToBoundingBox(imageSource, box2d) {
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = 'high';
 
-      // Draw strictly the book region
       ctx.drawImage(img, sx, sy, sw, sh, 0, 0, sw, sh);
 
       canvas.toBlob(
@@ -189,8 +190,8 @@ export async function cropToBoundingBox(imageSource, box2d) {
             resolve(null);
             return;
           }
-          const croppedFile = new File([blob], 'autocropped_cover.jpg', {
-            type: 'image/jpeg',
+          const croppedFile = new File([blob], 'autocropped_cover.webp', {
+            type: 'image/webp',
             lastModified: Date.now(),
           });
           const croppedUrl = URL.createObjectURL(blob);
@@ -201,8 +202,8 @@ export async function cropToBoundingBox(imageSource, box2d) {
             height: sh,
           });
         },
-        'image/jpeg',
-        0.92
+        'image/webp',
+        0.9
       );
     };
 
@@ -235,66 +236,38 @@ export async function cropToBoundingBox(imageSource, box2d) {
 }
 
 /**
- * Crops and standardizes a snapped photo into a uniform book cover.
- * Correctly scales preview touch/mouse pans to the high-res 600x840 canvas.
+ * Prepares a cropped book cover for saving, preserving its natural book proportions
+ * (up to 780x880 WebP) and applying any 90° rotation.
  */
 export async function cropUniformCover(imageSource, cropState = {}) {
-  const { 
-    zoom = 1, 
-    panX = 0, 
-    panY = 0,
-    rotation = 0,
-    previewWidth = 144,
-    previewHeight = 208,
-  } = cropState;
+  const { rotation = 0 } = cropState;
 
   return new Promise((resolve, reject) => {
     const processImg = (img) => {
+      const isSideways = rotation === 90 || rotation === 270;
+      const rawW = isSideways ? img.height : img.width;
+      const rawH = isSideways ? img.width : img.height;
+
+      const scale = Math.min(1, TARGET_COVER_WIDTH / rawW, TARGET_COVER_HEIGHT / rawH);
+      const outW = Math.max(1, Math.round(rawW * scale));
+      const outH = Math.max(1, Math.round(rawH * scale));
+
       const canvas = document.createElement('canvas');
-      canvas.width = TARGET_COVER_WIDTH;
-      canvas.height = TARGET_COVER_HEIGHT;
+      canvas.width = outW;
+      canvas.height = outH;
 
       const ctx = canvas.getContext('2d');
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = 'high';
 
-      // Clean dark background for letterboxing if needed
-      ctx.fillStyle = '#18120e';
-      ctx.fillRect(0, 0, TARGET_COVER_WIDTH, TARGET_COVER_HEIGHT);
-
       ctx.save();
-
-      // Center of canvas
-      const centerX = TARGET_COVER_WIDTH / 2;
-      const centerY = TARGET_COVER_HEIGHT / 2;
-
-      // Scale pan coordinates from preview resolution to target canvas resolution
-      const scaleMultiplier = TARGET_COVER_WIDTH / Math.max(1, previewWidth);
-      const canvasPanX = panX * scaleMultiplier;
-      const canvasPanY = panY * scaleMultiplier;
-
-      ctx.translate(centerX + canvasPanX, centerY + canvasPanY);
-
+      ctx.translate(outW / 2, outH / 2);
       if (rotation !== 0) {
         ctx.rotate((rotation * Math.PI) / 180);
       }
-
-      // Check effective width/height after rotation
-      const isSideways = rotation === 90 || rotation === 270;
-      const origW = isSideways ? img.height : img.width;
-      const origH = isSideways ? img.width : img.height;
-
-      // Base scale to cover target dimensions
-      const scaleToFill = Math.max(
-        TARGET_COVER_WIDTH / origW,
-        TARGET_COVER_HEIGHT / origH
-      );
-
-      const effectiveScale = scaleToFill * zoom;
-      const drawWidth = img.width * effectiveScale;
-      const drawHeight = img.height * effectiveScale;
-
-      ctx.drawImage(img, -drawWidth / 2, -drawHeight / 2, drawWidth, drawHeight);
+      const drawW = isSideways ? outH : outW;
+      const drawH = isSideways ? outW : outH;
+      ctx.drawImage(img, -drawW / 2, -drawH / 2, drawW, drawH);
       ctx.restore();
 
       canvas.toBlob(
@@ -303,7 +276,7 @@ export async function cropUniformCover(imageSource, cropState = {}) {
             reject(new Error('Canvas export failed'));
             return;
           }
-          const file = new File([blob], 'uniform_cover.webp', {
+          const file = new File([blob], 'book_cover.webp', {
             type: 'image/webp',
             lastModified: Date.now(),
           });
@@ -315,9 +288,8 @@ export async function cropUniformCover(imageSource, cropState = {}) {
     };
 
     if (imageSource instanceof HTMLImageElement) {
-      if (imageSource.complete) {
-        processImg(imageSource);
-      } else {
+      if (imageSource.complete) processImg(imageSource);
+      else {
         imageSource.onload = () => processImg(imageSource);
         imageSource.onerror = reject;
       }

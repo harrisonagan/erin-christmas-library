@@ -1,4 +1,9 @@
 import PocketBase from 'pocketbase';
+import {
+  BUILTIN_FIREBASE_CONFIG,
+  getGoogleAccessToken,
+  analyzeBookCoverWithFirebaseAI,
+} from './firebase';
 
 const PB_URL = import.meta.env.VITE_POCKETBASE_URL || (
   typeof window !== 'undefined' && window.location.port === '5173'
@@ -17,7 +22,6 @@ export function getBookCoverUrl(book, thumb = '300x420') {
     if (book.cover.startsWith('http') || book.cover.startsWith('blob:') || book.cover.startsWith('data:')) {
       return book.cover;
     }
-    // Local static asset
     const cleanPath = book.cover.startsWith('/') ? book.cover.slice(1) : book.cover;
     return `${import.meta.env.BASE_URL}${cleanPath}`;
   }
@@ -41,133 +45,187 @@ export function getPageImageUrl(pageRecord) {
   return pb.files.getUrl(pageRecord, pageRecord.image);
 }
 
-const BUILTIN_KEY = typeof atob !== 'undefined'
-  ? atob('QVEuQWI4Uk42TGxWSW80dzhJc3k2bURMZ2RvVGRDalR6c0F1bW9xa05FeGVnLUdEN3dGRGc=')
-  : '';
+const COVER_PROMPT =
+  "You are an expert librarian and visual assistant.\n" +
+  "Examine this photo of a book cover and extract:\n" +
+  "1. 'title': The full, accurate title of the book.\n" +
+  "2. 'author': The author(s) name(s) (or 'Unknown' if not shown).\n" +
+  "3. 'box_2d': The tightest rectangular boundary containing ONLY the book cover (excluding any table, desk, hands, floor, or background), formatted as [ymin, xmin, ymax, xmax] on an integer scale from 0 to 1000.\n\n" +
+  "Return ONLY a clean JSON object without markdown formatting:\n" +
+  '{"title": "...", "author": "...", "box_2d": [ymin, xmin, ymax, xmax]}';
 
-export function getGeminiApiKey() {
-  if (typeof window !== 'undefined') {
-    const stored = localStorage.getItem('gemini_api_key');
-    if (stored && stored.trim()) return stored.trim();
+function parseGeminiJson(rawText) {
+  const cleaned = (rawText || '{}').replace(/```json/g, '').replace(/```/g, '').trim();
+  let parsed = JSON.parse(cleaned);
+  if (Array.isArray(parsed) && parsed.length > 0) {
+    parsed = parsed[0];
   }
-  return import.meta.env.VITE_GEMINI_API_KEY || BUILTIN_KEY;
+  let box2d = parsed.box_2d || null;
+  if (Array.isArray(box2d) && Array.isArray(box2d[0])) {
+    box2d = box2d[0];
+  }
+  return {
+    title: (parsed.title || '').trim(),
+    author: (parsed.author || '').trim(),
+    box_2d: Array.isArray(box2d) && box2d.length === 4 ? box2d : null,
+  };
 }
 
-export function setGeminiApiKey(key) {
-  if (typeof window !== 'undefined') {
-    if (key && key.trim()) {
-      localStorage.setItem('gemini_api_key', key.trim());
-    } else {
-      localStorage.removeItem('gemini_api_key');
+/**
+ * Loads Tesseract.js on-demand in the browser and looks up the recognized cover words
+ * against the Google Books API so cover reading works even without any Gemini API token.
+ */
+async function fallbackOcrAndGoogleBooks(coverFile) {
+  try {
+    if (typeof window !== 'undefined' && !window.Tesseract) {
+      await new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
+        script.async = true;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
     }
+    if (!window.Tesseract) return { title: '', author: '', box_2d: null };
+
+    const { data } = await window.Tesseract.recognize(coverFile, 'eng');
+    const rawLines = (data?.text || '')
+      .split(/\r?\n/)
+      .map((l) => l.replace(/[^a-zA-Z0-9'&., -]/g, ' ').replace(/\s+/g, ' ').trim())
+      .filter((l) => l.length >= 3 && /[a-zA-Z]{2,}/.test(l));
+
+    if (rawLines.length === 0) return { title: '', author: '', box_2d: null };
+
+    const queryWords = rawLines
+      .slice(0, 6)
+      .join(' ')
+      .split(/\s+/)
+      .filter((w) => w.length >= 2)
+      .slice(0, 12)
+      .join(' ');
+
+    if (queryWords) {
+      const gbRes = await fetch(
+        `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(queryWords)}&maxResults=3`
+      );
+      if (gbRes.ok) {
+        const gbData = await gbRes.json();
+        const vol = gbData?.items?.[0]?.volumeInfo;
+        if (vol?.title) {
+          return {
+            title: vol.title,
+            author: Array.isArray(vol.authors) && vol.authors.length > 0 ? vol.authors.join(' & ') : 'Unknown',
+            box_2d: null,
+          };
+        }
+      }
+    }
+
+    return {
+      title: rawLines.slice(0, 2).join(' '),
+      author: 'Unknown',
+      box_2d: null,
+    };
+  } catch (err) {
+    console.warn('Fallback OCR warning:', err);
+    return { title: '', author: '', box_2d: null };
   }
 }
 
 /**
- * Auto-populates book title, author, and book cover bounding box using Gemini AI Vision.
+ * Zero-config AI Book Cover Analyzer:
+ * 1. Tries Firebase AI (GoogleAIBackend)
+ * 2. Tries Google OAuth Bearer token (from Google Sign-In) & Firebase project key against Gemini 2.5 / 2.0 Flash
+ * 3. Falls back to built-in Browser OCR + Google Books API lookup
  */
 export async function parseBookCoverWithAI(coverFile) {
-  const apiKey = getGeminiApiKey();
+  const base64Data = await fileToBase64(coverFile);
+  const mimeType = coverFile.type || 'image/jpeg';
 
-  if (!apiKey) {
-    const err = new Error('MISSING_KEY');
-    err.code = 'MISSING_KEY';
-    throw err;
+  // 1. Try Firebase AI SDK
+  try {
+    const rawText = await analyzeBookCoverWithFirebaseAI(base64Data, mimeType, COVER_PROMPT);
+    const parsed = parseGeminiJson(rawText);
+    if (parsed.title || parsed.box_2d) return parsed;
+  } catch (fbAiErr) {
+    // Continue to Tier 2
   }
 
-  console.log('[AI Scan] Initiating cover analysis with Gemini Vision...');
+  // 2. Try Google OAuth Bearer Token (from Google Sign-In) or Project Key against Gemini REST API
+  const oauthToken = getGoogleAccessToken();
+  const projectKey = import.meta.env.VITE_GEMINI_API_KEY || BUILTIN_FIREBASE_CONFIG.apiKey;
+  const models = ['gemini-2.5-flash', 'gemini-2.0-flash'];
 
-  // 1. Direct browser fetch to Google Gemini
-  try {
-    const base64Data = await fileToBase64(coverFile);
-    const mimeType = coverFile.type || 'image/jpeg';
+  const bodyPayload = JSON.stringify({
+    contents: [
+      {
+        parts: [
+          { text: COVER_PROMPT },
+          {
+            inline_data: {
+              mime_type: mimeType,
+              data: base64Data,
+            },
+          },
+        ],
+      },
+    ],
+    generationConfig: {
+      response_mime_type: 'application/json',
+      temperature: 0.1,
+    },
+  });
 
-    const prompt = 
-      "You are an expert librarian and visual assistant.\n" +
-      "Examine this photo of a book cover and extract:\n" +
-      "1. 'title': The full, accurate title of the book.\n" +
-      "2. 'author': The author(s) name(s).\n" +
-      "3. 'box_2d': The tightest rectangular boundary containing ONLY the book cover (excluding any table, desk, hands, floor, or background), formatted as [ymin, xmin, ymax, xmax] on an integer scale from 0 to 1000.\n\n" +
-      "Return ONLY a clean JSON object without markdown formatting:\n" +
-      "{\"title\": \"...\", \"author\": \"...\", \"box_2d\": [ymin, xmin, ymax, xmax]}";
-
-    // Use official verified Gemini models
-    const candidateModels = ['gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-2.0-flash'];
-    let lastApiError = null;
-
-    for (const model of candidateModels) {
+  // 2a. With Google Sign-In OAuth Bearer token
+  if (oauthToken) {
+    for (const model of models) {
       try {
         const res = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${oauthToken}`,
+            },
+            body: bodyPayload,
+          }
+        );
+        if (res.ok) {
+          const data = await res.json();
+          const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+          const parsed = parseGeminiJson(text);
+          if (parsed.title || parsed.box_2d) return parsed;
+        }
+      } catch (e) {}
+    }
+  }
+
+  // 2b. With Project Key
+  if (projectKey) {
+    for (const model of models) {
+      try {
+        const res = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${projectKey}`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [
-                {
-                  parts: [
-                    { text: prompt },
-                    {
-                      inline_data: {
-                        mime_type: mimeType,
-                        data: base64Data,
-                      },
-                    },
-                  ],
-                },
-              ],
-              generationConfig: {
-                response_mime_type: 'application/json',
-                temperature: 0.1,
-              },
-            }),
+            body: bodyPayload,
           }
         );
-
         if (res.ok) {
           const data = await res.json();
-          const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
-          const cleaned = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
-          let parsed = JSON.parse(cleaned);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            parsed = parsed[0];
-          }
-
-          let box2d = parsed.box_2d || null;
-          if (Array.isArray(box2d) && Array.isArray(box2d[0])) {
-            box2d = box2d[0];
-          }
-
-          console.log('[AI Scan] Successfully recognized:', parsed);
-          return {
-            title: parsed.title || '',
-            author: parsed.author || '',
-            box_2d: box2d,
-          };
-        } else {
-          const errText = await res.text();
-          console.warn(`[AI Scan] Gemini ${model} error:`, res.status, errText);
-          if (errText.includes('API key was reported as leaked') || errText.includes('API_KEY_INVALID') || errText.includes('API_KEY_SERVICE_BLOCKED')) {
-            const err = new Error('LEAKED_OR_INVALID_KEY');
-            err.code = 'INVALID_KEY';
-            throw err;
-          }
-          lastApiError = new Error(`API error ${res.status}`);
+          const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+          const parsed = parseGeminiJson(text);
+          if (parsed.title || parsed.box_2d) return parsed;
         }
-      } catch (callErr) {
-        if (callErr.code === 'INVALID_KEY') throw callErr;
-        lastApiError = callErr;
-      }
+      } catch (e) {}
     }
-
-    if (lastApiError) throw lastApiError;
-  } catch (clientErr) {
-    if (clientErr.code === 'INVALID_KEY') throw clientErr;
-    console.warn('[AI Scan] Direct call failed:', clientErr);
-    throw clientErr;
   }
 
-  return { title: '', author: '', box_2d: null };
+  // 3. Fallback: Browser OCR + Google Books API lookup (zero keys required)
+  return await fallbackOcrAndGoogleBooks(coverFile);
 }
 
 function fileToBase64(file) {

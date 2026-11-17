@@ -1,10 +1,23 @@
 /**
- * Google Firebase Cloud Integration
- * Provides permanent, resilient cloud storage via Google Cloud Firestore & Firebase Storage.
- * Syncs in real-time across all family devices (Erin's phone, your phone, iPad, Mac).
+ * Google Firebase Cloud, Google Auth & Firebase AI Integration
+ * Provides Google Sign-In, Gemini AI cover analysis, and real-time Cloud Firestore & Storage sync.
  */
 
 import { initializeApp, getApps, getApp } from 'firebase/app';
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
+  signOut,
+  onAuthStateChanged,
+} from 'firebase/auth';
+import {
+  getAI,
+  getGenerativeModel,
+  GoogleAIBackend,
+} from 'firebase/ai';
 import { 
   getFirestore, 
   collection, 
@@ -14,7 +27,6 @@ import {
   onSnapshot, 
   query, 
   orderBy, 
-  getDocs,
   enableIndexedDbPersistence 
 } from 'firebase/firestore';
 import { 
@@ -26,7 +38,7 @@ import {
 } from 'firebase/storage';
 
 // Default built-in Firebase configuration for Erin's Christmas Library
-const BUILTIN_FIREBASE_CONFIG = {
+export const BUILTIN_FIREBASE_CONFIG = {
   apiKey: "AIzaSyCXYPszHhNfFMPdt26XNKL69E4uF17QJSU",
   authDomain: "erins-christmas-library.firebaseapp.com",
   projectId: "erins-christmas-library",
@@ -36,7 +48,6 @@ const BUILTIN_FIREBASE_CONFIG = {
   measurementId: "G-BSBNXKL34N"
 };
 
-// Default / fallback Firebase config from environment, localStorage, or built-in
 function getFirebaseConfig() {
   if (typeof window !== 'undefined') {
     const custom = localStorage.getItem('erin_firebase_config');
@@ -48,7 +59,6 @@ function getFirebaseConfig() {
     }
   }
 
-  // Environment variables override
   if (import.meta.env.VITE_FIREBASE_PROJECT_ID) {
     return {
       apiKey: import.meta.env.VITE_FIREBASE_API_KEY || BUILTIN_FIREBASE_CONFIG.apiKey,
@@ -64,6 +74,7 @@ function getFirebaseConfig() {
 }
 
 let app = null;
+let auth = null;
 let db = null;
 let storage = null;
 
@@ -73,26 +84,26 @@ export function isFirebaseConfigured() {
 }
 
 export function initFirebase() {
-  if (db && storage) return { app, db, storage };
+  if (db && storage && auth) return { app, auth, db, storage };
   const config = getFirebaseConfig();
-  if (!config) return { app: null, db: null, storage: null };
+  if (!config) return { app: null, auth: null, db: null, storage: null };
 
   try {
     app = getApps().length === 0 ? initializeApp(config) : getApp();
+    auth = getAuth(app);
     db = getFirestore(app);
     storage = getStorage(app);
 
-    // Try enabling offline persistence
     if (typeof window !== 'undefined') {
       try {
         enableIndexedDbPersistence(db).catch(() => {});
       } catch (e) {}
     }
 
-    return { app, db, storage };
+    return { app, auth, db, storage };
   } catch (err) {
     console.warn('Firebase init error:', err);
-    return { app: null, db: null, storage: null };
+    return { app: null, auth: null, db: null, storage: null };
   }
 }
 
@@ -103,24 +114,140 @@ export function saveFirebaseConfig(configObj) {
     } else {
       localStorage.removeItem('erin_firebase_config');
     }
-    // Reset instances
     app = null;
+    auth = null;
     db = null;
     storage = null;
   }
 }
 
 /**
+ * Google Sign-In via Firebase Auth.
+ * Requests Gemini / generative-language scope so the user's Google session can power AI cover scanning.
+ */
+export async function signInWithGoogle() {
+  const { auth: firebaseAuth } = initFirebase();
+  if (!firebaseAuth) throw new Error('Firebase Auth is not initialized');
+
+  const provider = new GoogleAuthProvider();
+  provider.addScope('https://www.googleapis.com/auth/generative-language.retriever');
+  provider.setCustomParameters({ prompt: 'select_account' });
+
+  try {
+    const result = await signInWithPopup(firebaseAuth, provider);
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const accessToken = credential?.accessToken || null;
+    if (accessToken && typeof window !== 'undefined') {
+      sessionStorage.setItem('erin_google_access_token', accessToken);
+      localStorage.setItem('erin_google_access_token', accessToken);
+    }
+    return { user: result.user, accessToken };
+  } catch (err) {
+    // Fallback to redirect on mobile browsers that block popups
+    if (err?.code === 'auth/popup-blocked') {
+      await signInWithRedirect(firebaseAuth, provider);
+      return null;
+    }
+    throw err;
+  }
+}
+
+export async function checkGoogleRedirectResult() {
+  const { auth: firebaseAuth } = initFirebase();
+  if (!firebaseAuth) return null;
+  try {
+    const result = await getRedirectResult(firebaseAuth);
+    if (result?.user) {
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const accessToken = credential?.accessToken || null;
+      if (accessToken && typeof window !== 'undefined') {
+        sessionStorage.setItem('erin_google_access_token', accessToken);
+        localStorage.setItem('erin_google_access_token', accessToken);
+      }
+      return result.user;
+    }
+  } catch (e) {
+    console.warn('Redirect auth check warning:', e);
+  }
+  return null;
+}
+
+export function subscribeToAuthChanges(callback) {
+  const { auth: firebaseAuth } = initFirebase();
+  if (!firebaseAuth) return () => {};
+  return onAuthStateChanged(firebaseAuth, (user) => {
+    callback(user);
+  });
+}
+
+export async function signOutGoogle() {
+  const { auth: firebaseAuth } = initFirebase();
+  if (typeof window !== 'undefined') {
+    sessionStorage.removeItem('erin_google_access_token');
+    localStorage.removeItem('erin_google_access_token');
+  }
+  if (firebaseAuth) {
+    await signOut(firebaseAuth);
+  }
+}
+
+export function getGoogleAccessToken() {
+  if (typeof window === 'undefined') return null;
+  return (
+    sessionStorage.getItem('erin_google_access_token') ||
+    localStorage.getItem('erin_google_access_token') ||
+    null
+  );
+}
+
+/**
+ * Calls Firebase AI (GoogleAIBackend) with the initialized Firebase app & signed-in user.
+ */
+export async function analyzeBookCoverWithFirebaseAI(base64Data, mimeType, prompt) {
+  const { app: firebaseApp } = initFirebase();
+  if (!firebaseApp) throw new Error('Firebase app not initialized');
+
+  const ai = getAI(firebaseApp, { backend: new GoogleAIBackend() });
+  const candidateModels = ['gemini-2.5-flash', 'gemini-2.0-flash'];
+
+  let lastErr = null;
+  for (const modelName of candidateModels) {
+    try {
+      const model = getGenerativeModel(ai, {
+        model: modelName,
+        generationConfig: {
+          responseMimeType: 'application/json',
+          temperature: 0.1,
+        },
+      });
+      const result = await model.generateContent([
+        prompt,
+        {
+          inlineData: {
+            data: base64Data,
+            mimeType: mimeType || 'image/jpeg',
+          },
+        },
+      ]);
+      const text = result.response.text();
+      if (text) return text;
+    } catch (err) {
+      lastErr = err;
+    }
+  }
+  throw lastErr || new Error('Firebase AI call failed');
+}
+
+/**
  * Uploads a book cover image to Google Firebase Cloud Storage.
- * Returns the public permanent download URL and the storage path.
  */
 export async function uploadCoverToCloud(file, bookId) {
-  const { storage } = initFirebase();
-  if (!storage) throw new Error('Firebase Storage not configured');
+  const { storage: fbStorage } = initFirebase();
+  if (!fbStorage) throw new Error('Firebase Storage not configured');
 
   const fileExt = file.type === 'image/webp' ? 'webp' : file.type === 'image/png' ? 'png' : 'jpg';
   const storagePath = `covers/${bookId}_${Date.now()}.${fileExt}`;
-  const fileRef = ref(storage, storagePath);
+  const fileRef = ref(fbStorage, storagePath);
 
   const snapshot = await uploadBytes(fileRef, file, {
     contentType: file.type || 'image/jpeg',
@@ -134,10 +261,10 @@ export async function uploadCoverToCloud(file, bookId) {
  * Saves or updates a book record in Google Cloud Firestore.
  */
 export async function saveBookToCloud(book) {
-  const { db } = initFirebase();
-  if (!db) throw new Error('Firestore not configured');
+  const { db: fbDb } = initFirebase();
+  if (!fbDb) throw new Error('Firestore not configured');
 
-  const docRef = doc(db, 'books', String(book.id));
+  const docRef = doc(fbDb, 'books', String(book.id));
   const data = {
     id: String(book.id),
     title: book.title || '',
@@ -162,18 +289,18 @@ export async function saveBookToCloud(book) {
  * Deletes a book and its cover from Firebase.
  */
 export async function deleteBookFromCloud(bookId, coverStoragePath) {
-  const { db, storage } = initFirebase();
-  if (!db) return;
+  const { db: fbDb, storage: fbStorage } = initFirebase();
+  if (!fbDb) return;
 
   try {
-    await deleteDoc(doc(db, 'books', String(bookId)));
+    await deleteDoc(doc(fbDb, 'books', String(bookId)));
   } catch (e) {
     console.warn('Error deleting book doc:', e);
   }
 
-  if (storage && coverStoragePath) {
+  if (fbStorage && coverStoragePath) {
     try {
-      const fileRef = ref(storage, coverStoragePath);
+      const fileRef = ref(fbStorage, coverStoragePath);
       await deleteObject(fileRef);
     } catch (e) {
       console.warn('Error deleting cover image from storage:', e);
@@ -183,14 +310,13 @@ export async function deleteBookFromCloud(bookId, coverStoragePath) {
 
 /**
  * Real-time listener for all books in Google Cloud Firestore.
- * Automatically notifies when anyone adds, modifies, or deletes a book.
  */
 export function subscribeToBooksFromCloud(onBooksChanged) {
-  const { db } = initFirebase();
-  if (!db) return null;
+  const { db: fbDb } = initFirebase();
+  if (!fbDb) return null;
 
   try {
-    const q = query(collection(db, 'books'), orderBy('createdAt', 'desc'));
+    const q = query(collection(fbDb, 'books'), orderBy('createdAt', 'desc'));
     return onSnapshot(q, (snapshot) => {
       const booksList = [];
       snapshot.forEach((doc) => {
@@ -210,12 +336,12 @@ export function subscribeToBooksFromCloud(onBooksChanged) {
  * Uploads a story page or family photo to Firebase Storage.
  */
 export async function uploadPageToCloud(file, bookId, pageNumber) {
-  const { storage, db } = initFirebase();
-  if (!storage || !db) throw new Error('Firebase not configured');
+  const { storage: fbStorage, db: fbDb } = initFirebase();
+  if (!fbStorage || !fbDb) throw new Error('Firebase not configured');
 
   const fileExt = file.type === 'image/webp' ? 'webp' : 'jpg';
   const storagePath = `pages/${bookId}/${pageNumber}_${Date.now()}.${fileExt}`;
-  const fileRef = ref(storage, storagePath);
+  const fileRef = ref(fbStorage, storagePath);
 
   const snapshot = await uploadBytes(fileRef, file, {
     contentType: file.type || 'image/jpeg',
@@ -223,7 +349,7 @@ export async function uploadPageToCloud(file, bookId, pageNumber) {
 
   const downloadUrl = await getDownloadURL(snapshot.ref);
 
-  const pageDocRef = doc(collection(db, `books/${bookId}/pages`));
+  const pageDocRef = doc(collection(fbDb, `books/${bookId}/pages`));
   const pageData = {
     id: pageDocRef.id,
     bookId,
