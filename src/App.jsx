@@ -11,6 +11,7 @@ import {
   signOutGoogle,
   subscribeToAuthChanges,
   checkGoogleRedirectResult,
+  isAuthorizedUser,
 } from './lib/firebase';
 import CabinLanding from './components/CabinLanding';
 import SpineBookshelf, { isMouseBookItem, isMagazineItem } from './components/SpineBookshelf';
@@ -1135,50 +1136,39 @@ const INITIAL_BOOKS = [
 ];
 
 export default function App() {
-  // Session-based access control so closing the browser requires re-entry
-  const [isUnlocked, setIsUnlocked] = useState(() => {
-    try {
-      const session = sessionStorage.getItem('erin_library_access_unlocked');
-      const local = localStorage.getItem('erin_library_access_unlocked');
-      return session === 'true' || local === 'true';
-    } catch {
-      return false;
-    }
-  });
-  const [passcodeInput, setPasscodeInput] = useState('');
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [authChecking, setAuthChecking] = useState(true);
   const [passcodeError, setPasscodeError] = useState('');
-  const [rememberDevice, setRememberDevice] = useState(false);
   const [googleUser, setGoogleUser] = useState(null);
   const [isSigningInGoogle, setIsSigningInGoogle] = useState(false);
-  const [currentSecretPasscode] = useState(() => {
-    try {
-      return localStorage.getItem('erin_library_passcode') || '1225';
-    } catch {
-      return '1225';
-    }
-  });
 
-  // Listen for Google Auth state & redirect results
+  // Listen for Google Auth state & redirect results (strictly restricted to harrisonagan@gmail.com)
   useEffect(() => {
-    checkGoogleRedirectResult().then((u) => {
-      if (u) {
+    try {
+      sessionStorage.removeItem('erin_library_access_unlocked');
+      localStorage.removeItem('erin_library_access_unlocked');
+    } catch {}
+
+    checkGoogleRedirectResult()
+      .then((u) => {
+        if (u && isAuthorizedUser(u)) {
+          setGoogleUser(u);
+          setIsUnlocked(true);
+        }
+      })
+      .catch((err) => {
+        setPasscodeError(err.message || 'Access denied.');
+      });
+
+    const unsub = subscribeToAuthChanges((u) => {
+      if (u && isAuthorizedUser(u)) {
         setGoogleUser(u);
         setIsUnlocked(true);
-        try {
-          sessionStorage.setItem('erin_library_access_unlocked', 'true');
-          localStorage.setItem('erin_library_access_unlocked', 'true');
-        } catch {}
+      } else {
+        setGoogleUser(null);
+        setIsUnlocked(false);
       }
-    });
-    const unsub = subscribeToAuthChanges((u) => {
-      setGoogleUser(u || null);
-      if (u) {
-        setIsUnlocked(true);
-        try {
-          sessionStorage.setItem('erin_library_access_unlocked', 'true');
-          localStorage.setItem('erin_library_access_unlocked', 'true');
-        } catch {}
-      }
+      setAuthChecking(false);
     });
     return () => unsub && unsub();
   }, []);
@@ -1188,17 +1178,17 @@ export default function App() {
     setIsSigningInGoogle(true);
     try {
       const res = await signInWithGoogle();
-      if (res?.user) {
+      if (res?.user && isAuthorizedUser(res.user)) {
         setGoogleUser(res.user);
         setIsUnlocked(true);
-        try {
-          sessionStorage.setItem('erin_library_access_unlocked', 'true');
-          localStorage.setItem('erin_library_access_unlocked', 'true');
-        } catch {}
       }
     } catch (err) {
       console.warn('Google sign-in error:', err);
-      setPasscodeError('Google sign-in could not complete (' + (err.code || err.message) + '). You can also use your passcode below.');
+      if (err?.code === 'auth/unauthorized-email') {
+        setPasscodeError(err.message);
+      } else {
+        setPasscodeError('Google sign-in failed: ' + (err.message || err.code));
+      }
     } finally {
       setIsSigningInGoogle(false);
     }
@@ -1457,15 +1447,15 @@ export default function App() {
           </h1>
 
           <p className="text-stone-300 text-xs font-sans mb-6 leading-relaxed">
-            Sign in with Google to unlock the library, enable automatic camera capture, and AI book recognition:
+            Private access restricted to authorized Google account only.
           </p>
 
           {/* Primary Google Sign-In Button */}
           <button
             type="button"
             onClick={handleGoogleSignIn}
-            disabled={isSigningInGoogle}
-            className="w-full py-3.5 px-4 bg-white hover:bg-stone-100 text-stone-900 font-sans font-semibold text-sm rounded-xl shadow-lg flex items-center justify-center gap-3 transition active:scale-95 mb-5 disabled:opacity-60"
+            disabled={isSigningInGoogle || authChecking}
+            className="w-full py-3.5 px-4 bg-white hover:bg-stone-100 text-stone-900 font-sans font-semibold text-sm rounded-xl shadow-lg flex items-center justify-center gap-3 transition active:scale-95 disabled:opacity-60"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path
@@ -1485,52 +1475,18 @@ export default function App() {
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
               />
             </svg>
-            <span>{isSigningInGoogle ? 'Signing in with Google...' : 'Sign in with Google'}</span>
+            <span>
+              {authChecking
+                ? 'Checking session...'
+                : isSigningInGoogle
+                ? 'Signing in with Google...'
+                : 'Sign in with Google'}
+            </span>
           </button>
 
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-[1px] flex-1 bg-stone-800" />
-            <span className="text-[10px] font-sans uppercase tracking-widest text-stone-500">or family passcode</span>
-            <div className="h-[1px] flex-1 bg-stone-800" />
-          </div>
-
-          <form onSubmit={handleUnlock} className="space-y-3">
-            <div>
-              <input
-                type="password"
-                placeholder="Enter passcode"
-                value={passcodeInput}
-                onChange={(e) => {
-                  setPasscodeInput(e.target.value);
-                  setPasscodeError('');
-                }}
-                className="w-full px-4 py-2.5 bg-stone-950/90 border border-stone-800 rounded-xl text-center text-sm font-sans tracking-widest text-amber-100 placeholder:text-stone-600 focus:outline-none focus:border-amber-600"
-              />
-            </div>
-
-            {passcodeError && (
-              <p className="text-xs text-rose-400 font-sans">{passcodeError}</p>
-            )}
-
-            <div className="flex items-center justify-center gap-2">
-              <label className="flex items-center gap-2 text-xs font-sans text-stone-400 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={rememberDevice}
-                  onChange={(e) => setRememberDevice(e.target.checked)}
-                  className="rounded border-stone-800 bg-stone-950 text-amber-600 focus:ring-0 cursor-pointer"
-                />
-                <span>Remember me on this browser</span>
-              </label>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full py-2.5 bg-stone-900 hover:bg-stone-800 text-amber-200/90 font-sans font-medium text-xs rounded-xl border border-stone-800 transition active:scale-95"
-            >
-              Unlock with Passcode 🗝️
-            </button>
-          </form>
+          {passcodeError && (
+            <p className="text-xs text-rose-400 font-sans mt-4">{passcodeError}</p>
+          )}
         </motion.div>
       </div>
     );
