@@ -121,9 +121,17 @@ export function saveFirebaseConfig(configObj) {
   }
 }
 
+// Allowed Google accounts that can access Erin's Christmas Library
+export const ALLOWED_EMAILS = ['harrisonagan@gmail.com'];
+
+export function isAuthorizedUser(user) {
+  if (!user || !user.email) return false;
+  return ALLOWED_EMAILS.includes(user.email.trim().toLowerCase());
+}
+
 /**
  * Google Sign-In via Firebase Auth.
- * Requests Gemini / generative-language scope so the user's Google session can power AI cover scanning.
+ * Restricted strictly to ALLOWED_EMAILS (harrisonagan@gmail.com).
  */
 export async function signInWithGoogle() {
   const { auth: firebaseAuth } = initFirebase();
@@ -135,6 +143,14 @@ export async function signInWithGoogle() {
 
   try {
     const result = await signInWithPopup(firebaseAuth, provider);
+    if (!isAuthorizedUser(result.user)) {
+      const triedEmail = result.user?.email || 'unknown account';
+      await signOut(firebaseAuth);
+      const err = new Error(`Access denied for ${triedEmail}. This library is restricted to authorized accounts only.`);
+      err.code = 'auth/unauthorized-email';
+      throw err;
+    }
+
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const accessToken = credential?.accessToken || null;
     if (accessToken && typeof window !== 'undefined') {
@@ -143,7 +159,6 @@ export async function signInWithGoogle() {
     }
     return { user: result.user, accessToken };
   } catch (err) {
-    // Fallback to redirect on mobile browsers that block popups
     if (err?.code === 'auth/popup-blocked') {
       await signInWithRedirect(firebaseAuth, provider);
       return null;
@@ -158,6 +173,11 @@ export async function checkGoogleRedirectResult() {
   try {
     const result = await getRedirectResult(firebaseAuth);
     if (result?.user) {
+      if (!isAuthorizedUser(result.user)) {
+        const triedEmail = result.user?.email || 'unknown account';
+        await signOut(firebaseAuth);
+        throw new Error(`Access denied for ${triedEmail}.`);
+      }
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const accessToken = credential?.accessToken || null;
       if (accessToken && typeof window !== 'undefined') {
@@ -168,6 +188,7 @@ export async function checkGoogleRedirectResult() {
     }
   } catch (e) {
     console.warn('Redirect auth check warning:', e);
+    throw e;
   }
   return null;
 }
@@ -175,7 +196,12 @@ export async function checkGoogleRedirectResult() {
 export function subscribeToAuthChanges(callback) {
   const { auth: firebaseAuth } = initFirebase();
   if (!firebaseAuth) return () => {};
-  return onAuthStateChanged(firebaseAuth, (user) => {
+  return onAuthStateChanged(firebaseAuth, async (user) => {
+    if (user && !isAuthorizedUser(user)) {
+      await signOut(firebaseAuth);
+      callback(null);
+      return;
+    }
     callback(user);
   });
 }
