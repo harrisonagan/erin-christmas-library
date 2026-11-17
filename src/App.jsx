@@ -66,7 +66,7 @@ const INITIAL_BOOKS = [
     title: 'The Night Before Christmas', 
     author: 'Clement C. Moore', 
     category: 'story',
-    cover: '/covers/the-night-before-christmas.webp?v=5',
+    cover: '/covers/the-night-before-christmas.webp?v=7',
     notes: 'Illustrations by Tom Browning • Read every Christmas Eve',
     pages: [] 
   },
@@ -75,7 +75,7 @@ const INITIAL_BOOKS = [
     title: 'Chickadees In December', 
     author: 'Bill O. Smith', 
     category: 'story',
-    cover: '/covers/chickadees-in-december.webp?v=5',
+    cover: '/covers/chickadees-in-december.webp?v=7',
     notes: 'Illustrated by Charles R. Murphy • Heartwarming winter story',
     pages: [] 
   },
@@ -102,7 +102,7 @@ const INITIAL_BOOKS = [
     title: 'The Very First Christmas', 
     author: "The Beginner's Bible", 
     category: 'story',
-    cover: '/covers/the-very-first-christmas.webp?v=5',
+    cover: '/covers/the-very-first-christmas.webp?v=7',
     notes: 'The Nativity story for young readers • Baby Jesus born in Bethlehem',
     pages: [] 
   },
@@ -320,7 +320,7 @@ const INITIAL_BOOKS = [
     title: 'Christmas in the Manger',
     author: 'Nola Buck',
     category: 'story',
-    cover: '/covers/christmas-in-the-manger.webp?v=5',
+    cover: '/covers/christmas-in-the-manger.webp?v=7',
     notes: 'Illustrated by Felicia Bond • Gentle Nativity board book for little hands',
     pages: []
   },
@@ -543,12 +543,22 @@ const INITIAL_BOOKS = [
     pages: []
   },
   {
+    id: 'santa_mouse',
+    title: 'Santa Mouse',
+    author: 'Michael Brown',
+    category: 'story',
+    isMouseBook: true,
+    cover: '/covers/santa-mouse.webp?v=7',
+    notes: 'We have 2 copies of this book in our holiday collection! • Illustrated by Elfrieda De Witt',
+    pages: []
+  },
+  {
     id: 'santa_mouse_where_are_you',
     title: 'Santa Mouse, Where Are You?',
     author: 'Michael Brown',
     category: 'story',
     isMouseBook: true,
-    cover: '/covers/santa-mouse-where-are-you.webp?v=5',
+    cover: '/covers/santa-mouse-where-are-you.webp?v=7',
     notes: 'Illustrated by Elfrieda De Witt • Beloved sequel to Santa Mouse',
     pages: []
   },
@@ -570,16 +580,6 @@ const INITIAL_BOOKS = [
     isMouseBook: true,
     cover: '/covers/the-mice-before-christmas.webp?v=5',
     notes: 'Illustrated by Wendy Edelson • Miniature woodland mice prepare for St. Nicholas',
-    pages: []
-  },
-  {
-    id: 'santa_mouse',
-    title: 'Santa Mouse',
-    author: 'Michael Brown',
-    category: 'story',
-    isMouseBook: true,
-    cover: '/covers/santa-mouse.webp?v=5',
-    notes: 'We have 2 copies of this book in our holiday collection! • Illustrated by Elfrieda De Witt',
     pages: []
   },
   {
@@ -876,7 +876,7 @@ const INITIAL_BOOKS = [
     category: 'story',
     isMagazine: true,
     badge: 'Vintage Holiday Magazine',
-    cover: '/covers/jolly-old-santa-claus-ideals.webp?v=5',
+    cover: '/covers/jolly-old-santa-claus-ideals.webp?v=7',
     notes: 'Vintage Holiday Magazine • Ideals Publishing ($2.50 Issue) • Illustrated holiday poetry, stories, and nostalgia',
     pages: []
   },
@@ -940,7 +940,7 @@ const INITIAL_BOOKS = [
     title: 'Jingle, the Christmas Clown',
     author: 'Tomie dePaola',
     category: 'story',
-    cover: '/covers/jingle-the-christmas-clown.webp?v=5',
+    cover: '/covers/jingle-the-christmas-clown.webp?v=7',
     notes: 'Written and illustrated by Tomie dePaola • A tiny Italian circus brings joy on Christmas Eve',
     pages: []
   },
@@ -1060,7 +1060,7 @@ const INITIAL_BOOKS = [
     category: 'story',
     isMagazine: true,
     badge: 'Vintage Holiday Magazine',
-    cover: '/covers/christmas-annual-vol-41.webp?v=5',
+    cover: '/covers/christmas-annual-vol-41.webp?v=7',
     notes: 'Vintage Holiday Magazine • Volume Forty-One (1971) • Edited by Randolph E. Haugan • Augsburg Publishing House, Minneapolis',
     pages: [
       { id: 'annual_41_title', pageNumber: 1, image: '/covers/christmas-annual-vol-41-title.webp?v=5' }
@@ -1213,8 +1213,9 @@ export default function App() {
   const LEGACY_PLACEHOLDERS = new Set(['2','3','4','5','6','7','8','9','10','11','12','13','14','album_2024','album_2023']);
 
   const upgradeBuiltInBooks = (list) => {
+    const initOrderMap = new Map(INITIAL_BOOKS.map((b, idx) => [b.id, idx]));
     const initMap = new Map(INITIAL_BOOKS.map((b) => [b.id, b]));
-    return list.map((b) => {
+    const upgraded = list.map((b) => {
       const fresh = initMap.get(b.id);
       if (!fresh) return b;
       const shouldUseFreshCover = !b.cover || b.cover.startsWith('/covers/');
@@ -1232,6 +1233,13 @@ export default function App() {
         pages: b.pages && b.pages.length > 0 ? b.pages : fresh.pages,
       };
     });
+
+    // Ensure built-in books follow canonical INITIAL_BOOKS order (e.g. Santa Mouse & sequel together)
+    return upgraded.sort((a, b) => {
+      const aIdx = initOrderMap.has(a.id) ? initOrderMap.get(a.id) : 9999;
+      const bIdx = initOrderMap.has(b.id) ? initOrderMap.get(b.id) : 9999;
+      return aIdx - bIdx;
+    });
   };
 
   const [books, setBooks] = useState(() => {
@@ -1242,7 +1250,13 @@ export default function App() {
         const cleaned = upgradeBuiltInBooks(parsed.filter(b => !LEGACY_PLACEHOLDERS.has(String(b.id))));
         const existingIds = new Set(cleaned.map((b) => b.id));
         const missing = INITIAL_BOOKS.filter((b) => !existingIds.has(b.id));
-        return [...cleaned, ...missing];
+        const combined = [...cleaned, ...missing];
+        const initOrderMap = new Map(INITIAL_BOOKS.map((b, idx) => [b.id, idx]));
+        return combined.sort((a, b) => {
+          const aIdx = initOrderMap.has(a.id) ? initOrderMap.get(a.id) : 9999;
+          const bIdx = initOrderMap.has(b.id) ? initOrderMap.get(b.id) : 9999;
+          return aIdx - bIdx;
+        });
       }
     } catch (e) {}
     return INITIAL_BOOKS;
