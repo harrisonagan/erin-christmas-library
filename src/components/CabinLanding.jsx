@@ -1,20 +1,34 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import SnowParticles from './SnowParticles';
 
 export default function CabinLanding({ onStepUp }) {
   const [isZooming, setIsZooming] = useState(false);
+  const [showMouse, setShowMouse] = useState(false);
+  const [mouseDissolve, setMouseDissolve] = useState(false);
 
   const handleEnter = () => {
     setIsZooming(true);
-    // Luxurious, slow walk-up timing into the bookshelf
+    // Plaque fades out (0s - 0.4s)
+    // Mouse appears right as camera rushes forward into the hearth (~400ms)
+    setTimeout(() => {
+      setShowMouse(true);
+    }, 400);
+
+    // Mouse softly dissolves into warm holiday glow as covers load (~2150ms)
+    setTimeout(() => {
+      setMouseDissolve(true);
+    }, 2150);
+
+    // Transition smoothly into Cover Gallery view (~2700ms)
     setTimeout(() => {
       onStepUp();
-    }, 2400);
+    }, 2700);
   };
 
   const bgImage = `${import.meta.env.BASE_URL}cabin-garland.jpg`;
   const foregroundImage = `${import.meta.env.BASE_URL}cabin-garland-foreground.png`;
+  const mouseImage = `${import.meta.env.BASE_URL}christmas-mouse.webp`;
   const windowCoords = { left: '5.5%', top: '11%', width: '31%', height: '60%' };
 
   return (
@@ -69,10 +83,152 @@ export default function CabinLanding({ onStepUp }) {
         </div>
       </motion.div>
 
+      {/* Keepsake Mouse Greeting During Camera Zoom */}
+      <AnimatePresence>
+        {showMouse && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.6, y: 35 }}
+            animate={
+              mouseDissolve
+                ? {
+                    opacity: 0,
+                    scale: 1.25,
+                    filter: 'blur(10px)',
+                    transition: { duration: 0.52, ease: 'easeIn' },
+                  }
+                : {
+                    opacity: 1,
+                    scale: 1,
+                    y: 0,
+                    filter: 'blur(0px)',
+                    transition: { type: 'spring', damping: 18, stiffness: 220 },
+                  }
+            }
+            exit={{ opacity: 0, scale: 1.2, filter: 'blur(8px)' }}
+            className="fixed inset-0 flex items-center justify-center p-4 z-30 pointer-events-none select-none"
+          >
+            <div className="relative flex flex-col items-center">
+              {/* Cozy golden candlelight back-glow */}
+              <div className="absolute -inset-12 bg-amber-400/25 blur-3xl rounded-full pointer-events-none" />
+              <div className="absolute -inset-6 bg-orange-500/20 blur-2xl rounded-full animate-pulse pointer-events-none" />
+
+              {/* Floating magical sparkles */}
+              {[
+                { icon: '✨', x: -75, y: -50, delay: 0.1 },
+                { icon: '⭐', x: 80, y: -30, delay: 0.25 },
+                { icon: '🍪', x: -85, y: 35, delay: 0.15 },
+                { icon: '✨', x: 75, y: 45, delay: 0.35 },
+              ].map((sp, idx) => (
+                <motion.span
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.4, y: 15 }}
+                  animate={{
+                    opacity: [0, 1, 0.85, 0],
+                    scale: [0.5, 1.2, 1, 0.7],
+                    y: [-10, -45],
+                  }}
+                  transition={{
+                    duration: 1.8,
+                    delay: sp.delay,
+                    repeat: Infinity,
+                    ease: 'easeOut',
+                  }}
+                  className="absolute pointer-events-none text-base sm:text-xl select-none"
+                  style={{ left: `calc(50% + ${sp.x}px)`, top: `calc(50% + ${sp.y}px)` }}
+                >
+                  {sp.icon}
+                </motion.span>
+              ))}
+
+              {/* "Merry Christmas!" Voice Cloud with Trail Dots to Mouth */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.7, x: -10 }}
+                animate={{ opacity: 1, scale: 1, x: 0 }}
+                transition={{ delay: 0.2, duration: 0.35, ease: 'easeOut' }}
+                className="absolute -top-16 sm:-top-20 left-[48%] sm:left-[54%] z-40 whitespace-nowrap filter drop-shadow-[0_8px_18px_rgba(0,0,0,0.7)]"
+              >
+                <div className="relative inline-flex items-center justify-center select-none">
+                  <svg
+                    viewBox="-14 0 170 74"
+                    className="w-36 sm:w-44 h-auto block"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <defs>
+                      <linearGradient id="cabinCloudGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="#ffffff" />
+                        <stop offset="100%" stopColor="#fefaf3" />
+                      </linearGradient>
+                    </defs>
+
+                    {/* Fluffy Voice Cloud Body */}
+                    <path
+                      d="M 41.1 46.1 A 15 15 0 0 1 41.1 17.9 A 15 15 0 0 1 69.0 12.5 A 16 16 0 0 1 99.8 15.3 A 15 15 0 0 1 128.9 17.9 A 15 15 0 0 1 130.8 46.6 A 15 15 0 0 1 100.5 45.0 A 16 16 0 0 1 69.0 51.5 A 15 15 0 0 1 41.1 46.1 Z"
+                      fill="url(#cabinCloudGrad)"
+                      stroke="#c2782b"
+                      strokeWidth="1.2"
+                    />
+
+                    {/* Voice cloud trail dots leading down-left directly to the mouse's mouth */}
+                    <circle cx="32" cy="50" r="3.5" fill="#ffffff" stroke="#c2782b" strokeWidth="1" />
+                    <circle cx="22" cy="55" r="2.5" fill="#ffffff" stroke="#c2782b" strokeWidth="0.8" />
+                    <circle cx="12" cy="60" r="1.8" fill="#ffffff" stroke="#c2782b" strokeWidth="0.6" />
+                    <circle cx="3" cy="65" r="1.2" fill="#ffffff" stroke="#c2782b" strokeWidth="0.5" />
+                    <circle cx="-5" cy="69" r="0.9" fill="#ffffff" stroke="#c2782b" strokeWidth="0.4" />
+
+                    {/* Centered "Merry Christmas!" Text */}
+                    <text
+                      x="85"
+                      y="32"
+                      textAnchor="middle"
+                      dominantBaseline="central"
+                      fontFamily="Georgia, 'Times New Roman', serif"
+                      fontWeight="bold"
+                      fontSize="11"
+                      fill="#7a1e28"
+                      letterSpacing="0.2"
+                    >
+                      Merry Christmas!
+                    </text>
+                  </svg>
+                </div>
+              </motion.div>
+
+              {/* Keepsake Mouse Figurine with Gentle Cheerful Bobbing */}
+              <motion.div
+                animate={{
+                  y: [0, -6, 0, -4, 0],
+                  rotate: [0, 1.8, -1.2, 0.8, 0],
+                  scale: [1, 1.02, 0.99, 1.01, 1],
+                }}
+                transition={{
+                  duration: 2.2,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
+                className="relative flex flex-col items-center"
+              >
+                <img
+                  src={mouseImage}
+                  alt="Vintage Keepsake Christmas Mouse holding a cookie"
+                  className="w-36 sm:w-48 h-auto object-contain drop-shadow-[0_16px_32px_rgba(0,0,0,0.9)] filter contrast-[1.04] brightness-[1.03]"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = `${import.meta.env.BASE_URL}christmas-mouse.png`;
+                  }}
+                />
+                {/* Contact shadow */}
+                <div className="w-24 sm:w-32 h-3 bg-black/80 blur-sm rounded-full -mt-2 pointer-events-none" />
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Center Welcome Plaque (Responsive & compact on mobile) */}
       <motion.div
         initial={{ opacity: 0, y: 25 }}
-        animate={isZooming ? { opacity: 0, y: -15, scale: 0.95, transition: { duration: 0.7, ease: 'easeOut' } } : { opacity: 1, y: 0 }}
+        animate={isZooming ? { opacity: 0, y: -15, scale: 0.95, transition: { duration: 0.6, ease: 'easeOut' } } : { opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
         className="absolute inset-0 flex items-center justify-center p-4 sm:p-6 pointer-events-none z-20"
       >
@@ -99,7 +255,7 @@ export default function CabinLanding({ onStepUp }) {
             disabled={isZooming}
             className="group px-6 py-3 sm:px-8 sm:py-3.5 bg-gradient-to-r from-amber-700 via-amber-600 to-amber-700 hover:from-amber-600 hover:to-amber-500 text-amber-50 font-sans font-semibold text-xs sm:text-base rounded-full shadow-[0_8px_25px_rgba(180,83,9,0.5)] border border-amber-400/40 transition-all duration-300 transform active:scale-95 flex items-center gap-2.5 mx-auto"
           >
-            <span>Step Up to the Bookshelf</span>
+            <span>Step into the Library</span>
             <span className="group-hover:translate-x-1 transition-transform">✨ →</span>
           </button>
         </div>

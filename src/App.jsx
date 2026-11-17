@@ -14,7 +14,7 @@ import {
   isAuthorizedUser,
 } from './lib/firebase';
 import CabinLanding from './components/CabinLanding';
-import SpineBookshelf, { isMouseBookItem, isMagazineItem } from './components/SpineBookshelf';
+import { isMouseBookItem, isMagazineItem } from './components/SpineBookshelf';
 import CoverGalleryView from './components/CoverGalleryView';
 import ListView from './components/ListView';
 import ReaderModal from './components/ReaderModal';
@@ -1195,7 +1195,7 @@ export default function App() {
   };
 
   const [isAtBookshelf, setIsAtBookshelf] = useState(false);
-  const [viewMode, setViewMode] = useState('spines'); // 'spines' | 'covers' | 'list'
+  const [viewMode, setViewMode] = useState('covers'); // 'covers' | 'list'
   const [activeFilter, setActiveFilter] = useState('all'); // 'all' | 'story' | 'mouse' | 'magazine' | 'album' | 'cookbook'
   const [searchQuery, setSearchQuery] = useState('');
   const [isCloudModalOpen, setIsCloudModalOpen] = useState(false);
@@ -1569,16 +1569,6 @@ export default function App() {
 
                   <div className="flex bg-stone-950/80 p-0.5 rounded-lg border border-stone-800 font-sans text-xs">
                     <button
-                      onClick={() => setViewMode('spines')}
-                      className={`px-3 py-1.5 rounded-md transition flex items-center gap-1.5 ${
-                        viewMode === 'spines'
-                          ? 'bg-amber-800/80 text-amber-100 font-medium shadow'
-                          : 'text-stone-400 hover:text-stone-200'
-                      }`}
-                    >
-                      <span>🎄</span> <span>Shelf</span>
-                    </button>
-                    <button
                       onClick={() => setViewMode('covers')}
                       className={`px-3 py-1.5 rounded-md transition flex items-center gap-1.5 ${
                         viewMode === 'covers'
@@ -1701,31 +1691,22 @@ export default function App() {
 
                   <div className="flex bg-stone-950/80 p-0.5 rounded-lg border border-stone-800 font-sans text-xs flex-shrink-0">
                     <button
-                      onClick={() => setViewMode('spines')}
-                      className={`px-2.5 py-1 rounded-md transition ${
-                        viewMode === 'spines' ? 'bg-amber-800 text-amber-100 font-semibold' : 'text-stone-400'
-                      }`}
-                      title="Bookshelf View"
-                    >
-                      🎄
-                    </button>
-                    <button
                       onClick={() => setViewMode('covers')}
-                      className={`px-2.5 py-1 rounded-md transition ${
+                      className={`px-2.5 py-1 rounded-md transition flex items-center gap-1 ${
                         viewMode === 'covers' ? 'bg-amber-800 text-amber-100 font-semibold' : 'text-stone-400'
                       }`}
                       title="Cover Gallery"
                     >
-                      🖼️
+                      <span>🖼️</span> <span>Covers</span>
                     </button>
                     <button
                       onClick={() => setViewMode('list')}
-                      className={`px-2.5 py-1 rounded-md transition ${
+                      className={`px-2.5 py-1 rounded-md transition flex items-center gap-1 ${
                         viewMode === 'list' ? 'bg-amber-800 text-amber-100 font-semibold' : 'text-stone-400'
                       }`}
                       title="List View"
                     >
-                      📋
+                      <span>📋</span> <span>List</span>
                     </button>
                   </div>
                 </div>
@@ -1743,20 +1724,15 @@ export default function App() {
 
             {/* Main Stage Content */}
             <main className="flex-1 w-full">
-              {viewMode === 'spines' && (
-                <SpineBookshelf
+              {viewMode === 'list' ? (
+                <ListView
                   books={filteredBooks}
-                  externalFilter={activeFilter}
+                  activeFilter={activeFilter}
                   onFilterChange={setActiveFilter}
                   onSelectBook={handleSelectBook}
-                  onAddBook={(cat) => {
-                    setAddModalCategory(cat || 'story');
-                    setIsAddModalOpen(true);
-                  }}
+                  onDeleteBook={handleDeleteBook}
                 />
-              )}
-
-              {viewMode === 'covers' && (
+              ) : (
                 <CoverGalleryView
                   books={filteredBooks}
                   activeFilter={activeFilter}
@@ -1766,16 +1742,6 @@ export default function App() {
                     setAddModalCategory('story');
                     setIsAddModalOpen(true);
                   }}
-                />
-              )}
-
-              {viewMode === 'list' && (
-                <ListView
-                  books={filteredBooks}
-                  activeFilter={activeFilter}
-                  onFilterChange={setActiveFilter}
-                  onSelectBook={handleSelectBook}
-                  onDeleteBook={handleDeleteBook}
                 />
               )}
             </main>
