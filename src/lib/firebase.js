@@ -138,7 +138,6 @@ export async function signInWithGoogle() {
   if (!firebaseAuth) throw new Error('Firebase Auth is not initialized');
 
   const provider = new GoogleAuthProvider();
-  provider.addScope('https://www.googleapis.com/auth/generative-language.retriever');
   provider.setCustomParameters({ prompt: 'select_account' });
 
   try {
