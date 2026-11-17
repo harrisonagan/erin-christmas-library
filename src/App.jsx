@@ -446,7 +446,7 @@ const INITIAL_BOOKS = [
     title: 'The Best Christmas Pageant Ever',
     author: 'Barbara Robinson',
     category: 'story',
-    cover: '/covers/the-best-christmas-pageant-ever.webp?v=5',
+    cover: '/covers/the-best-christmas-pageant-ever.webp?v=8',
     notes: 'Avon Camelot Vintage Paperback • The hilarious and touching Herdman family Christmas pageant',
     pages: []
   },
@@ -474,7 +474,7 @@ const INITIAL_BOOKS = [
     title: "Corduroy's Christmas",
     author: 'Don Freeman',
     category: 'story',
-    cover: '/covers/corduroys-christmas.webp?v=5',
+    cover: '/covers/corduroys-christmas.webp?v=8',
     notes: 'A Lift-the-Flap Book • Pictures by Lisa McCue • Based on the character created by Don Freeman',
     pages: []
   },
@@ -782,7 +782,7 @@ const INITIAL_BOOKS = [
     title: 'Christmas Joys',
     author: 'Unknown',
     category: 'story',
-    cover: '/covers/christmas-joys.webp?v=5',
+    cover: '/covers/christmas-joys.webp?v=8',
     notes: 'A Rand McNally Junior Elf Book (#8206 • 49¢) • Vintage holiday storybook',
     pages: []
   },
@@ -1016,7 +1016,7 @@ const INITIAL_BOOKS = [
     author: 'Peggy Burton',
     category: 'story',
     isMouseBook: true,
-    cover: '/covers/christmas-comes-to-mrs-mouse.webp?v=5',
+    cover: '/covers/christmas-comes-to-mrs-mouse.webp?v=8',
     notes: 'A cozy woodland mouse tale of holiday hospitality',
     pages: []
   },
