@@ -1114,7 +1114,7 @@ const INITIAL_BOOKS = [
     author: 'Down Home For Dinner • 1999 Reunion',
     category: 'cookbook',
     badge: 'Cookbook',
-    cover: '/covers/strom-family-cookbook.webp?v=7',
+    cover: '/covers/strom-family-cookbook-restored.webp',
     pdfUrl: '/strom_family_cookbook_cleaned.pdf',
     notes: 'Treasured family recipes, childhood memories & photos dedicated to Albion Sr. & Laura Strom 🥧 (Contributed by Erin, Sally, Peter, Virginia & family)',
     pages: Array.from({ length: 86 }, (_, i) => ({
@@ -1218,6 +1218,14 @@ export default function App() {
     const upgraded = list.map((b) => {
       const fresh = initMap.get(b.id);
       if (!fresh) return b;
+      if (b.id === 'cookbook_erin') {
+        return {
+          ...b,
+          ...fresh,
+          cover: fresh.cover,
+          pages: b.pages && b.pages.length > 0 ? b.pages : fresh.pages,
+        };
+      }
       const shouldUseFreshCover = !b.cover || b.cover.startsWith('/covers/');
       if (b.userEdited) {
         return {
