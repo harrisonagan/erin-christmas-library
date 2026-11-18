@@ -30,7 +30,7 @@ const INITIAL_BOOKS = [
     title: 'Pictures with Santa (2012–2025)',
     author: 'Agan Family Scrapbook',
     category: 'album',
-    cover: '/covers/santa-scrapbook-cover.webp?v=1',
+    cover: '/covers/santa-scrapbook-cover.webp?v=2',
     notes: '13 years of family Santa photos in chronological order (2012–2025) with festive borders, years, handwritten notes & bonus holiday snapshots! 🎅✨',
     pages: SANTA_SCRAPBOOK_PAGES.map((p, idx) => ({
       id: `santa_page_${p.year}`,
