@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { pb, getBookCoverUrl } from './lib/pocketbase';
+import { pb, getBookCoverUrl, resolvePublicAssetUrl } from './lib/pocketbase';
 import { saveBooksToIndexedDB, getBooksFromIndexedDB } from './lib/idbStorage';
 import {
   isFirebaseConfigured,
@@ -1119,8 +1119,8 @@ const INITIAL_BOOKS = [
     author: 'Down Home For Dinner • 1999 Reunion',
     category: 'cookbook',
     badge: 'Cookbook',
-    cover: '/covers/strom-family-cookbook-restored.webp?v=8',
-    pdfUrl: '/strom_family_cookbook_cleaned.pdf',
+    cover: '/covers/strom-family-cookbook-restored.webp?v=9',
+    pdfUrl: '/strom_family_cookbook_print_ready.pdf',
     notes: 'Treasured family recipes, childhood memories & photos dedicated to Albion Sr. & Laura Strom 🥧 (Contributed by Erin, Sally, Peter, Virginia & family)',
     pages: Array.from({ length: 86 }, (_, i) => ({
       id: `cookbook_page_${i + 1}`,
@@ -2058,11 +2058,14 @@ export default function App() {
                               </button>
                               <span>•</span>
                               <a
-                                href={selectedBook.pdfUrl || '/strom_family_cookbook_cleaned.pdf'}
-                                download="strom_family_cookbook_cleaned.pdf"
-                                className="hover:text-amber-200 underline"
+                                href={resolvePublicAssetUrl(selectedBook.pdfUrl || 'strom_family_cookbook_print_ready.pdf')}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                download="strom_family_cookbook_print_ready.pdf"
+                                className="hover:text-amber-200 underline flex items-center gap-1 font-medium"
                               >
-                                Download Full PDF
+                                <span>📥</span>
+                                <span>Download Print-Ready PDF</span>
                               </a>
                             </div>
                           </div>

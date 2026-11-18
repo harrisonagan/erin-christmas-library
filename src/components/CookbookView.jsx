@@ -298,15 +298,17 @@ export default function CookbookView({ initialRecipeId, onClose }) {
             <span>TOC ({totalMatches})</span>
           </button>
 
-          {/* Download Original PDF */}
+          {/* Download Print-Ready PDF */}
           <a
             href={resolveAssetUrl(COOKBOOK_METADATA.pdfUrl)}
-            download="strom_family_cookbook_cleaned.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            download="strom_family_cookbook_print_ready.pdf"
             className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-stone-900/90 hover:bg-stone-800 text-stone-300 hover:text-amber-200 rounded-xl border border-stone-700/60 text-xs font-medium transition shadow"
-            title="Download full 86-page printable PDF"
+            title="Download full 86-page print-ready PDF for reprinting"
           >
             <span>📥</span>
-            <span>Original PDF</span>
+            <span>Print-Ready PDF</span>
           </a>
 
           {/* Committee & Dedication info */}

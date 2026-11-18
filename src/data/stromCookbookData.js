@@ -48,7 +48,7 @@ export const COOKBOOK_METADATA = {
     "Joanna Harrold",
     "Barbara (Finnerty) Haines"
   ],
-  pdfUrl: "/strom_family_cookbook_cleaned.pdf",
+  pdfUrl: "/strom_family_cookbook_print_ready.pdf",
   totalScannedPages: 86
 };
 
