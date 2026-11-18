@@ -1294,12 +1294,10 @@ export default function App() {
       }
     }
 
-    // Ensure built-in books follow canonical INITIAL_BOOKS order (e.g. Santa Mouse & sequel together)
-    return deduped.sort((a, b) => {
-      const aIdx = initOrderMap.has(a.id) ? initOrderMap.get(a.id) : 9999;
-      const bIdx = initOrderMap.has(b.id) ? initOrderMap.get(b.id) : 9999;
-      return aIdx - bIdx;
-    });
+    // Sort alphabetically by title (A-Z)
+    return deduped.sort((a, b) =>
+      (a.title || '').localeCompare(b.title || '', undefined, { numeric: true, sensitivity: 'base' })
+    );
   };
 
   const [books, setBooks] = useState(() => {
@@ -1311,15 +1309,14 @@ export default function App() {
         const existingIds = new Set(cleaned.map((b) => b.id));
         const missing = INITIAL_BOOKS.filter((b) => !existingIds.has(b.id));
         const combined = [...cleaned, ...missing];
-        const initOrderMap = new Map(INITIAL_BOOKS.map((b, idx) => [b.id, idx]));
-        return combined.sort((a, b) => {
-          const aIdx = initOrderMap.has(a.id) ? initOrderMap.get(a.id) : 9999;
-          const bIdx = initOrderMap.has(b.id) ? initOrderMap.get(b.id) : 9999;
-          return aIdx - bIdx;
-        });
+        return combined.sort((a, b) =>
+          (a.title || '').localeCompare(b.title || '', undefined, { numeric: true, sensitivity: 'base' })
+        );
       }
     } catch (e) {}
-    return INITIAL_BOOKS;
+    return [...INITIAL_BOOKS].sort((a, b) =>
+      (a.title || '').localeCompare(b.title || '', undefined, { numeric: true, sensitivity: 'base' })
+    );
   });
   const [selectedBook, setSelectedBook] = useState(null);
   const [isReaderOpen, setIsReaderOpen] = useState(false);
@@ -1328,6 +1325,11 @@ export default function App() {
   const [isCookbookOpen, setIsCookbookOpen] = useState(false);
   const [cookbookInitialRecipe, setCookbookInitialRecipe] = useState(null);
   const [isSantaScrapbookOpen, setIsSantaScrapbookOpen] = useState(false);
+
+  // Always default filter to 'all' when entering or returning to the bookshelf page
+  useEffect(() => {
+    setActiveFilter('all');
+  }, [isAtBookshelf]);
 
   // URL Hash Routing for Dedicated Cookbook & Santa Scrapbook Views
   useEffect(() => {
@@ -1465,11 +1467,16 @@ export default function App() {
     } catch (e) {}
   }, [books]);
 
-  const filteredBooks = books.filter((b) =>
-    (b.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (b.author || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (b.notes || '').toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredBooks = books
+    .filter(
+      (b) =>
+        (b.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (b.author || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (b.notes || '').toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .sort((a, b) =>
+      (a.title || '').localeCompare(b.title || '', undefined, { numeric: true, sensitivity: 'base' })
+    );
 
   const handleSelectBook = (book) => {
     setSelectedBook(book);
@@ -1692,17 +1699,6 @@ export default function App() {
                   </div>
 
                   <button
-                    onClick={() => {
-                      setIsSantaScrapbookOpen(true);
-                      window.location.hash = '#/santa';
-                    }}
-                    className="px-3.5 py-2 bg-gradient-to-r from-red-800 via-red-700 to-amber-700 hover:from-red-700 hover:to-amber-600 text-amber-50 border border-amber-400/50 rounded-xl text-xs font-sans font-semibold transition shadow flex items-center gap-1.5"
-                    title="Open Family Santa Scrapbook (2012–2025)"
-                  >
-                    <span>🎅</span> <span>Santa Book</span>
-                  </button>
-
-                  <button
                     onClick={() => setIsAddModalOpen(true)}
                     className="px-4 py-2 bg-gradient-to-r from-amber-700 to-amber-800 hover:from-amber-600 text-white rounded-xl text-xs font-sans font-medium transition shadow flex items-center gap-1.5"
                   >
@@ -1759,16 +1755,6 @@ export default function App() {
                   </h2>
 
                   <div className="flex items-center gap-1.5">
-                    <button
-                      onClick={() => {
-                        setIsSantaScrapbookOpen(true);
-                        window.location.hash = '#/santa';
-                      }}
-                      className="px-2.5 py-1 bg-gradient-to-r from-red-800 to-amber-700 text-amber-50 border border-amber-400/50 rounded-lg text-xs font-sans font-semibold shadow flex items-center gap-1 active:scale-95"
-                      title="Open Santa Scrapbook"
-                    >
-                      <span>🎅</span> <span>Santa</span>
-                    </button>
                     <button
                       onClick={() => setIsAddModalOpen(true)}
                       className="px-3 py-1 bg-gradient-to-r from-amber-700 to-amber-800 text-white rounded-lg text-xs font-sans font-semibold shadow flex items-center gap-1 active:scale-95"
@@ -2151,6 +2137,7 @@ export default function App() {
             onClose={() => {
               setIsCookbookOpen(false);
               setCookbookInitialRecipe(null);
+              setActiveFilter('all');
               if (window.location.hash.includes('cookbook')) {
                 window.history.pushState(null, '', window.location.pathname + window.location.search);
               }
@@ -2165,6 +2152,7 @@ export default function App() {
           <SantaScrapbookView
             onClose={() => {
               setIsSantaScrapbookOpen(false);
+              setActiveFilter('all');
               if (window.location.hash.includes('santa')) {
                 window.history.pushState(null, '', window.location.pathname + window.location.search);
               }
