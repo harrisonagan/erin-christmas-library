@@ -19,7 +19,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     location: 'Rivertown Mall • Grand Rapids, MI',
     handwrittenNote: 'Rowan 2012 — 8 months old • Rivertown Mall, Grand Rapids',
     theme: 'crimson',
-    sticker: '🎅 First Christmas!',
+    sticker: "🎅 Rowan's First Christmas",
     mainPhoto: assetUrl('santa/santa-2012.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [],
@@ -28,7 +28,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     year: 2013,
     title: 'Sitting Up with Santa',
     subtitle: 'Rowan • 1 Year Old',
-    location: 'Christmas 2013',
+    location: null,
     handwrittenNote: 'Sweet little spectacles & snowflake frame • 2013',
     theme: 'evergreen',
     sticker: '❄️ Snowflake Memories',
@@ -40,7 +40,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     year: 2014,
     title: 'Christmas Eve Excitement',
     subtitle: 'Rowan • 2 Years Old',
-    location: 'Christmas 2014',
+    location: null,
     handwrittenNote: 'Visiting Santa & Mrs. Claus • 2014',
     theme: 'gold',
     sticker: '🎄 Holiday Magic',
@@ -52,10 +52,10 @@ export const SANTA_SCRAPBOOK_PAGES = [
     year: 2015,
     title: "Elouise's First Santa Photo",
     subtitle: 'Rowan (3) & Baby Elouise',
-    location: 'Christmas 2015',
+    location: null,
     handwrittenNote: 'Big brother Rowan with baby sister Elouise in her reindeer dress • 2015',
     theme: 'crimson',
-    sticker: '🦌 Baby Sister’s 1st Christmas',
+    sticker: "🦌 Elouise's First Christmas",
     mainPhoto: assetUrl('santa/santa-2015.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [],
@@ -64,7 +64,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     year: 2017,
     title: 'Stripes & Smiles at Sullivan’s',
     subtitle: 'Rowan (5) & Elouise (2)',
-    location: 'Sullivan Hardware • 2017',
+    location: "Sullivan's Hardware",
     handwrittenNote: 'Rowan - 5 • Elouise - 2 • Sullivan Hardware - 2017',
     theme: 'evergreen',
     sticker: '🍬 Candy Cane Stripes',
@@ -81,11 +81,11 @@ export const SANTA_SCRAPBOOK_PAGES = [
   {
     year: 2018,
     title: 'Big Grins with Santa Claus',
-    subtitle: 'Rowan (6) & Elouise (3)',
-    location: "Sullivan's Hardware • 2018",
-    handwrittenNote: "Sullivan's Hardware - 2018 • Rowan (6) & Elouise (3)",
+    subtitle: 'Rowan (6), Elouise (3) & Baby Solomon',
+    location: "Sullivan's Hardware",
+    handwrittenNote: "Sullivan's Hardware - 2018 • Solomon's First Christmas!",
     theme: 'gold',
-    sticker: '🌟 Scrapbook Favorites',
+    sticker: "🎅 Solomon's First Christmas",
     mainPhoto: assetUrl('santa/santa-2018.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [
@@ -96,7 +96,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
       },
       {
         src: assetUrl('santa/santa-2018-bonus-2.webp?v=2'),
-        caption: '2018 Bonus — Visiting Santa 🎅',
+        caption: "2018 Bonus — Solomon's First Visit with Santa 🎅",
         tilt: '2.5deg',
       },
     ],
@@ -104,11 +104,11 @@ export const SANTA_SCRAPBOOK_PAGES = [
   {
     year: 2019,
     title: "“Chillin' With My Snowmies”",
-    subtitle: "Rowan, Elouise & Baby Solomon's First Santa Visit",
-    location: "Sullivan's Hardware • 2019",
+    subtitle: 'Rowan (7), Elouise (4) & Solomon (1)',
+    location: "Sullivan's Hardware",
     handwrittenNote: "Sullivan's - 2019 • Matching 'Chillin' With My Snowmies' shirts!",
     theme: 'crimson',
-    sticker: '⛄ All Three Kids!',
+    sticker: null,
     mainPhoto: assetUrl('santa/santa-2019.webp?v=2'),
     orientation: 'landscape',
     bonusPhotos: [],
@@ -117,10 +117,10 @@ export const SANTA_SCRAPBOOK_PAGES = [
     year: 2020,
     title: 'Cozy Christmas Pajamas at Home',
     subtitle: 'No Santa 2020 — COVID Year',
-    location: 'Home Sweet Home • 2020',
+    location: 'Home Sweet Home',
     handwrittenNote: 'No Santa 2020 - covid year • Rowan, Solomon & Elouise in matching reindeer PJs',
     theme: 'evergreen',
-    sticker: '🏠 Cozy Couch Cuddles',
+    sticker: null,
     mainPhoto: assetUrl('santa/santa-2020.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [],
@@ -129,7 +129,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     year: 2021,
     title: 'Buffalo Plaid Robes with the Cousins',
     subtitle: '2021 with Cousins',
-    location: "Sullivan's Hardware • 2021",
+    location: "Sullivan's Hardware",
     handwrittenNote: "Sullivan's Hardware - 2021 with cousins • Matching red & black plaid robes!",
     theme: 'crimson',
     sticker: '🧣 Cousin Crew 2021',
@@ -141,10 +141,10 @@ export const SANTA_SCRAPBOOK_PAGES = [
     year: 2022,
     title: 'Candy Canes & Sparkle Shoes',
     subtitle: 'Rowan (10), Elouise (7) & Solomon (4)',
-    location: "Sullivan's Hardware • 2022",
+    location: "Sullivan's Hardware",
     handwrittenNote: 'Solomon holding two candy canes, Elouise & Rowan smiling big • 2022',
     theme: 'gold',
-    sticker: '🍭 Sweet Memories',
+    sticker: null,
     mainPhoto: assetUrl('santa/santa-2022.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [],
@@ -153,10 +153,10 @@ export const SANTA_SCRAPBOOK_PAGES = [
     year: 2023,
     title: 'Santa Hats & Holiday Adventures',
     subtitle: 'Row (11), Lulu (8) & Sol (5)',
-    location: "Sullivan's Hardware & Michigan • 2023",
+    location: "Sullivan's Hardware & Michigan",
     handwrittenNote: "Sullivan's 2023 • Row - 11 • Lulu - 8 • Sol - 5",
     theme: 'crimson',
-    sticker: '🎄 2023 Scrapbook Spread',
+    sticker: null,
     mainPhoto: assetUrl('santa/santa-2023.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [
@@ -176,10 +176,10 @@ export const SANTA_SCRAPBOOK_PAGES = [
     year: 2024,
     title: 'Holiday Pajamas at Sullivan’s',
     subtitle: 'Visits with Santa • 2024',
-    location: "Sullivan's Hardware • 2024",
-    handwrittenNote: "Sullivan's - 2024",
+    location: "Sullivan's Hardware",
+    handwrittenNote: "Sullivan's - 2024 • Maeve's First Christmas!",
     theme: 'evergreen',
-    sticker: '✨ Christmas 2024',
+    sticker: "🎀 Maeve's First Christmas",
     mainPhoto: assetUrl('santa/santa-2024.webp?v=2'),
     orientation: 'landscape',
     bonusPhotos: [],
@@ -188,10 +188,10 @@ export const SANTA_SCRAPBOOK_PAGES = [
     year: 2025,
     title: 'Christmas 2025 with Santa',
     subtitle: 'The Tradition Continues',
-    location: "Sullivan's Hardware • 2025",
+    location: "Sullivan's Hardware",
     handwrittenNote: "Sullivan's Hardware - 2025 • All dressed up in holiday plaids & velvet with Santa",
     theme: 'gold',
-    sticker: '🌟 Christmas 2025',
+    sticker: null,
     mainPhoto: assetUrl('santa/santa-2025.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [],
@@ -345,23 +345,20 @@ function ScrapbookSpread({ page, onZoom }) {
       {/* Spread Header Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-6 mb-7 border-b border-amber-900/50">
         <div>
-          <div className="flex flex-wrap items-center gap-2 mb-2">
-            <span
-              className={`px-3 py-1 rounded-full border text-xs font-serif font-bold tracking-wider shadow ${style.badgeBg}`}
-            >
-              🎄 Christmas {page.year}
-            </span>
-            {page.location && (
-              <span className="px-3 py-1 rounded-full bg-stone-900/90 border border-stone-700/80 text-xs font-sans text-amber-200/90">
-                📍 {page.location}
-              </span>
-            )}
-            {page.sticker && (
-              <span className="px-3 py-1 rounded-full bg-amber-950/80 border border-amber-600/40 text-xs font-sans text-amber-300">
-                {page.sticker}
-              </span>
-            )}
-          </div>
+          {(page.location || page.sticker) && (
+            <div className="flex flex-wrap items-center gap-2 mb-2">
+              {page.location && (
+                <span className="px-3 py-1 rounded-full bg-stone-900/90 border border-stone-700/80 text-xs font-sans text-amber-200/90">
+                  📍 {page.location}
+                </span>
+              )}
+              {page.sticker && (
+                <span className="px-3 py-1 rounded-full bg-amber-950/80 border border-amber-600/40 text-xs font-sans text-amber-300">
+                  {page.sticker}
+                </span>
+              )}
+            </div>
+          )}
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-amber-100 tracking-wide">
             {page.title}
           </h2>
