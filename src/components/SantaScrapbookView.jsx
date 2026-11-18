@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const BASE_URL = import.meta.env.BASE_URL || '/';
+function assetUrl(relPath) {
+  if (!relPath) return '';
+  if (relPath.startsWith('http') || relPath.startsWith('data:') || relPath.startsWith('blob:')) {
+    return relPath;
+  }
+  const clean = relPath.startsWith('/') ? relPath.slice(1) : relPath;
+  return `${BASE_URL}${clean}`;
+}
+
 export const SANTA_SCRAPBOOK_PAGES = [
   {
     year: 2012,
@@ -10,7 +20,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     handwrittenNote: 'Rowan 2012 — 8 months old • Rivertown Mall, Grand Rapids',
     theme: 'crimson',
     sticker: '🎅 First Christmas!',
-    mainPhoto: '/santa/santa-2012.webp?v=1',
+    mainPhoto: assetUrl('santa/santa-2012.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [],
   },
@@ -22,7 +32,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     handwrittenNote: 'Sweet little spectacles & snowflake frame • 2013',
     theme: 'evergreen',
     sticker: '❄️ Snowflake Memories',
-    mainPhoto: '/santa/santa-2013.webp?v=1',
+    mainPhoto: assetUrl('santa/santa-2013.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [],
   },
@@ -34,7 +44,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     handwrittenNote: 'Visiting Santa & Mrs. Claus • 2014',
     theme: 'gold',
     sticker: '🎄 Holiday Magic',
-    mainPhoto: '/santa/santa-2014.webp?v=1',
+    mainPhoto: assetUrl('santa/santa-2014.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [],
   },
@@ -46,7 +56,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     handwrittenNote: 'Big brother Rowan with baby sister Elouise in her reindeer dress • 2015',
     theme: 'crimson',
     sticker: '🦌 Baby Sister’s 1st Christmas',
-    mainPhoto: '/santa/santa-2015.webp?v=1',
+    mainPhoto: assetUrl('santa/santa-2015.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [],
   },
@@ -58,11 +68,11 @@ export const SANTA_SCRAPBOOK_PAGES = [
     handwrittenNote: 'Rowan - 5 • Elouise - 2 • Sullivan Hardware - 2017',
     theme: 'evergreen',
     sticker: '🍬 Candy Cane Stripes',
-    mainPhoto: '/santa/santa-2017.webp?v=1',
+    mainPhoto: assetUrl('santa/santa-2017.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [
       {
-        src: '/santa/santa-2017-bonus.webp?v=1',
+        src: assetUrl('santa/santa-2017-bonus.webp?v=2'),
         caption: '2017 Bonus Holiday Memory ✨',
         tilt: '-2.5deg',
       },
@@ -76,16 +86,16 @@ export const SANTA_SCRAPBOOK_PAGES = [
     handwrittenNote: 'Festive sweaters, family fun & holiday traditions • 2018',
     theme: 'gold',
     sticker: '🌟 Scrapbook Favorites',
-    mainPhoto: '/santa/santa-2018.webp?v=1',
+    mainPhoto: assetUrl('santa/santa-2018.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [
       {
-        src: '/santa/santa-2018-bonus-1.webp?v=1',
+        src: assetUrl('santa/santa-2018-bonus-1.webp?v=2'),
         caption: '2018 Bonus — Holiday Crew Together 🎄',
         tilt: '-2deg',
       },
       {
-        src: '/santa/santa-2018-bonus-2.webp?v=1',
+        src: assetUrl('santa/santa-2018-bonus-2.webp?v=2'),
         caption: '2018 Bonus — Visiting Santa 🎅',
         tilt: '2.5deg',
       },
@@ -99,7 +109,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     handwrittenNote: "Sullivan's - 2019 • Matching 'Chillin' With My Snowmies' shirts!",
     theme: 'crimson',
     sticker: '⛄ All Three Kids!',
-    mainPhoto: '/santa/santa-2019.webp?v=1',
+    mainPhoto: assetUrl('santa/santa-2019.webp?v=2'),
     orientation: 'landscape',
     bonusPhotos: [],
   },
@@ -111,7 +121,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     handwrittenNote: 'No Santa 2020 - covid year • Rowan, Solomon & Elouise in matching reindeer PJs',
     theme: 'evergreen',
     sticker: '🏠 Cozy Couch Cuddles',
-    mainPhoto: '/santa/santa-2020.webp?v=1',
+    mainPhoto: assetUrl('santa/santa-2020.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [],
   },
@@ -123,7 +133,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     handwrittenNote: '2021 with cousins • Matching red & black plaid robes around Santa’s throne!',
     theme: 'crimson',
     sticker: '🧣 Cousin Crew 2021',
-    mainPhoto: '/santa/santa-2021.webp?v=1',
+    mainPhoto: assetUrl('santa/santa-2021.webp?v=2'),
     orientation: 'landscape',
     bonusPhotos: [],
   },
@@ -135,7 +145,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     handwrittenNote: 'Solomon holding two candy canes, Elouise & Rowan smiling big • 2022',
     theme: 'gold',
     sticker: '🍭 Sweet Memories',
-    mainPhoto: '/santa/santa-2022.webp?v=1',
+    mainPhoto: assetUrl('santa/santa-2022.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [],
   },
@@ -147,16 +157,16 @@ export const SANTA_SCRAPBOOK_PAGES = [
     handwrittenNote: "Sullivan's 2023 • Row - 11 • Lulu - 8 • Sol - 5",
     theme: 'crimson',
     sticker: '🎄 2023 Scrapbook Spread',
-    mainPhoto: '/santa/santa-2023.webp?v=1',
+    mainPhoto: assetUrl('santa/santa-2023.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [
       {
-        src: '/santa/santa-2023-bonus-1.webp?v=1',
+        src: assetUrl('santa/santa-2023-bonus-1.webp?v=2'),
         caption: '2023 Bonus — Festive Family & Friends Gathering 🎉',
         tilt: '-2deg',
       },
       {
-        src: '/santa/santa-2023-bonus-mi.webp?v=1',
+        src: assetUrl('santa/santa-2023-bonus-mi.webp?v=2'),
         caption: '2023 Bonus — Great Wolf Lodge, Michigan 🐺❄️',
         tilt: '2deg',
       },
@@ -170,7 +180,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     handwrittenNote: "Sullivan's - 2024",
     theme: 'evergreen',
     sticker: '✨ Christmas 2024',
-    mainPhoto: '/santa/santa-2024.webp?v=1',
+    mainPhoto: assetUrl('santa/santa-2024.webp?v=2'),
     orientation: 'landscape',
     bonusPhotos: [],
   },
@@ -182,7 +192,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     handwrittenNote: 'All dressed up in holiday plaids & velvet with Santa • 2025',
     theme: 'gold',
     sticker: '🌟 Christmas 2025',
-    mainPhoto: '/santa/santa-2025.webp?v=1',
+    mainPhoto: assetUrl('santa/santa-2025.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [],
   },

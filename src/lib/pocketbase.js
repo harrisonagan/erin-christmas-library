@@ -13,17 +13,27 @@ const PB_URL = import.meta.env.VITE_POCKETBASE_URL || (
 
 export const pb = new PocketBase(PB_URL);
 
+export function resolvePublicAssetUrl(rawPath) {
+  if (!rawPath || typeof rawPath !== 'string') return null;
+  if (rawPath.startsWith('http') || rawPath.startsWith('blob:') || rawPath.startsWith('data:')) {
+    return rawPath;
+  }
+  const baseUrl = import.meta.env.BASE_URL || '/';
+  const baseClean = baseUrl.replace(/^\/+|\/+$/g, '');
+  let cleanPath = rawPath.replace(/^\/+/, '');
+  if (baseClean && cleanPath.startsWith(`${baseClean}/`)) {
+    cleanPath = cleanPath.slice(baseClean.length + 1);
+  }
+  return `${baseUrl}${cleanPath}`;
+}
+
 /**
  * Helper to get a book's cover image URL.
  */
 export function getBookCoverUrl(book, thumb = '300x420') {
   if (!book?.cover) return null;
   if (typeof book.cover === 'string') {
-    if (book.cover.startsWith('http') || book.cover.startsWith('blob:') || book.cover.startsWith('data:')) {
-      return book.cover;
-    }
-    const cleanPath = book.cover.startsWith('/') ? book.cover.slice(1) : book.cover;
-    return `${import.meta.env.BASE_URL}${cleanPath}`;
+    return resolvePublicAssetUrl(book.cover);
   }
   return pb.files.getUrl(book, book.cover, { thumb });
 }
@@ -36,11 +46,7 @@ export function getPageImageUrl(pageRecord) {
   const img = typeof pageRecord === 'string' ? pageRecord : pageRecord.image;
   if (!img) return null;
   if (typeof img === 'string') {
-    if (img.startsWith('http') || img.startsWith('blob:') || img.startsWith('data:')) {
-      return img;
-    }
-    const cleanPath = img.startsWith('/') ? img.slice(1) : img;
-    return `${import.meta.env.BASE_URL}${cleanPath}`;
+    return resolvePublicAssetUrl(img);
   }
   return pb.files.getUrl(pageRecord, pageRecord.image);
 }
@@ -157,7 +163,7 @@ export async function parseBookCoverWithAI(coverFile) {
   const oauthToken = getGoogleAccessToken();
   const customUserKey = typeof window !== 'undefined' ? localStorage.getItem('erin_gemini_api_key') : null;
   const projectKey = customUserKey || import.meta.env.VITE_GEMINI_API_KEY;
-  const models = ['gemini-2.0-flash', 'gemini-2.5-flash'];
+  const models = ['gemini-3-flash-preview', 'gemini-3.1-flash-lite', 'gemini-2.5-flash'];
 
   const bodyPayload = JSON.stringify({
     contents: [
