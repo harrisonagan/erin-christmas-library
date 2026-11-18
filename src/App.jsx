@@ -2065,7 +2065,17 @@ export default function App() {
                                 className="hover:text-amber-200 underline flex items-center gap-1 font-medium"
                               >
                                 <span>📥</span>
-                                <span>Download Print-Ready PDF</span>
+                                <span>Download PDF</span>
+                              </a>
+                              <span>•</span>
+                              <a
+                                href={resolvePublicAssetUrl('strom_family_cookbook.docx')}
+                                download="strom_family_cookbook.docx"
+                                className="hover:text-amber-200 underline flex items-center gap-1 font-medium"
+                                title="Open directly in Google Docs or Word for a clean digital typeset reprint"
+                              >
+                                <span>📄</span>
+                                <span>Google Doc (.docx)</span>
                               </a>
                             </div>
                           </div>

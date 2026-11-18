@@ -311,6 +311,17 @@ export default function CookbookView({ initialRecipeId, onClose }) {
             <span>Print-Ready PDF</span>
           </a>
 
+          {/* Download Google Doc (.docx) */}
+          <a
+            href={resolveAssetUrl('strom_family_cookbook.docx')}
+            download="strom_family_cookbook.docx"
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-stone-900/90 hover:bg-stone-800 text-stone-300 hover:text-amber-200 rounded-xl border border-stone-700/60 text-xs font-medium transition shadow"
+            title="Download Google Doc (.docx) with 100% clean digital recipes"
+          >
+            <span>📄</span>
+            <span>Google Doc</span>
+          </a>
+
           {/* Committee & Dedication info */}
           <button
             onClick={() => setIsCommitteeModalOpen(true)}
