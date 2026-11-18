@@ -1220,35 +1220,82 @@ export default function App() {
   const upgradeBuiltInBooks = (list) => {
     const initOrderMap = new Map(INITIAL_BOOKS.map((b, idx) => [b.id, idx]));
     const initMap = new Map(INITIAL_BOOKS.map((b) => [b.id, b]));
-    const upgraded = list.map((b) => {
-      const fresh = initMap.get(b.id);
-      if (!fresh) return b;
-      if (b.id === 'cookbook_erin' || b.id === 'album_santa') {
-        return {
+    const initTitleMap = new Map(
+      INITIAL_BOOKS.map((b) => [(b.title || '').trim().toLowerCase(), b])
+    );
+
+    const upgraded = [];
+    for (const b of list) {
+      if (!b) continue;
+      const fresh =
+        initMap.get(b.id) ||
+        initTitleMap.get((b.title || '').trim().toLowerCase());
+
+      if (!fresh) {
+        // Custom user-added book: keep only if it has a valid non-local cover image
+        const cov = typeof b.cover === 'string' ? b.cover.trim() : '';
+        if (
+          cov &&
+          !cov.includes('127.0.0.1') &&
+          !cov.includes('localhost') &&
+          (cov.startsWith('data:image/') ||
+            cov.startsWith('https://') ||
+            cov.startsWith('/covers/') ||
+            cov.startsWith('covers/'))
+        ) {
+          upgraded.push(b);
+        }
+        continue;
+      }
+
+      if (fresh.id === 'cookbook_erin' || fresh.id === 'album_santa') {
+        upgraded.push({
           ...b,
           ...fresh,
+          id: fresh.id,
           cover: fresh.cover,
           pages: fresh.pages,
-        };
+        });
+        continue;
       }
-      const shouldUseFreshCover = !b.cover || b.cover.startsWith('/covers/');
+
+      const hasCustomUploadedCover =
+        typeof b.cover === 'string' &&
+        (b.cover.startsWith('data:image/') ||
+          b.cover.startsWith('https://firebasestorage.googleapis.com/'));
+
       if (b.userEdited) {
-        return {
+        upgraded.push({
           ...fresh,
           ...b,
-          cover: shouldUseFreshCover ? fresh.cover : b.cover,
-          pages: b.pages && b.pages.length > 0 ? b.pages : fresh.pages,
-        };
+          id: fresh.id,
+          cover: hasCustomUploadedCover ? b.cover : fresh.cover,
+          pages: fresh.pages && fresh.pages.length > 0 ? fresh.pages : b.pages || [],
+        });
+        continue;
       }
-      return {
+
+      upgraded.push({
         ...b,
         ...fresh,
-        pages: b.pages && b.pages.length > 0 ? b.pages : fresh.pages,
-      };
-    });
+        id: fresh.id,
+        cover: fresh.cover,
+        pages: fresh.pages && fresh.pages.length > 0 ? fresh.pages : b.pages || [],
+      });
+    }
+
+    // Deduplicate by id
+    const seen = new Set();
+    const deduped = [];
+    for (const item of upgraded) {
+      if (!seen.has(item.id)) {
+        seen.add(item.id);
+        deduped.push(item);
+      }
+    }
 
     // Ensure built-in books follow canonical INITIAL_BOOKS order (e.g. Santa Mouse & sequel together)
-    return upgraded.sort((a, b) => {
+    return deduped.sort((a, b) => {
       const aIdx = initOrderMap.has(a.id) ? initOrderMap.get(a.id) : 9999;
       const bIdx = initOrderMap.has(b.id) ? initOrderMap.get(b.id) : 9999;
       return aIdx - bIdx;
