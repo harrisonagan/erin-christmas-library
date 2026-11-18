@@ -1478,9 +1478,12 @@ export default function App() {
       (a.title || '').localeCompare(b.title || '', undefined, { numeric: true, sensitivity: 'base' })
     );
 
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
+
   const handleSelectBook = (book) => {
     setSelectedBook(book);
     setIsEditingBook(false);
+    setIsConfirmingDelete(false);
     setEditTitle(book.title || '');
     setEditAuthor(book.author || 'Unknown');
     setEditNotes(book.notes || '');
@@ -1527,7 +1530,6 @@ export default function App() {
   };
 
   const handleDeleteBook = async (bookId) => {
-    if (!confirm('Remove this book from Erin\'s Christmas shelf?')) return;
     const target = books.find((b) => b.id === bookId);
     if (isFirebaseConfigured()) {
       try {
@@ -1537,6 +1539,7 @@ export default function App() {
       }
     }
     setBooks((prev) => prev.filter((b) => b.id !== bookId));
+    setIsConfirmingDelete(false);
     setSelectedBook(null);
   };
 
@@ -2064,26 +2067,54 @@ export default function App() {
                             </div>
                           </div>
                         ) : (
-                          <div className="w-full flex flex-col sm:flex-row gap-3 items-center">
-                            <button
-                              onClick={() => setIsReaderOpen(true)}
-                              className="w-full sm:flex-1 py-3.5 px-6 bg-gradient-to-r from-amber-700 via-amber-600 to-amber-700 hover:from-amber-600 hover:to-amber-500 text-amber-50 rounded-2xl text-sm font-semibold shadow-[0_8px_20px_rgba(180,83,9,0.4)] border border-amber-400/30 transition-all flex items-center justify-center gap-2 transform active:scale-95"
-                            >
-                              <span className="text-lg">📖</span>
-                              <span>
-                                {selectedBook.pages && selectedBook.pages.length > 0
-                                  ? `Open & View Inside Page (${selectedBook.pages.length})`
-                                  : 'Open Storybook & Read'}
-                              </span>
-                            </button>
+                          <div className="w-full flex flex-col gap-3">
+                            <div className="w-full flex flex-col sm:flex-row gap-3 items-center">
+                              <button
+                                onClick={() => setIsReaderOpen(true)}
+                                className="w-full sm:flex-1 py-3.5 px-6 bg-gradient-to-r from-amber-700 via-amber-600 to-amber-700 hover:from-amber-600 hover:to-amber-500 text-amber-50 rounded-2xl text-sm font-semibold shadow-[0_8px_20px_rgba(180,83,9,0.4)] border border-amber-400/30 transition-all flex items-center justify-center gap-2 transform active:scale-95"
+                              >
+                                <span className="text-lg">📖</span>
+                                <span>
+                                  {selectedBook.pages && selectedBook.pages.length > 0
+                                    ? `Open & View Inside Page (${selectedBook.pages.length})`
+                                    : 'Open Storybook & Read'}
+                                </span>
+                              </button>
 
-                            <button
-                              onClick={() => handleDeleteBook(selectedBook.id)}
-                              className="w-full sm:w-auto px-4 py-3.5 bg-stone-900/60 hover:bg-red-950/50 text-stone-400 hover:text-red-300 border border-stone-800 hover:border-red-900/60 rounded-2xl text-xs font-medium transition"
-                              title="Remove from shelf"
-                            >
-                              Remove
-                            </button>
+                              {!isConfirmingDelete && (
+                                <button
+                                  onClick={() => setIsConfirmingDelete(true)}
+                                  className="w-full sm:w-auto px-4 py-3.5 bg-stone-900/60 hover:bg-red-950/50 text-stone-400 hover:text-red-300 border border-stone-800 hover:border-red-900/60 rounded-2xl text-xs font-medium transition"
+                                  title="Remove from shelf"
+                                >
+                                  Remove
+                                </button>
+                              )}
+                            </div>
+
+                            {isConfirmingDelete && (
+                              <div className="p-3.5 rounded-2xl bg-red-950/50 border border-red-800/70 flex flex-col sm:flex-row items-center justify-between gap-3">
+                                <p className="text-xs text-red-200 font-sans text-center sm:text-left">
+                                  Are you sure you want to remove <strong className="text-white">“{selectedBook.title}”</strong> from the library?
+                                </p>
+                                <div className="flex items-center gap-2 flex-shrink-0">
+                                  <button
+                                    type="button"
+                                    onClick={() => setIsConfirmingDelete(false)}
+                                    className="px-3 py-1.5 rounded-xl bg-stone-900 hover:bg-stone-800 border border-stone-700 text-xs text-stone-300 transition"
+                                  >
+                                    Cancel
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleDeleteBook(selectedBook.id)}
+                                    className="px-3.5 py-1.5 rounded-xl bg-red-700 hover:bg-red-600 text-xs font-semibold text-white shadow transition"
+                                  >
+                                    Yes, Remove
+                                  </button>
+                                </div>
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>

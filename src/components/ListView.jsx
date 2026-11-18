@@ -110,18 +110,6 @@ export default function ListView({ books = [], onSelectBook, onDeleteBook, activ
                 <span className="text-xs text-amber-400 bg-amber-950/60 border border-amber-900/60 px-3.5 py-1.5 rounded-full font-medium hidden sm:inline">
                   Open Book →
                 </span>
-                {onDeleteBook && (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onDeleteBook(book.id);
-                    }}
-                    className="p-1.5 text-stone-500 hover:text-red-400 transition text-xs"
-                    title="Remove book"
-                  >
-                    🗑️
-                  </button>
-                )}
               </div>
             </div>
           );
