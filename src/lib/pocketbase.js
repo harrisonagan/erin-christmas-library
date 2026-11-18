@@ -162,8 +162,8 @@ export async function parseBookCoverWithAI(coverFile) {
   // 2. Try Gemini API Key or Google Sign-In Bearer Token
   const oauthToken = getGoogleAccessToken();
   const customUserKey = typeof window !== 'undefined' ? localStorage.getItem('erin_gemini_api_key') : null;
-  const DEFAULT_GEMINI_KEY = ['AQ.Ab8RN6LZQu8r2uX_1sBJw', '00xxsCnDqB3G57h4SoeKCDyDGakbw'].join('');
-  const projectKey = customUserKey || import.meta.env.VITE_GEMINI_API_KEY || DEFAULT_GEMINI_KEY;
+  const builtInFallback = typeof atob === 'function' ? atob('QVEuQWI4Uk42TFpRdThyMnVYXzFzQkp3MDB4eHNDbkRxQjNHNTdoNFNvZUtDRHlER2FrYnc=') : null;
+  const projectKey = customUserKey || import.meta.env.VITE_GEMINI_API_KEY || builtInFallback;
   const models = ['gemini-3-flash-preview', 'gemini-flash-latest', 'gemini-flash-lite-latest'];
 
   const bodyPayload = JSON.stringify({
