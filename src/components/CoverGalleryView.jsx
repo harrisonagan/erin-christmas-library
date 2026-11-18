@@ -68,6 +68,7 @@ export default function CoverGalleryView({ books = [], onSelectBook, onAddBook, 
           const isMouse = isMouseBookItem(book);
           const isMag = isMagazineItem(book);
           const isCookbook = book.category === 'cookbook' || book.id === 'cookbook_erin' || book.id === 'twelve_days_of_christmas_cookbook';
+          const isAlbum = book.category === 'album' || book.id === 'album_santa';
           const isSantaMouse = book.id === 'santa_mouse';
 
           return (
@@ -83,6 +84,11 @@ export default function CoverGalleryView({ books = [], onSelectBook, onAddBook, 
 
                 {/* Top Corner Badges */}
                 <div className="absolute top-1.5 right-1.5 z-20 flex flex-col items-end gap-1 pointer-events-none">
+                  {isAlbum && (
+                    <span className="px-1.5 py-0.5 rounded bg-red-900/95 border border-amber-300/70 text-[8.5px] font-sans font-semibold text-amber-100 shadow">
+                      🎅 Santa Scrapbook
+                    </span>
+                  )}
                   {isCookbook && (
                     <span className="px-1.5 py-0.5 rounded bg-amber-900/95 border border-amber-400/60 text-[8.5px] font-sans font-semibold text-amber-100 shadow">
                       🥧 Cookbook

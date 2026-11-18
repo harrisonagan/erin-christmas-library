@@ -122,9 +122,10 @@ async function fallbackOcrAndGoogleBooks(coverFile) {
       }
     }
 
+    // If Google Books didn't find a clean match, DO NOT dump raw garbled OCR into the title
     return {
-      title: rawLines.slice(0, 2).join(' '),
-      author: 'Unknown',
+      title: '',
+      author: '',
       box_2d: null,
     };
   } catch (err) {
@@ -136,7 +137,7 @@ async function fallbackOcrAndGoogleBooks(coverFile) {
 /**
  * Zero-config AI Book Cover Analyzer:
  * 1. Tries Firebase AI (GoogleAIBackend)
- * 2. Tries Google OAuth Bearer token (from Google Sign-In) & Firebase project key against Gemini 2.5 / 2.0 Flash
+ * 2. Tries Gemini API Key (from localStorage, env, or Google Sign-In token) against Gemini 2.0 / 2.5 Flash
  * 3. Falls back to built-in Browser OCR + Google Books API lookup
  */
 export async function parseBookCoverWithAI(coverFile) {
@@ -152,10 +153,11 @@ export async function parseBookCoverWithAI(coverFile) {
     // Continue to Tier 2
   }
 
-  // 2. Try Google OAuth Bearer Token (from Google Sign-In) or Project Key against Gemini REST API
+  // 2. Try Gemini API Key or Google Sign-In Bearer Token
   const oauthToken = getGoogleAccessToken();
-  const projectKey = import.meta.env.VITE_GEMINI_API_KEY || BUILTIN_FIREBASE_CONFIG.apiKey;
-  const models = ['gemini-2.5-flash', 'gemini-2.0-flash'];
+  const customUserKey = typeof window !== 'undefined' ? localStorage.getItem('erin_gemini_api_key') : null;
+  const projectKey = customUserKey || import.meta.env.VITE_GEMINI_API_KEY;
+  const models = ['gemini-2.0-flash', 'gemini-2.5-flash'];
 
   const bodyPayload = JSON.stringify({
     contents: [

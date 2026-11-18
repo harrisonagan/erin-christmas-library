@@ -21,9 +21,24 @@ import ReaderModal from './components/ReaderModal';
 import AddBookModal from './components/AddBookModal';
 import CloudBackupModal from './components/CloudBackupModal';
 import CookbookView from './components/CookbookView';
+import SantaScrapbookView, { SANTA_SCRAPBOOK_PAGES } from './components/SantaScrapbookView';
 
-// Curated Authentic Family Christmas Library (109 Volumes from Family Collection)
+// Curated Authentic Family Christmas Library (Family Collection + Santa Scrapbook)
 const INITIAL_BOOKS = [
+  {
+    id: 'album_santa',
+    title: 'Pictures with Santa (2012–2025)',
+    author: 'Agan Family Scrapbook',
+    category: 'album',
+    cover: '/covers/santa-scrapbook-cover.webp?v=1',
+    notes: '13 years of family Santa photos in chronological order (2012–2025) with festive borders, years, handwritten notes & bonus holiday snapshots! 🎅✨',
+    pages: SANTA_SCRAPBOOK_PAGES.map((p, idx) => ({
+      id: `santa_page_${p.year}`,
+      pageNumber: idx + 1,
+      image: p.mainPhoto,
+      caption: `${p.year} — ${p.title}: ${p.handwrittenNote}`,
+    })),
+  },
   { 
     id: '1', 
     title: 'Mice Skating', 
@@ -1097,16 +1112,6 @@ const INITIAL_BOOKS = [
     notes: 'With two-way reversible sequins! • Interactive holiday board book',
     pages: []
   },
-  // Family Photo Albums
-  {
-    id: 'album_santa',
-    title: 'Pictures with Santa',
-    author: 'Agan Family Keepsake',
-    category: 'album',
-    cover: 'https://images.unsplash.com/photo-1543258103-a62bdc069871?auto=format&fit=crop&w=400&q=80',
-    notes: 'Our annual keepsake album of all our pictures with Santa Claus 🎅 (Upload Apple Photos here!)',
-    pages: [],
-  },
   // Family Cookbooks & Keepsakes
   {
     id: 'cookbook_erin',
@@ -1218,12 +1223,12 @@ export default function App() {
     const upgraded = list.map((b) => {
       const fresh = initMap.get(b.id);
       if (!fresh) return b;
-      if (b.id === 'cookbook_erin') {
+      if (b.id === 'cookbook_erin' || b.id === 'album_santa') {
         return {
           ...b,
           ...fresh,
           cover: fresh.cover,
-          pages: b.pages && b.pages.length > 0 ? b.pages : fresh.pages,
+          pages: fresh.pages,
         };
       }
       const shouldUseFreshCover = !b.cover || b.cover.startsWith('/covers/');
@@ -1275,8 +1280,9 @@ export default function App() {
   const [addModalCategory, setAddModalCategory] = useState('story');
   const [isCookbookOpen, setIsCookbookOpen] = useState(false);
   const [cookbookInitialRecipe, setCookbookInitialRecipe] = useState(null);
+  const [isSantaScrapbookOpen, setIsSantaScrapbookOpen] = useState(false);
 
-  // URL Hash Routing for Dedicated Cookbook View (#/cookbook, #/cookbook?recipe=slug)
+  // URL Hash Routing for Dedicated Cookbook & Santa Scrapbook Views
   useEffect(() => {
     const handleUrlRoute = () => {
       const hash = window.location.hash || '';
@@ -1288,6 +1294,9 @@ export default function App() {
         if (match && match[1]) {
           setCookbookInitialRecipe(decodeURIComponent(match[1]));
         }
+      } else if (hash.includes('santa')) {
+        setIsAtBookshelf(true);
+        setIsSantaScrapbookOpen(true);
       }
     };
     handleUrlRoute();
@@ -1636,6 +1645,17 @@ export default function App() {
                   </div>
 
                   <button
+                    onClick={() => {
+                      setIsSantaScrapbookOpen(true);
+                      window.location.hash = '#/santa';
+                    }}
+                    className="px-3.5 py-2 bg-gradient-to-r from-red-800 via-red-700 to-amber-700 hover:from-red-700 hover:to-amber-600 text-amber-50 border border-amber-400/50 rounded-xl text-xs font-sans font-semibold transition shadow flex items-center gap-1.5"
+                    title="Open Family Santa Scrapbook (2012–2025)"
+                  >
+                    <span>🎅</span> <span>Santa Book</span>
+                  </button>
+
+                  <button
                     onClick={() => setIsAddModalOpen(true)}
                     className="px-4 py-2 bg-gradient-to-r from-amber-700 to-amber-800 hover:from-amber-600 text-white rounded-xl text-xs font-sans font-medium transition shadow flex items-center gap-1.5"
                   >
@@ -1692,6 +1712,16 @@ export default function App() {
                   </h2>
 
                   <div className="flex items-center gap-1.5">
+                    <button
+                      onClick={() => {
+                        setIsSantaScrapbookOpen(true);
+                        window.location.hash = '#/santa';
+                      }}
+                      className="px-2.5 py-1 bg-gradient-to-r from-red-800 to-amber-700 text-amber-50 border border-amber-400/50 rounded-lg text-xs font-sans font-semibold shadow flex items-center gap-1 active:scale-95"
+                      title="Open Santa Scrapbook"
+                    >
+                      <span>🎅</span> <span>Santa</span>
+                    </button>
                     <button
                       onClick={() => setIsAddModalOpen(true)}
                       className="px-3 py-1 bg-gradient-to-r from-amber-700 to-amber-800 text-white rounded-lg text-xs font-sans font-semibold shadow flex items-center gap-1 active:scale-95"
@@ -1948,7 +1978,29 @@ export default function App() {
 
                       {/* Action Buttons */}
                       <div className="pt-4 flex flex-col gap-3">
-                        {selectedBook.id === 'cookbook_erin' ? (
+                        {selectedBook.id === 'album_santa' ? (
+                          <div className="w-full flex flex-col gap-2.5">
+                            <button
+                              onClick={() => {
+                                setIsSantaScrapbookOpen(true);
+                                setSelectedBook(null);
+                                window.location.hash = '#/santa';
+                              }}
+                              className="w-full py-4 px-6 bg-gradient-to-r from-red-800 via-red-700 to-amber-700 hover:from-red-700 hover:to-amber-600 text-amber-50 rounded-2xl text-sm font-semibold shadow-[0_10px_25px_rgba(185,28,28,0.5)] border border-amber-400/50 transition-all flex items-center justify-center gap-2.5 transform active:scale-95"
+                            >
+                              <span className="text-xl">🎅</span>
+                              <span className="font-bold">Open Family Santa Scrapbook (2012–2025)</span>
+                            </button>
+                            <div className="flex items-center justify-center gap-4 text-xs font-sans text-stone-400 pt-1">
+                              <button
+                                onClick={() => setIsReaderOpen(true)}
+                                className="hover:text-amber-200 underline"
+                              >
+                                View Classic Page Flip
+                              </button>
+                            </div>
+                          </div>
+                        ) : selectedBook.id === 'cookbook_erin' ? (
                           <div className="w-full flex flex-col gap-2.5">
                             <button
                               onClick={() => {
@@ -2053,6 +2105,20 @@ export default function App() {
               setIsCookbookOpen(false);
               setCookbookInitialRecipe(null);
               if (window.location.hash.includes('cookbook')) {
+                window.history.pushState(null, '', window.location.pathname + window.location.search);
+              }
+            }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Dedicated Interactive Family Santa Scrapbook View (#/santa) */}
+      <AnimatePresence>
+        {isSantaScrapbookOpen && (
+          <SantaScrapbookView
+            onClose={() => {
+              setIsSantaScrapbookOpen(false);
+              if (window.location.hash.includes('santa')) {
                 window.history.pushState(null, '', window.location.pathname + window.location.search);
               }
             }}
