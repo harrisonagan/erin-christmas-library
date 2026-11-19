@@ -154,16 +154,16 @@ export default function CabinLanding({ onStepUp }) {
                 }}
                 className="relative flex flex-col items-center"
               >
-                {/* "Merry Christmas!" Voice Cloud with Trail Dots Leading Directly from the Mouse's Mouth */}
+                {/* "Merry Christmas!" Voice Cloud with Stretched Trail Dots from Mouth Level Up-Right */}
                 <motion.div
                   initial={{ opacity: 0, scale: 0.7, x: -10 }}
                   animate={{ opacity: 1, scale: 1, x: 0 }}
                   transition={{ delay: 0.2, duration: 0.35, ease: 'easeOut' }}
-                  className="absolute top-[11%] left-[58%] z-40 whitespace-nowrap filter drop-shadow-[0_8px_18px_rgba(0,0,0,0.7)] pointer-events-none"
+                  className="absolute -top-[2%] left-[68%] z-40 whitespace-nowrap filter drop-shadow-[0_8px_18px_rgba(0,0,0,0.7)] pointer-events-none"
                 >
                   <div className="relative inline-flex items-center justify-center select-none">
                     <svg
-                      viewBox="-14 0 170 78"
+                      viewBox="-14 0 176 118"
                       className="w-36 sm:w-48 h-auto block"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
@@ -183,12 +183,12 @@ export default function CabinLanding({ onStepUp }) {
                         strokeWidth="1.2"
                       />
 
-                      {/* Voice cloud trail dots leading from the mouse's mouth/cheek up-right to the cloud */}
-                      <circle cx="32" cy="49" r="3.5" fill="#ffffff" stroke="#c2782b" strokeWidth="1" />
-                      <circle cx="21" cy="54" r="2.6" fill="#ffffff" stroke="#c2782b" strokeWidth="0.85" />
-                      <circle cx="11" cy="59" r="1.9" fill="#ffffff" stroke="#c2782b" strokeWidth="0.7" />
-                      <circle cx="1" cy="64" r="1.4" fill="#ffffff" stroke="#c2782b" strokeWidth="0.55" />
-                      <circle cx="-8" cy="68" r="1.0" fill="#ffffff" stroke="#c2782b" strokeWidth="0.45" />
+                      {/* Stretched trail dots arcing from mouth/cheek level up-right to the cloud */}
+                      <circle cx="36" cy="53" r="3.5" fill="#ffffff" stroke="#c2782b" strokeWidth="1" />
+                      <circle cx="26" cy="68" r="2.7" fill="#ffffff" stroke="#c2782b" strokeWidth="0.85" />
+                      <circle cx="16" cy="83" r="2.0" fill="#ffffff" stroke="#c2782b" strokeWidth="0.7" />
+                      <circle cx="6" cy="98" r="1.5" fill="#ffffff" stroke="#c2782b" strokeWidth="0.55" />
+                      <circle cx="-4" cy="112" r="1.1" fill="#ffffff" stroke="#c2782b" strokeWidth="0.45" />
 
                       {/* Centered "Merry Christmas!" Text */}
                       <text
