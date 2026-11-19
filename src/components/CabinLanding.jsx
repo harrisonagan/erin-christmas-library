@@ -140,60 +140,6 @@ export default function CabinLanding({ onStepUp }) {
                 </motion.span>
               ))}
 
-              {/* "Merry Christmas!" Voice Cloud with Trail Dots to Mouth */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.7, x: -10 }}
-                animate={{ opacity: 1, scale: 1, x: 0 }}
-                transition={{ delay: 0.2, duration: 0.35, ease: 'easeOut' }}
-                className="absolute -top-16 sm:-top-20 left-[48%] sm:left-[54%] z-40 whitespace-nowrap filter drop-shadow-[0_8px_18px_rgba(0,0,0,0.7)]"
-              >
-                <div className="relative inline-flex items-center justify-center select-none">
-                  <svg
-                    viewBox="-14 0 170 74"
-                    className="w-36 sm:w-44 h-auto block"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <defs>
-                      <linearGradient id="cabinCloudGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="#ffffff" />
-                        <stop offset="100%" stopColor="#fefaf3" />
-                      </linearGradient>
-                    </defs>
-
-                    {/* Fluffy Voice Cloud Body */}
-                    <path
-                      d="M 41.1 46.1 A 15 15 0 0 1 41.1 17.9 A 15 15 0 0 1 69.0 12.5 A 16 16 0 0 1 99.8 15.3 A 15 15 0 0 1 128.9 17.9 A 15 15 0 0 1 130.8 46.6 A 15 15 0 0 1 100.5 45.0 A 16 16 0 0 1 69.0 51.5 A 15 15 0 0 1 41.1 46.1 Z"
-                      fill="url(#cabinCloudGrad)"
-                      stroke="#c2782b"
-                      strokeWidth="1.2"
-                    />
-
-                    {/* Voice cloud trail dots leading down-left directly to the mouse's mouth */}
-                    <circle cx="32" cy="50" r="3.5" fill="#ffffff" stroke="#c2782b" strokeWidth="1" />
-                    <circle cx="22" cy="55" r="2.5" fill="#ffffff" stroke="#c2782b" strokeWidth="0.8" />
-                    <circle cx="12" cy="60" r="1.8" fill="#ffffff" stroke="#c2782b" strokeWidth="0.6" />
-                    <circle cx="3" cy="65" r="1.2" fill="#ffffff" stroke="#c2782b" strokeWidth="0.5" />
-                    <circle cx="-5" cy="69" r="0.9" fill="#ffffff" stroke="#c2782b" strokeWidth="0.4" />
-
-                    {/* Centered "Merry Christmas!" Text */}
-                    <text
-                      x="85"
-                      y="32"
-                      textAnchor="middle"
-                      dominantBaseline="central"
-                      fontFamily="Georgia, 'Times New Roman', serif"
-                      fontWeight="bold"
-                      fontSize="11"
-                      fill="#7a1e28"
-                      letterSpacing="0.2"
-                    >
-                      Merry Christmas!
-                    </text>
-                  </svg>
-                </div>
-              </motion.div>
-
               {/* Keepsake Mouse Figurine with Gentle Cheerful Bobbing */}
               <motion.div
                 animate={{
@@ -208,6 +154,60 @@ export default function CabinLanding({ onStepUp }) {
                 }}
                 className="relative flex flex-col items-center"
               >
+                {/* "Merry Christmas!" Voice Cloud with Trail Dots Leading Directly from the Mouse's Mouth */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.7, x: -10 }}
+                  animate={{ opacity: 1, scale: 1, x: 0 }}
+                  transition={{ delay: 0.2, duration: 0.35, ease: 'easeOut' }}
+                  className="absolute top-[11%] left-[58%] z-40 whitespace-nowrap filter drop-shadow-[0_8px_18px_rgba(0,0,0,0.7)] pointer-events-none"
+                >
+                  <div className="relative inline-flex items-center justify-center select-none">
+                    <svg
+                      viewBox="-14 0 170 78"
+                      className="w-36 sm:w-48 h-auto block"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <defs>
+                        <linearGradient id="cabinCloudGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                          <stop offset="0%" stopColor="#ffffff" />
+                          <stop offset="100%" stopColor="#fefaf3" />
+                        </linearGradient>
+                      </defs>
+
+                      {/* Fluffy Voice Cloud Body */}
+                      <path
+                        d="M 41.1 46.1 A 15 15 0 0 1 41.1 17.9 A 15 15 0 0 1 69.0 12.5 A 16 16 0 0 1 99.8 15.3 A 15 15 0 0 1 128.9 17.9 A 15 15 0 0 1 130.8 46.6 A 15 15 0 0 1 100.5 45.0 A 16 16 0 0 1 69.0 51.5 A 15 15 0 0 1 41.1 46.1 Z"
+                        fill="url(#cabinCloudGrad)"
+                        stroke="#c2782b"
+                        strokeWidth="1.2"
+                      />
+
+                      {/* Voice cloud trail dots leading from the mouse's mouth/cheek up-right to the cloud */}
+                      <circle cx="32" cy="49" r="3.5" fill="#ffffff" stroke="#c2782b" strokeWidth="1" />
+                      <circle cx="21" cy="54" r="2.6" fill="#ffffff" stroke="#c2782b" strokeWidth="0.85" />
+                      <circle cx="11" cy="59" r="1.9" fill="#ffffff" stroke="#c2782b" strokeWidth="0.7" />
+                      <circle cx="1" cy="64" r="1.4" fill="#ffffff" stroke="#c2782b" strokeWidth="0.55" />
+                      <circle cx="-8" cy="68" r="1.0" fill="#ffffff" stroke="#c2782b" strokeWidth="0.45" />
+
+                      {/* Centered "Merry Christmas!" Text */}
+                      <text
+                        x="85"
+                        y="32"
+                        textAnchor="middle"
+                        dominantBaseline="central"
+                        fontFamily="Georgia, 'Times New Roman', serif"
+                        fontWeight="bold"
+                        fontSize="11"
+                        fill="#7a1e28"
+                        letterSpacing="0.2"
+                      >
+                        Merry Christmas!
+                      </text>
+                    </svg>
+                  </div>
+                </motion.div>
+
                 <img
                   src={mouseImage}
                   alt="Vintage Keepsake Christmas Mouse holding a cookie"
