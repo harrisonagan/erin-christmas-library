@@ -1217,6 +1217,12 @@ export default function App() {
 
   const LEGACY_PLACEHOLDERS = new Set(['2','3','4','5','6','7','8','9','10','11','12','13','14','album_2024','album_2023']);
 
+  const compareBookTitles = (a, b) => {
+    const cleanA = (a?.title || '').replace(/^[^a-zA-Z0-9]+/, '').trim();
+    const cleanB = (b?.title || '').replace(/^[^a-zA-Z0-9]+/, '').trim();
+    return cleanA.localeCompare(cleanB, undefined, { numeric: true, sensitivity: 'base' });
+  };
+
   const upgradeBuiltInBooks = (list) => {
     const initOrderMap = new Map(INITIAL_BOOKS.map((b, idx) => [b.id, idx]));
     const initMap = new Map(INITIAL_BOOKS.map((b) => [b.id, b]));
@@ -1294,10 +1300,8 @@ export default function App() {
       }
     }
 
-    // Sort alphabetically by title (A-Z)
-    return deduped.sort((a, b) =>
-      (a.title || '').localeCompare(b.title || '', undefined, { numeric: true, sensitivity: 'base' })
-    );
+    // Sort alphabetically by title (A-Z, ignoring leading punctuation like 'Twas)
+    return deduped.sort(compareBookTitles);
   };
 
   const [books, setBooks] = useState(() => {
@@ -1309,14 +1313,10 @@ export default function App() {
         const existingIds = new Set(cleaned.map((b) => b.id));
         const missing = INITIAL_BOOKS.filter((b) => !existingIds.has(b.id));
         const combined = [...cleaned, ...missing];
-        return combined.sort((a, b) =>
-          (a.title || '').localeCompare(b.title || '', undefined, { numeric: true, sensitivity: 'base' })
-        );
+        return combined.sort(compareBookTitles);
       }
     } catch (e) {}
-    return [...INITIAL_BOOKS].sort((a, b) =>
-      (a.title || '').localeCompare(b.title || '', undefined, { numeric: true, sensitivity: 'base' })
-    );
+    return [...INITIAL_BOOKS].sort(compareBookTitles);
   });
   const [selectedBook, setSelectedBook] = useState(null);
   const [isReaderOpen, setIsReaderOpen] = useState(false);
@@ -1474,9 +1474,7 @@ export default function App() {
         (b.author || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
         (b.notes || '').toLowerCase().includes(searchQuery.toLowerCase())
     )
-    .sort((a, b) =>
-      (a.title || '').localeCompare(b.title || '', undefined, { numeric: true, sensitivity: 'base' })
-    );
+    .sort(compareBookTitles);
 
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
 
