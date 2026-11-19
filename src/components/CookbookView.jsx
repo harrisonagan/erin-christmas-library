@@ -21,6 +21,34 @@ export default function CookbookView({ initialRecipeId, onClose }) {
   // Navigation & Search State
   const [selectedSection, setSelectedSection] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Bulletproof file download handler using blob URLs
+  const handleDownloadFile = async (e, relativePath, fileName) => {
+    if (e && e.preventDefault) e.preventDefault();
+    const url = resolveAssetUrl(relativePath);
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Fetch failed');
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const tempLink = document.createElement('a');
+      tempLink.href = blobUrl;
+      tempLink.setAttribute('download', fileName);
+      document.body.appendChild(tempLink);
+      tempLink.click();
+      document.body.removeChild(tempLink);
+      setTimeout(() => window.URL.revokeObjectURL(blobUrl), 2000);
+    } catch (err) {
+      const tempLink = document.createElement('a');
+      tempLink.href = url;
+      tempLink.setAttribute('download', fileName);
+      tempLink.target = '_blank';
+      tempLink.rel = 'noopener noreferrer';
+      document.body.appendChild(tempLink);
+      tempLink.click();
+      document.body.removeChild(tempLink);
+    }
+  };
   
   // As the cookbook opens, show the Welcome & Color Picture view unless a specific recipe was requested
   const [activeItemId, setActiveItemId] = useState(() => {
@@ -301,19 +329,20 @@ export default function CookbookView({ initialRecipeId, onClose }) {
           {/* Download Print-Ready PDF */}
           <a
             href={resolveAssetUrl(COOKBOOK_METADATA.pdfUrl)}
-            target="_blank"
-            rel="noopener noreferrer"
+            onClick={(e) => handleDownloadFile(e, COOKBOOK_METADATA.pdfUrl, 'strom_family_cookbook_print_ready.pdf')}
             download="strom_family_cookbook_print_ready.pdf"
-            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-stone-900/90 hover:bg-stone-800 text-stone-300 hover:text-amber-200 rounded-xl border border-stone-700/60 text-xs font-medium transition shadow"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-stone-900/90 hover:bg-stone-800 text-stone-300 hover:text-amber-200 rounded-xl border border-stone-700/60 text-xs font-medium transition shadow"
             title="Download full 86-page print-ready PDF for reprinting"
           >
             <span>📥</span>
-            <span>Print-Ready PDF</span>
+            <span className="hidden sm:inline">Print-Ready PDF</span>
+            <span className="sm:hidden">PDF</span>
           </a>
 
           {/* Download Google Doc (.docx) */}
           <a
             href={resolveAssetUrl('strom_family_cookbook.docx')}
+            onClick={(e) => handleDownloadFile(e, 'strom_family_cookbook.docx', 'strom_family_cookbook.docx')}
             download="strom_family_cookbook.docx"
             className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-stone-900/90 hover:bg-stone-800 text-stone-300 hover:text-amber-200 rounded-xl border border-stone-700/60 text-xs font-medium transition shadow"
             title="Download Google Doc (.docx) with 100% clean digital recipes"
@@ -358,12 +387,21 @@ export default function CookbookView({ initialRecipeId, onClose }) {
             <span className="text-xs font-serif font-bold text-amber-200 flex items-center gap-1.5">
               <span>📖</span> Table of Contents
             </span>
-            <button
-              onClick={() => setIsSidebarOpenMobile(false)}
-              className="text-xs text-stone-400 hover:text-amber-200 px-2 py-1 bg-stone-900 rounded-lg"
-            >
-              Close TOC ✕
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={(e) => handleDownloadFile(e, COOKBOOK_METADATA.pdfUrl, 'strom_family_cookbook_print_ready.pdf')}
+                className="text-[11px] text-amber-200 hover:text-white px-2 py-1 bg-amber-900/70 border border-amber-700/60 rounded-lg flex items-center gap-1 font-sans"
+                title="Download Print-Ready PDF"
+              >
+                <span>📥</span> PDF
+              </button>
+              <button
+                onClick={() => setIsSidebarOpenMobile(false)}
+                className="text-xs text-stone-400 hover:text-amber-200 px-2 py-1 bg-stone-900 rounded-lg"
+              >
+                ✕
+              </button>
+            </div>
           </div>
 
           {/* Welcome & Family Portrait Shortcut Row */}
