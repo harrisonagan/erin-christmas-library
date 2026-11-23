@@ -61,6 +61,18 @@ export const SANTA_SCRAPBOOK_PAGES = [
     bonusPhotos: [],
   },
   {
+    year: 2016,
+    title: 'Santa in Lexington',
+    subtitle: 'Rowan (4), Elouise (1) & Family',
+    location: 'Lexington',
+    handwrittenNote: '05a - 2016 Santa in Lexington • Gathering with Santa around the grand Christmas tree',
+    theme: 'gold',
+    sticker: '🎅 Santa in Lexington',
+    mainPhoto: assetUrl('santa/santa-2016.webp?v=1'),
+    orientation: 'landscape',
+    bonusPhotos: [],
+  },
+  {
     year: 2017,
     title: 'Stripes & Smiles at Sullivan’s',
     subtitle: 'Rowan (5) & Elouise (2)',
