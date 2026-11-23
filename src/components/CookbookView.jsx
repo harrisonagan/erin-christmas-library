@@ -320,10 +320,10 @@ export default function CookbookView({ initialRecipeId, onClose }) {
           {/* Mobile TOC Drawer Toggle */}
           <button
             onClick={() => setIsSidebarOpenMobile(!isSidebarOpenMobile)}
-            className="lg:hidden flex items-center gap-1.5 px-3 py-1.5 bg-amber-900/50 hover:bg-amber-800/60 text-amber-200 rounded-xl border border-amber-700/50 text-xs font-semibold shadow"
+            className="lg:hidden flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-amber-700 to-amber-800 hover:from-amber-600 text-white rounded-xl border border-amber-400/50 text-xs font-semibold shadow"
           >
             <span>📖</span>
-            <span>TOC ({totalMatches})</span>
+            <span>Recipes ({totalMatches})</span>
           </button>
 
           {/* Download Print-Ready PDF */}
@@ -372,8 +372,110 @@ export default function CookbookView({ initialRecipeId, onClose }) {
         </div>
       </header>
 
+      {/* Mobile Sticky Search & Category Navigation Bar (Always visible on phones/tablets) */}
+      <div className="lg:hidden flex-shrink-0 bg-[#1c1510] border-b border-amber-900/50 px-3 py-2.5 space-y-2 z-20">
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1">
+            <span className="absolute left-3 top-2 text-stone-400 text-xs">🔍</span>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                if (activeItemId !== 'welcome') {
+                  setIsSidebarOpenMobile(true);
+                }
+              }}
+              placeholder="Search recipes, ingredients, or family..."
+              className="w-full pl-8 pr-7 py-1.5 bg-[#281f18] border border-amber-900/60 rounded-xl text-xs text-amber-50 placeholder:text-stone-400 focus:outline-none focus:border-amber-500"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-2.5 top-1.5 text-stone-400 hover:text-stone-200 text-xs"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+          <button
+            onClick={() => setIsSidebarOpenMobile(!isSidebarOpenMobile)}
+            className="px-3 py-1.5 rounded-xl bg-amber-800/90 hover:bg-amber-700 text-amber-50 border border-amber-500/50 text-xs font-semibold whitespace-nowrap flex items-center gap-1 shadow"
+          >
+            <span>📋</span>
+            <span>{isSidebarOpenMobile ? 'Hide List' : 'All Recipes'}</span>
+          </button>
+        </div>
+
+        {/* Scrollable Category Pills on Mobile */}
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5">
+          <button
+            onClick={() => {
+              setActiveItemId('welcome');
+              setIsSidebarOpenMobile(false);
+            }}
+            className={`px-2.5 py-1 rounded-lg text-[11px] font-medium whitespace-nowrap flex items-center gap-1 border transition ${
+              activeItemId === 'welcome' && selectedSection === 'all' && !isSidebarOpenMobile
+                ? 'bg-amber-700 text-white border-amber-400/60'
+                : 'bg-[#251d16] text-amber-200/80 border-amber-950'
+            }`}
+          >
+            <span>🏠</span>
+            <span>Home</span>
+          </button>
+          <button
+            onClick={() => {
+              setSelectedSection('favorites');
+              if (activeItemId !== 'welcome') {
+                setIsSidebarOpenMobile(true);
+              } else {
+                document.getElementById('mobile-recipe-directory')?.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+            className={`px-2.5 py-1 rounded-lg text-[11px] font-medium whitespace-nowrap flex items-center gap-1 border transition ${
+              selectedSection === 'favorites'
+                ? 'bg-rose-900 text-rose-100 border-rose-500/60'
+                : 'bg-[#251d16] text-stone-300 border-amber-950'
+            }`}
+          >
+            <span>❤️</span>
+            <span>Favorites ({favoriteIds.size})</span>
+          </button>
+          {COOKBOOK_SECTIONS.map((sec) => (
+            <button
+              key={sec.id}
+              onClick={() => {
+                setSelectedSection(sec.id);
+                if (activeItemId !== 'welcome') {
+                  setIsSidebarOpenMobile(true);
+                } else {
+                  document.getElementById('mobile-recipe-directory')?.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+              className={`px-2.5 py-1 rounded-lg text-[11px] font-medium whitespace-nowrap flex items-center gap-1 border transition ${
+                selectedSection === sec.id && (activeItemId !== 'welcome' || sec.id !== 'all')
+                  ? 'bg-amber-800 text-amber-50 border-amber-500/60'
+                  : 'bg-[#251d16] text-stone-300 border-amber-950'
+              }`}
+            >
+              <span>{sec.icon}</span>
+              <span>{sec.title}</span>
+              <span className="opacity-70 text-[10px]">({sec.count})</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Main Two-Pane Body */}
       <div className="flex-1 flex overflow-hidden relative">
+        {/* Mobile Backdrop Overlay */}
+        {isSidebarOpenMobile && (
+          <div
+            onClick={() => setIsSidebarOpenMobile(false)}
+            className="lg:hidden fixed inset-0 bg-black/70 z-30"
+          />
+        )}
+
         {/* Left Pane: Table of Contents & Search Sidebar */}
         <aside
           className={`
@@ -703,19 +805,30 @@ export default function CookbookView({ initialRecipeId, onClose }) {
                   <div className="flex items-center gap-2.5 text-stone-300">
                     <span className="text-lg">🔍</span>
                     <span>
-                      Use the search features on the left to explore recipes by ingredient, dish, or family member!
+                      Search or tap any category above (or browse the recipe directory below) to explore all 162 family recipes!
                     </span>
                   </div>
-                  <button
-                    onClick={() => {
-                      const erin = COOKBOOK_RECIPES.find(r => r.id.includes('erin') || r.contributor.includes('Erin'));
-                      if (erin) selectItem(erin.id);
-                    }}
-                    className="px-3.5 py-2 rounded-xl bg-amber-800/90 hover:bg-amber-700 text-amber-100 font-medium transition shadow-sm whitespace-nowrap active:scale-95 flex items-center gap-1.5"
-                  >
-                    <span>⭐</span>
-                    <span>View Erin's Cheesy Tortillas</span>
-                  </button>
+                  <div className="flex items-center gap-2 flex-wrap justify-center">
+                    <button
+                      onClick={() => {
+                        document.getElementById('mobile-recipe-directory')?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                      className="lg:hidden px-3.5 py-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-amber-200 border border-amber-700/50 font-medium transition shadow-sm whitespace-nowrap active:scale-95 flex items-center gap-1.5"
+                    >
+                      <span>📖</span>
+                      <span>Browse All Recipes</span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        const erin = COOKBOOK_RECIPES.find(r => r.id.includes('erin') || r.contributor.includes('Erin'));
+                        if (erin) selectItem(erin.id);
+                      }}
+                      className="px-3.5 py-2 rounded-xl bg-amber-800/90 hover:bg-amber-700 text-amber-100 font-medium transition shadow-sm whitespace-nowrap active:scale-95 flex items-center gap-1.5"
+                    >
+                      <span>⭐</span>
+                      <span>View Erin's Cheesy Tortillas</span>
+                    </button>
+                  </div>
                 </div>
               </div>
 
@@ -828,22 +941,142 @@ export default function CookbookView({ initialRecipeId, onClose }) {
                   </div>
                 )}
               </div>
+
+              {/* ========================================================= */}
+              {/* ON-PAGE BROWSEABLE RECIPE & STORY DIRECTORY               */}
+              {/* ========================================================= */}
+              <div id="mobile-recipe-directory" className="space-y-4 pt-4 border-t border-amber-900/40 scroll-mt-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-2xl">📖</span>
+                    <div>
+                      <h3 className="text-xl sm:text-2xl font-serif font-bold text-amber-100 leading-tight">
+                        Browse Recipes & Family Stories
+                      </h3>
+                      <p className="text-xs text-stone-400">
+                        Showing {totalMatches} {totalMatches === 1 ? 'item' : 'items'}
+                        {searchQuery ? ` matching “${searchQuery}”` : ''}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Category Filter Pills inside Directory */}
+                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
+                  <button
+                    onClick={() => setSelectedSection('favorites')}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap flex items-center gap-1.5 border transition ${
+                      selectedSection === 'favorites'
+                        ? 'bg-rose-900 text-rose-100 border-rose-500/70 shadow'
+                        : 'bg-[#221a13] text-stone-300 border-amber-900/50 hover:text-amber-100'
+                    }`}
+                  >
+                    <span>❤️</span>
+                    <span>Favorites ({favoriteIds.size})</span>
+                  </button>
+                  {COOKBOOK_SECTIONS.map((sec) => (
+                    <button
+                      key={sec.id}
+                      onClick={() => setSelectedSection(sec.id)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap flex items-center gap-1.5 border transition ${
+                        selectedSection === sec.id
+                          ? 'bg-amber-800 text-amber-50 border-amber-500/70 shadow'
+                          : 'bg-[#221a13] text-stone-300 border-amber-900/50 hover:text-amber-100'
+                      }`}
+                    >
+                      <span>{sec.icon}</span>
+                      <span>{sec.title}</span>
+                      <span className="text-[10px] opacity-75">({sec.count})</span>
+                    </button>
+                  ))}
+                </div>
+
+                {/* Memories List in Directory */}
+                {filteredMemories.length > 0 && (
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-mono uppercase tracking-wider text-amber-300/90 px-1">
+                      📜 Family Memories & Stories ({filteredMemories.length})
+                    </h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {filteredMemories.map((mem) => (
+                        <button
+                          key={mem.id}
+                          onClick={() => selectItem(mem.id)}
+                          className="text-left p-3.5 rounded-2xl bg-[#221a13] hover:bg-[#2c2118] border border-amber-900/50 hover:border-amber-600/70 transition flex items-center justify-between gap-3 shadow"
+                        >
+                          <div className="min-w-0">
+                            <p className="font-serif font-bold text-sm sm:text-base text-amber-100 truncate">
+                              {mem.title}
+                            </p>
+                            <p className="text-xs text-amber-300/75 truncate mt-0.5">
+                              By {mem.contributor}
+                            </p>
+                          </div>
+                          <span className="text-xs text-amber-400 font-medium flex-shrink-0">
+                            Read →
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Recipes Grid in Directory */}
+                {filteredRecipes.length > 0 && (
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-mono uppercase tracking-wider text-amber-300/90 px-1">
+                      🥧 Family Recipes ({filteredRecipes.length})
+                    </h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {filteredRecipes.map((rec) => (
+                        <button
+                          key={rec.id}
+                          onClick={() => selectItem(rec.id)}
+                          className="text-left p-3.5 rounded-2xl bg-[#221a13] hover:bg-[#2c2118] border border-amber-900/50 hover:border-amber-600/70 transition flex items-center justify-between gap-3 shadow"
+                        >
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-1.5">
+                              {isFavorite(rec.id) && <span className="text-xs">❤️</span>}
+                              <p className="font-serif font-bold text-sm sm:text-base text-amber-100 truncate">
+                                {rec.title}
+                              </p>
+                            </div>
+                            <p className="text-xs text-stone-400 truncate mt-0.5">
+                              {rec.contributor} • <span className="text-amber-300/70">{rec.category || rec.sectionName}</span>
+                            </p>
+                          </div>
+                          <span className="text-xs text-amber-400 font-medium flex-shrink-0">
+                            Open →
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           ) : (
             /* ========================================================= */
             /* RECIPE / FAMILY STORY READING STAGE                       */
             /* ========================================================= */
-            <div className="w-full max-w-4xl space-y-6">
+            <div className="w-full max-w-4xl space-y-6 pb-16 lg:pb-4">
               {/* Top Bar for Current Recipe */}
               <div className="flex flex-wrap items-center justify-between gap-3 bg-[#231b14] border border-amber-900/40 p-3 sm:p-4 rounded-2xl shadow">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center flex-wrap gap-2">
                   <button
                     onClick={() => selectItem('welcome')}
                     className="text-xs px-2.5 py-1.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-amber-200 border border-stone-700/60 font-sans flex items-center gap-1.5 transition shadow-sm active:scale-95"
                     title="Return to Welcome & Family Photo"
                   >
                     <span>🏠</span>
-                    <span>Welcome</span>
+                    <span>Home</span>
+                  </button>
+                  <button
+                    onClick={() => setIsSidebarOpenMobile(true)}
+                    className="lg:hidden text-xs px-3 py-1.5 rounded-xl bg-amber-800 hover:bg-amber-700 text-amber-50 border border-amber-500/60 font-sans font-semibold flex items-center gap-1.5 transition shadow-sm active:scale-95"
+                  >
+                    <span>📋</span>
+                    <span>All Recipes</span>
                   </button>
                   <span className="text-xs px-2.5 py-1 rounded-full bg-amber-950 text-amber-300 border border-amber-800/60 font-mono">
                     {activeItem.category || activeItem.sectionName}
@@ -1127,6 +1360,35 @@ export default function CookbookView({ initialRecipeId, onClose }) {
           )}
         </main>
       </div>
+
+      {/* Mobile Fixed Bottom Thumb Bar When Reading a Recipe */}
+      {activeItemId !== 'welcome' && activeItem && (
+        <div className="lg:hidden flex-shrink-0 bg-[#1e1611] border-t border-amber-900/60 px-3 py-2.5 flex items-center justify-between gap-2 z-20 shadow-[0_-8px_20px_rgba(0,0,0,0.6)]">
+          <button
+            onClick={() => (prevItem ? selectItem(prevItem.id) : selectItem('welcome'))}
+            className="flex-1 py-2 px-3 rounded-xl bg-stone-900 hover:bg-stone-800 border border-stone-700/70 text-xs font-medium text-amber-200 flex items-center justify-center gap-1.5 truncate active:scale-95"
+          >
+            <span>←</span>
+            <span className="truncate">{prevItem ? 'Prev' : 'Home'}</span>
+          </button>
+
+          <button
+            onClick={() => setIsSidebarOpenMobile(true)}
+            className="flex-[1.3] py-2 px-3 rounded-xl bg-gradient-to-r from-amber-700 to-amber-800 text-amber-50 border border-amber-500/60 text-xs font-semibold flex items-center justify-center gap-1.5 shadow active:scale-95"
+          >
+            <span>📖</span>
+            <span>All Recipes ({totalMatches})</span>
+          </button>
+
+          <button
+            onClick={() => (nextItem ? selectItem(nextItem.id) : selectItem('welcome'))}
+            className="flex-1 py-2 px-3 rounded-xl bg-stone-900 hover:bg-stone-800 border border-stone-700/70 text-xs font-medium text-amber-200 flex items-center justify-center gap-1.5 truncate active:scale-95"
+          >
+            <span className="truncate">{nextItem ? 'Next' : 'Home'}</span>
+            <span>→</span>
+          </button>
+        </div>
+      )}
 
       {/* Dedication & Reunion Committee Modal */}
       <AnimatePresence>

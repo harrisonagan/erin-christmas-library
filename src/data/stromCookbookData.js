@@ -248,7 +248,7 @@ export const COOKBOOK_RECIPES = [
       "1/2 cup chopped onion",
       "6 Tbl. flour",
       "4 cups chicken broth",
-      "1 20 oz. pkg. frozen broccoli",
+      "1 (20 oz.) pkg. frozen broccoli",
       "2 cups half and half(or 2% milk)"
     ],
     "instructions": [
@@ -299,7 +299,7 @@ export const COOKBOOK_RECIPES = [
       "1 can whole cranberry sauce",
       "1 small can crushed pineapple(drained) 1 ripe",
       "banana-mashed",
-      "1 8oz container Cool Whip Nuts or coconut-optional"
+      "1 (8 oz.) container Cool Whip Nuts or coconut-optional"
     ],
     "instructions": [
       "Mix & place in flat 7X11 pan. Freeze. Thaw a little before serving Can be made ahead"
@@ -322,7 +322,7 @@ export const COOKBOOK_RECIPES = [
       "1 bunch fresh broccoli",
       "1 head fresh cauliflower",
       "1 Tbls. Lawry's season salt",
-      "1 8 oz. bottle buttermilk dressing",
+      "1 (8 oz.) bottle buttermilk dressing",
       "small jar chopped pimento",
       "1 bunch green onion",
       "1 can water chestnuts"
@@ -346,10 +346,10 @@ export const COOKBOOK_RECIPES = [
     "story": "This recipe is the one most requested at family gatherings by my sister-in-law... this is for you Sandra!",
     "ingredients": [
       "2 (12 oz.) containers Cool Whip",
-      "2 small pkgs. pistachio pudding",
-      "1 18 oz. can crushed pineapple(DO NOT DRAIN)",
-      "1/2 cup chopped walnut",
-      "1/2 cup small marshmallows"
+      "2 small pkgs. instant pistachio pudding mix",
+      "1 (8 oz.) can crushed pineapple (DO NOT DRAIN)",
+      "1/2 cup chopped walnuts",
+      "1/2 cup miniature marshmallows"
     ],
     "instructions": [
       "Mix together. Chill before serving. Top with red maraschino cherries. *TIP* I add a couple drops of green food coloring to the Cool Whip. This helps it to have a nicer color"
@@ -486,7 +486,7 @@ export const COOKBOOK_RECIPES = [
       "Sift together flour, baking soda, pinch of salt, and baking powder.",
       "Add dry ingredients gently to the banana mixture.",
       "Fold in 1 cup chopped nuts if desired.",
-      "Divide into 2 greased loaf pans and bake at 350\u00b0F for about 45 minutes."
+      "Divide into 2 greased loaf pans and bake at 350°F for about 45 minutes."
     ],
     "notes": ""
   },
@@ -605,7 +605,7 @@ export const COOKBOOK_RECIPES = [
       "Pour the pudding mixture evenly over the first layer of dough.",
       "Tear the second loaf of dough into pieces and arrange evenly over the top.",
       "Let rise for about 2 hours until doubled in size.",
-      "Bake at 350\u00b0F for approximately 25 minutes."
+      "Bake at 350°F for approximately 25 minutes."
     ],
     "notes": ""
   },
@@ -743,7 +743,7 @@ export const COOKBOOK_RECIPES = [
       "Stir in grated zucchini.",
       "Add flour, baking soda, salt, baking powder, and cinnamon; mix thoroughly.",
       "Fold in chopped nuts if desired.",
-      "Pour into 2 greased and floured loaf pans and bake at 350\u00b0F for 1 hour."
+      "Pour into 2 greased and floured loaf pans and bake at 350°F for 1 hour."
     ],
     "notes": ""
   },
@@ -758,13 +758,21 @@ export const COOKBOOK_RECIPES = [
     "bookPage": "9",
     "originalPageImage": "/cookbook/page_30.webp",
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=30",
-    "story": "",
+    "story": "Another great dip for tortilla chips, this one from a friend in Mt. Pleasant. She notes that it's a meal in itself!",
     "ingredients": [
-      "Pleasant. She notes that it's a meal in itself\"",
-      "\"Another great dip for tortilla chips, this one froma friend in Mt."
+      "1 lb. ground beef (hamburger)",
+      "Minced onion to taste",
+      "1 small jar salsa",
+      "1 pkg. shredded mozzarella cheese",
+      "1 pkg. Velveeta mild Mexican shredded cheese",
+      "Corn or tortilla chips for dipping",
+      "Sour cream (optional dollop)"
     ],
     "instructions": [
-      "Brown 1 lb. hamburger with minced onion. Add 1 small jar salsa. Add 1 pkg. shredded mozzarella cheese and 1 pkg. Velveeta mild Mexican shredded cheese. Heat until melted. Stir once or twice. Serve with corn chips to dip. Option: add a dollop of sour cream."
+      "Brown 1 lb. ground beef with minced onion in a skillet and drain excess fat.",
+      "Add salsa, shredded mozzarella cheese, and Velveeta mild Mexican shredded cheese.",
+      "Heat over low heat until cheeses are melted, stirring once or twice.",
+      "Serve warm with corn or tortilla chips, topped with a dollop of sour cream if desired."
     ],
     "notes": ""
   },
@@ -805,19 +813,14 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=30",
     "story": "",
     "ingredients": [
-      "pkg. shredded mozzarella cheese and 1 pkg. Velveeta mild Mexican",
-      "shredded cheese. Heat until melted. Stir once or twice. Serve with corn",
-      "chips to dip. Option: add a dollop of sour cream.",
-      "Heather Strom",
-      "FRUIT DIP",
-      "1/2 cup powdered sugar",
-      "1 3 oz, cream cheese",
-      "18 oz. cool whip",
-      "2 tsp. lemon juice"
+      "1 (24 oz.) container sour cream",
+      "1 (8 oz.) pkg. cream cheese, softened",
+      "2 pkgs. sliced/chipped ham, finely chopped",
+      "3 bunches green onions, finely chopped"
     ],
     "instructions": [
-      "Mix all ingredients together. Serve as a dip with fruit.",
-      "Sharon Moritz HAM AND ONION DIP 1 24 oz. sour cream 1 8 oz, cream cheese 2 pkgs. ham packages) 3 bunches green onions Mix together and spread on crackers."
+      "Mix softened cream cheese and sour cream together until smooth.",
+      "Fold in chopped ham and green onions. Chill and serve with crackers."
     ],
     "notes": ""
   },
@@ -860,19 +863,16 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=31",
     "story": "This is a Middle Eastern Garbanzo Spread, wonderful for dipping tortilla chips into. Don't forget the Red Hot! Mmmm, my favorite!",
     "ingredients": [
-      "1 15 oz. can garbanzo beans",
-      "2 1/2 Tbls.. lemon",
-      "juice(I use 4",
-      "Tbls.)",
-      "1 1/2 Tbls. tahini(1 use 1/4 cup)",
-      "powder or 2 small",
-      "3/4 tsp. garlic",
-      "minced",
-      "cloves fresh garlic,",
-      "I also add 1/2 tsp. onion powder"
+      "1 (15 oz.) can garbanzo beans (chickpeas), drained (reserve liquid)",
+      "2 1/2 Tbls. lemon juice (I use 4 Tbls.)",
+      "1 1/2 Tbls. tahini / sesame seed butter (I use 1/4 cup)",
+      "3/4 tsp. garlic powder (or 2 small cloves fresh garlic, minced)",
+      "1/2 tsp. onion powder (optional)"
     ],
     "instructions": [
-      "Drain garbanzo beans, reserving liquid. Combine all ingredients in blender and whiz until smooth, adding enough liquid from beans to facilitate blending. (It will take about 1/2 cup) And you may have to use a rubber spatula carefully to help combine ingredients. Traditionally served with pita bread. By the way, tahini is sesame seed butter."
+      "Drain garbanzo beans, reserving the liquid from the can.",
+      "Combine all ingredients in a blender and process until smooth, adding enough reserved bean liquid (about 1/2 cup) to reach a creamy consistency.",
+      "Use a rubber spatula as needed to scrape down the sides and blend thoroughly. Traditionally served with pita bread or tortilla chips."
     ],
     "notes": ""
   },
@@ -919,14 +919,14 @@ export const COOKBOOK_RECIPES = [
     "story": "",
     "ingredients": [
       "1 can shrimp or crabmeat, drained(mash shrimp)",
-      "1 8oz. cream cheese",
+      "1 (8 oz.) cream cheese",
       "1/3 cup Miracie Whip",
       "1/4 cup ketchup",
       "1 1/2 tsp. worcestershire sauce",
       "2 dashes tabasco sauce",
       "1 tsp. horseradish",
       "1 tsp. dried parsley flakes",
-      "1 Tbls.. lemon juice."
+      "1 Tbls. lemon juice."
     ],
     "instructions": [
       "Mix everything together well. Chill overnight."
@@ -1018,16 +1018,16 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=33",
     "story": "I got this recipe from my Aunt Pat at one of our family reunions. It is really yummy! And I don't know what it is called. So that's why it's called this!",
     "ingredients": [
-      "12 oz. dry type cottage cheese",
+      "12 oz. dry-curd cottage cheese",
       "12 oz. sour cream",
-      "12 oz. finely shredded cheese(my aunt said cheddar and",
-      "Monterey jack)",
-      "finely chopped green onion",
-      "Worcestershire sauce",
-      "Optional: jalepenos"
+      "12 oz. finely shredded cheese (cheddar and Monterey Jack)",
+      "Finely chopped green onion to taste",
+      "Dash of Worcestershire sauce",
+      "Chopped jalapeños (optional)"
     ],
     "instructions": [
-      "Mix all ingredients thoroughly and prepare according to family recipe."
+      "Combine cottage cheese, sour cream, shredded cheddar and Monterey Jack cheeses, green onion, Worcestershire sauce, and optional jalapeños.",
+      "Mix well, chill, and serve with tortilla chips."
     ],
     "notes": ""
   },
@@ -1047,7 +1047,7 @@ export const COOKBOOK_RECIPES = [
       "1 package lasagna noodles",
       "1 package American cheese slices",
       "1 can spaghetti sauce(any kind)",
-      "1lb. ground beef",
+      "1 lb. ground beef",
       "1 package Swiss cheese slices",
       "1 package shredded mozzarella cheese"
     ],
@@ -1101,17 +1101,18 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=35",
     "story": "",
     "ingredients": [
-      "1 large can Bush beans-drained",
-      "1 small can lima beans-drained",
-      "1 small can kidney beans-drained",
-      "1 lb. hamburger",
-      "onion to taste",
-      "bacon(about 1/2 Ib.) Brown meat with onion. Cook bacon.",
-      "Sauce: BBQ sauce, mustard, molasses or corn syrup, Worcestershire",
-      "sauce--season to taste"
+      "1 large can Bush’s baked beans, drained",
+      "1 small can lima beans, drained",
+      "1 small can kidney beans, drained",
+      "1 lb. ground beef (hamburger)",
+      "Chopped onion to taste",
+      "1/2 lb. bacon, cooked and crumbled",
+      "Sauce: BBQ sauce, mustard, molasses (or corn syrup), and Worcestershire sauce to taste"
     ],
     "instructions": [
-      "Combine all ingredients in crock pot and cook on high until hot, cook on low 2 hours(approx.)"
+      "Brown ground beef with chopped onion and drain. Cook and crumble bacon.",
+      "Combine beans, browned meat, onion, bacon, and sauce ingredients in a crock pot.",
+      "Cook on high until hot, then simmer on low for approximately 2 hours."
     ],
     "notes": ""
   },
@@ -1129,7 +1130,7 @@ export const COOKBOOK_RECIPES = [
     "story": "This has been a family favorite for along time, especially nice and easy to do for Sunday dinner.",
     "ingredients": [
       "2 Tbls. oil",
-      "2 Ibs. chicken-mixed parts",
+      "2 lbs. chicken-mixed parts",
       "1 can Campbell's cream of chicken soup",
       "2 Tbls. lemon juice",
       "1 tsp. paprika",
@@ -1185,14 +1186,18 @@ export const COOKBOOK_RECIPES = [
     "story": "This recipe was given to me by l'elma Whales",
     "ingredients": [
       "3 cups diced cooked chicken",
-      "1 1/2 c. chopped celer!",
-      "3/4 c. sour cream or salad dressing 1 c. chopped nuts",
-      "1/4 c. chopped onion",
+      "1 1/2 cups chopped celery",
+      "3/4 cup sour cream or salad dressing",
+      "1 cup chopped nuts",
+      "1/4 cup chopped onion",
       "1 Tbls. lemon juice",
-      "1 tsp. salt"
+      "1 tsp. salt",
+      "Topping: Crushed corn flakes mixed with 2 Tbls. melted butter (oleo)"
     ],
     "instructions": [
-      "Mix altogether in 9.X13 pan Topping: Mix crushed corn flakes and 2 Tbls. melted oleo Bake at 325 for 35 minutes."
+      "Mix chicken, celery, sour cream (or salad dressing), chopped nuts, onion, lemon juice, and salt in a 9x13-inch baking dish.",
+      "Sprinkle top with crushed corn flakes tossed with 2 Tbls. melted butter.",
+      "Bake at 325°F for 35 minutes."
     ],
     "notes": ""
   },
@@ -1209,7 +1214,7 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=37",
     "story": "",
     "ingredients": [
-      "1lb. cooked chicken breast",
+      "1 lb. cooked chicken breast",
       "1 pint sour cream",
       "1 can cream of chicken soup",
       "crouton stuffing mix",
@@ -1235,7 +1240,7 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=37",
     "story": "",
     "ingredients": [
-      "2 Ibs. chicken breast, cooked and chopped",
+      "2 lbs. chicken breast, cooked and chopped",
       "8 oz. sour cream",
       "1 can cream of chicken soup",
       "3/4 stick margarine, melted",
@@ -1262,27 +1267,21 @@ export const COOKBOOK_RECIPES = [
     "story": "",
     "ingredients": [
       "1 lb. lean ground beef",
-      "1/2 c. evaporated milk",
+      "1/2 cup evaporated milk",
+      "1/3 cup dried bread crumbs",
+      "1/4 cup chopped onion",
       "1/2 tsp. dried oregano",
-      "1/2 c. catsup",
-      "8 in. pie pastry-unbaked",
-      "2 cups co",
-      "4 oz. shredded American",
-      "2 Tbls. b",
-      "1/3 c. dried bread crumbs",
-      "1/4 c. chopped onion",
-      "cheese(1 cup)",
-      "1 cup m",
-      "1 tsp. Worcestershire",
-      "1 tsp. w",
-      "sauce",
-      "11/2 c",
-      "2 Tbls"
+      "3/4 tsp. salt",
+      "1/8 tsp. pepper",
+      "1/2 cup catsup (ketchup)",
+      "1 (8-inch) pie pastry, unbaked",
+      "4 oz. shredded American cheese (1 cup)",
+      "1 tsp. Worcestershire sauce"
     ],
     "instructions": [
-      "Combine first 6 ingredients, 3/4 tsp. salt, and 1/8 tsp.",
-      "1/2 c pepper. Fill pie pastry with meat mixture. Bake at 350 for 35 to 40 minutes. Toss cheese with Worcestershire sauce, Stir sprinkle on top of pie. Bake for an additional 10 minutes.",
-      "Ad Ac m"
+      "Combine ground beef, evaporated milk, bread crumbs, onion, oregano, catsup, 3/4 tsp. salt, and 1/8 tsp. pepper.",
+      "Fill unbaked 8-inch pie pastry with the meat mixture. Bake at 350°F for 35 to 40 minutes.",
+      "Toss shredded American cheese with Worcestershire sauce and sprinkle over the top of the pie. Bake for an additional 10 minutes until cheese melts."
     ],
     "notes": ""
   },
@@ -1312,7 +1311,7 @@ export const COOKBOOK_RECIPES = [
     ],
     "instructions": [
       "Heat butter or margarine in a skillet or heavy saucepan.",
-      "Add chopped onion and green pepper; saut\u00e9 just until tender.",
+      "Add chopped onion and green pepper; sauté just until tender.",
       "Add flour, stir and cook until bubbly.",
       "Slowly whisk in chicken broth and milk. Season with salt and pepper.",
       "Cook, stirring constantly, until smooth and thickened.",
@@ -1337,12 +1336,12 @@ export const COOKBOOK_RECIPES = [
       "2 cups cooked & drained elbow macaroni",
       "2 Tbls. flour",
       "2 Tbls. butter or margarine",
-      "1.2 tsp. salt",
+      "1/2 tsp. salt",
+      "Pepper to taste",
       "1 cup milk",
-      "pepper to taste",
-      "1 tsp. worcestershire sauce",
-      "1 1/2 cup grated sharp cheddar cheese",
-      "2 Tbls. parmesan cheese",
+      "1 tsp. Worcestershire sauce",
+      "1 1/2 cups grated sharp cheddar cheese",
+      "2 Tbls. Parmesan cheese",
       "1/2 cup buttered fine bread crumbs"
     ],
     "instructions": [
@@ -1365,12 +1364,12 @@ export const COOKBOOK_RECIPES = [
     "ingredients": [
       "3 eggs",
       "1/2 tsp. salt",
-      "pinch pepper",
-      "2 cups flour",
-      "Knead on flour board and roll thin and let dry. Cook in broth"
+      "Pinch of pepper",
+      "2 cups flour"
     ],
     "instructions": [
-      "Mix all ingredients thoroughly and prepare according to family recipe."
+      "Combine eggs, salt, pepper, and flour to form a stiff noodle dough.",
+      "Knead on a floured board, roll out thin, and let dry. Cut into strips and cook in boiling broth."
     ],
     "notes": ""
   },
@@ -1387,16 +1386,16 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=39",
     "story": "A friend of mine at work made this recipe up for a cookbook at Rexair. He went home that night & tried it & said it was great! I've made it many times since then & my family loves it!",
     "ingredients": [
-      "2 cups cooked rice -OR -",
-      "2 Ibs. hamburger-browned & seasoned",
-      "3 cans sliced potatoes",
-      "1 1/2 c. frozen peas(cooked & drained)",
-      "3-4 cans(10 oz.) mushroom soup"
+      "2 lbs. ground beef (hamburger), browned & seasoned",
+      "2 cups cooked rice (OR 3 cans sliced potatoes)",
+      "1 1/2 cups frozen peas, cooked & drained",
+      "3 to 4 cans (10.5 oz. each) cream of mushroom soup",
+      "Topping: Shredded cheese & crushed Ritz crackers"
     ],
     "instructions": [
-      "Bake at 350 for 30-45 minutes Mix all ingredients together in 9X13 pan.",
-      "Right before it's done, sprinkle with shredded cheese & crushed Ritz crackers. Bake another 15 minutes.",
-      "Kim & Jim Cockeram n -16-"
+      "Mix browned hamburger, rice (or sliced potatoes), peas, and mushroom soup together in a 9x13-inch pan.",
+      "Bake at 350°F for 30 to 45 minutes.",
+      "Right before it is done, sprinkle top with shredded cheese and crushed Ritz crackers and bake another 15 minutes."
     ],
     "notes": ""
   },
@@ -1413,18 +1412,16 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=40",
     "story": "This has been declared a wonderful dish by a person who 'hates' cabbage. We like it, 100.",
     "ingredients": [
-      "1 cabbage, chopped",
+      "1 medium head cabbage, chopped",
       "2 cups milk",
       "4 Tbls. butter",
-      "4 Ibls. flour",
-      "salt and pepper to taste",
-      "Make white sauce. Add cabbage and mix well. Put in",
-      "buttered casserole dish and top with buttered crumbs. Bake",
-      "at 350 for 1 hour.",
-      "Alternate directions: (this is how I usually do it):"
+      "4 Tbls. flour",
+      "Salt and pepper to taste",
+      "Buttered bread crumbs (optional) or shredded cheese (optional)"
     ],
     "instructions": [
-      "Cook cabbage 2 minutes in hot milk. Melt butter. Add flour, stirring with fork as for white sauce. Then add to milk/cabbage mixture in pan. Cook for 5 minutes, stirring constantly. Cheese may be added."
+      "Classic Method: Make a white sauce with butter, flour, milk, salt, and pepper. Add chopped cabbage and mix well. Place in a buttered casserole dish, top with buttered crumbs, and bake at 350°F for 1 hour.",
+      "Stovetop Method (Heather’s usual way): Cook chopped cabbage for 2 minutes in hot milk. Melt butter and stir in flour with a fork as for white sauce, then stir into the hot milk and cabbage mixture. Cook for 5 minutes, stirring constantly. Shredded cheese may be added."
     ],
     "notes": ""
   },
@@ -1502,11 +1499,10 @@ export const COOKBOOK_RECIPES = [
     "story": "",
     "ingredients": [
       "1 can cream of chicken soup",
-      "1- 24 oz. bag shredded hash brow=s",
-      "1 pkg.(2 cups)shredded cheese",
-      "3 Tbls. oleo",
-      "1 cup diced ham, hamburg or",
-      "sausage."
+      "1 (24 oz.) bag frozen shredded hash browns",
+      "1 pkg. (2 cups) shredded cheddar cheese",
+      "3 Tbls. melted butter or oleo",
+      "1 cup diced ham, browned ground beef, or sausage"
     ],
     "instructions": [
       "Mix all together. Spread in 9X13 pan and bake at 350 for 1 hour"
@@ -1526,16 +1522,16 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=41",
     "story": "",
     "ingredients": [
-      "2 # bag hash browns",
+      "1 (2 lb.) bag frozen hash browns",
       "2 cans cream of chicken soup",
       "8 oz. sour cream",
-      "2 cups shredded cheese",
-      "1/2 c. walnuts or water chestnuts Optional: Hamburg, ham or",
-      "chicken(diced). Mix all together and bake in 9X13 pan at 325 for :",
-      "hours."
+      "2 cups shredded cheddar cheese",
+      "1/2 cup chopped walnuts or water chestnuts",
+      "Optional: Diced cooked chicken, ham, or browned ground beef"
     ],
     "instructions": [
-      "Mix all ingredients thoroughly and prepare according to family recipe."
+      "Mix all ingredients together in a large bowl.",
+      "Spread into a 9x13-inch baking dish and bake at 325°F for 1 1/2 to 2 hours until bubbly and golden."
     ],
     "notes": ""
   },
@@ -1585,7 +1581,7 @@ export const COOKBOOK_RECIPES = [
     "ingredients": [
       "5-6 Potatoes(red skins preferred)",
       "3 Tbs. each--vinegar, oil and lemon juice",
-      "1/2 Ib. bacon",
+      "1/2 lbs. bacon",
       "tarragon, parsiey, pepper, green onion or dry grated onion",
       "1 cup sour cream",
       "1 cup mayo"
@@ -1634,7 +1630,7 @@ export const COOKBOOK_RECIPES = [
     "story": "This is a big favorite of my son-in-law, Jeff.",
     "ingredients": [
       "8 oz. bacon, fried crisp and crumbled",
-      "1 Ib. ground beef.browned with 1 small chopped onion",
+      "1 lb. ground beef.browned with 1 small chopped onion",
       "1/2 lb. spaghetti, cooked and drained",
       "1 (4 oz.) can mushroom stems and pieces",
       "1 large jar spaghetti sauce"
@@ -1677,7 +1673,7 @@ export const COOKBOOK_RECIPES = [
       "Stir cooked zucchini mixture into egg mixture.",
       "Separate crescent dough into triangles; press into ungreased 11-inch pie plate or 9x13 dish to form crust. Brush crust with mustard.",
       "Pour zucchini filling into crust and sprinkle mozzarella cheese on top.",
-      "Bake at 375\u00b0F for 18 to 20 minutes until golden and center is set."
+      "Bake at 375°F for 18 to 20 minutes until golden and center is set."
     ],
     "notes": ""
   },
@@ -1687,45 +1683,65 @@ export const COOKBOOK_RECIPES = [
     "sectionId": "main-dishes",
     "sectionName": "Main Dishes & Vegetables",
     "category": "Main Dishes & Vegetables",
-    "contributor": "Strom Family",
+    "contributor": "Cheryl Haysmer",
     "pageNumber": 44,
     "bookPage": "21",
     "originalPageImage": "/cookbook/page_44.webp",
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=44",
     "story": "",
     "ingredients": [
-      "3 Ibs. ground beef",
-      "2 can tomato soup",
+      "3 lbs. ground beef",
+      "1 large onion, chopped",
+      "2 cans tomato soup",
       "2 cans tomato paste",
       "2 tsp. oregano",
       "2 tsp. parsley flakes",
-      "1 large onion",
-      "garlic salt to taste",
-      "1 large pkg. shredded cheese"
+      "Garlic salt to taste",
+      "1 pkg. lasagna noodles",
+      "1 large pkg. shredded mozzarella cheese",
+      "Grated Parmesan cheese (and optional sliced Swiss cheese)"
     ],
     "instructions": [
-      "Mix all ingredients thoroughly and prepare according to family recipe."
+      "Fry ground beef and chopped onion until browned; drain excess fat.",
+      "Stir in tomato soup, tomato paste, oregano, garlic salt, and parsley flakes. Simmer for a few minutes.",
+      "Cook lasagna noodles according to package directions.",
+      "In a 9x13-inch baking dish, alternate layers of noodles, meat sauce, and shredded cheese (plus optional sliced Swiss cheese), ending with Parmesan cheese on top.",
+      "Bake at 350°F until cheese is melted and bubbly."
     ],
     "notes": ""
   },
   {
     "id": "lasagna-brenda",
-    "title": "Lasagna (BRENDA)",
+    "title": "Lasagna (Sandy)",
     "sectionId": "main-dishes",
     "sectionName": "Main Dishes & Vegetables",
     "category": "Main Dishes & Vegetables",
-    "contributor": "Strom Family",
+    "contributor": "Sandy Strom Dryer",
     "pageNumber": 44,
     "bookPage": "21",
     "originalPageImage": "/cookbook/page_44.webp",
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=44",
-    "story": "",
+    "story": "Real good with tossed salad and garlic bread.",
     "ingredients": [
-      "cheese"
+      "1 to 1 1/2 lbs. ground beef",
+      "2 cans tomato paste",
+      "1 cup water",
+      "1 onion, chopped",
+      "1 clove garlic, minced",
+      "1 lb. mozzarella cheese, sliced",
+      "3/4 lb. ricotta cheese or cottage cheese",
+      "Grated Parmesan cheese",
+      "1 lb. lasagna noodles",
+      "1/4 cup red or white wine (optional)",
+      "1/4 to 1/2 tsp. pepper & salt to taste",
+      "Italian herbs & 1 bay leaf"
     ],
     "instructions": [
-      "Fry ground beef, onion until done. Add tomato soup. paste, oregano, garlic salt and parsley flakes. Simmer a few minutes. Cook noodles as directed. Layer of noodles, sauce, cheese, and ending with parmesan on top. Bake at 350 degrees until cheese is melted and bubbly. (I also use a layer of Swiss sliced cheese) Cheryl Haysmer LASAGNA \"Real good with tossed salad and garlic bread.\" 1-11/2 Ib. ground beef 2 cans tomato paste 1 cup water 1 onion 1 clove garlic 1lb. mozzarella cheese 3/4 lb. ricotta cheese or parmesan cheese cottage cheese 1 lb. lasagna noodles 1/4 c. red & white wine(opt.) 1/4-1/2 tsp. pepper salt to taste Italian herbs 1 bay leaf Boil lasagna noodles until tender. Slice mozzarella cheese and keep in refrigerator. Saut\u00e9 onion in oil. Add mead and brown. Add tomato paste, water & seasonings. Simmer for 1 1/2 hrs.. Add the wine after the first half hour. Put noodles in a large baking dish. Put a layer of cheese, sauce, etc, repeat until all used. Sprinkle with parmesan. Bake at 350 for 1/2 hour. Let set 5 minutes and serve. Serves 4.",
-      "Sandy Strom Dryer"
+      "Boil lasagna noodles until tender. Slice mozzarella cheese and keep chilled in refrigerator.",
+      "Sauté chopped onion and garlic in oil. Add ground beef and brown.",
+      "Add tomato paste, water, bay leaf, pepper, salt, and Italian herbs. Simmer for 1 1/2 hours, adding the optional wine after the first half hour.",
+      "Layer noodles, cheeses, and meat sauce in a large baking dish, repeating layers until all ingredients are used. Sprinkle top with Parmesan cheese.",
+      "Bake at 350°F for 30 minutes. Let stand 5 minutes before serving. Serves 4 to 6."
     ],
     "notes": ""
   },
@@ -1769,11 +1785,11 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=45",
     "story": "This is one of my favorite recipes from my mom(Anna Marie Pullen) and the first I ever attempted to make for Chris, my husband. Its my standard \"company dish\" \", served with homemade rolls. Great for a light supper after church. 6 eggs, beaten",
     "ingredients": [
+      "6 eggs, beaten",
+      "Approx. 3 cups flour (enough to make a stiff dough)",
       "1 can cream of chicken soup",
-      "Approx. 3 cups flour",
-      "1 can water",
-      "1 chicken breast, cooked &",
-      "chopped"
+      "1 soup can water (more if thinner broth is desired)",
+      "1 cooked chicken breast, chopped"
     ],
     "instructions": [
       "Add flour to beaten eggs until a stiff dough is made. (Measurement is approximate because neither mom nor I measure!) Roll out on counter to 1/4\" thick with flour. Cut into strips with pizza cutter. Drop into boiling water and boil minutes. (or you can let them dry before boiling).",
@@ -1794,22 +1810,19 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=46",
     "story": "This is a low cal meal.",
     "ingredients": [
-      "4 boneless chicken breasts(4 oz. each) 1 c. chopped onion",
-      "3 large garlic cloves",
-      "1 1/4 c. chicken broth",
-      "1 c. mild picante sauce",
-      "1 cup rice",
-      "1/4 cup shredded light cheddar cheese or Monterey jack",
-      "cheese",
-      "Spray 10\" skillet with non-stick spray. Cook onion & garlic",
-      "in skillet for 2 minutes, add chicken broth & picante, bring",
-      "to boil. Stir in rice, arrange chicken breasts over rice; cover",
-      "tightly & simmer for 20 min. With 2 min. remaining, lightly",
-      "sprinkle cheese on chicken & replace lid. When ready to",
-      "serve pour picante sauce on top of chicken"
+      "4 boneless chicken breasts (4 oz. each)",
+      "1 cup chopped onion",
+      "3 large garlic cloves, minced",
+      "1 1/4 cups chicken broth",
+      "1 cup mild picante sauce (plus extra for serving)",
+      "1 cup uncooked rice",
+      "1/4 cup shredded light cheddar or Monterey Jack cheese"
     ],
     "instructions": [
-      "Mix all ingredients thoroughly and prepare according to family recipe."
+      "Spray a 10-inch skillet with non-stick cooking spray. Cook onion and garlic in skillet for 2 minutes.",
+      "Add chicken broth and 1 cup picante sauce; bring to a boil.",
+      "Stir in rice and arrange chicken breasts on top of rice. Cover tightly and simmer over low heat for 20 minutes.",
+      "With 2 minutes remaining, lightly sprinkle shredded cheese over chicken and replace lid until melted. Spoon extra picante sauce over chicken when serving."
     ],
     "notes": ""
   },
@@ -1826,13 +1839,15 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=47",
     "story": "",
     "ingredients": [
-      "Remove skins from chicken pieces. Place 1 cup corn flake crumbs in",
-      "small brown bag or plastic bag & shake chicken in crumbs. Place chicken",
-      "in casserole dish. Add spices...onion or garlic salt, tarragon, thyme. Bake",
-      "at 350 for 1 hour."
+      "Chicken pieces (skins removed)",
+      "1 cup corn flake crumbs",
+      "Seasonings to taste: onion salt or garlic salt, tarragon, and thyme"
     ],
     "instructions": [
-      "Mix all ingredients thoroughly and prepare according to family recipe."
+      "Remove skins from chicken pieces.",
+      "Place 1 cup corn flake crumbs in a small brown paper or plastic bag and shake chicken pieces to coat.",
+      "Arrange coated chicken in a casserole dish and sprinkle with onion or garlic salt, tarragon, and thyme.",
+      "Bake at 350°F for 1 hour."
     ],
     "notes": ""
   },
@@ -1849,26 +1864,24 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=47",
     "story": "I've had this recipe for a long time, it's very good and easy. Works well in the crock pot & also is good warmed up, almost better.",
     "ingredients": [
-      "1 can beef consume(Campbell's)",
+      "1 lb. stew meat or round steak, cut into small chunks (do not precook)",
+      "1 can Campbell's beef consommé",
       "1 can tomatoes",
       "1 can tomato soup",
       "1 or 2 carrots, cut in chunks",
       "3 or 4 potatoes, cut up",
       "1 can string beans, drained",
       "1 can peas, drained",
-      "3 Tbls. tapioca",
       "1 onion, cut up",
+      "3 Tbls. quick-cooking tapioca",
       "1 Tbls. brown sugar",
-      "1/2 Tbls. salt(or less)",
-      "1lb. stew meat or round",
-      "1/4 tsp. pepper",
-      "steak, cut in small chunks",
-      "Do not precook meat. Mix all ingredients together & cover & bake at 250",
-      "for 6 hrs. or longer. This can be done in crock pot-let cook slow all day.",
-      "Do not uncover or stir while it's cooking"
+      "1/2 Tbls. salt (or less)",
+      "1/4 tsp. pepper"
     ],
     "instructions": [
-      "Mix all ingredients thoroughly and prepare according to family recipe."
+      "Do not precook the meat. Combine all ingredients together in a heavy Dutch oven or slow cooker.",
+      "Cover tightly and bake at 250°F for 6 hours or longer (or cook on low in a crock pot all day).",
+      "Do not uncover or stir while it is cooking."
     ],
     "notes": ""
   },
@@ -1885,15 +1898,15 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=47",
     "story": "",
     "ingredients": [
-      "2 Ibs. shoe string potatoes",
-      "2 cups cheese",
-      "1/2 c. chopped onions",
-      "I can cream of chicken soup",
-      "1/2 c. oleo",
-      "salt and pepper, to taste",
-      "1/2 c. green pepper",
-      "1 pint sour cream",
-      "TOPPING: 2 c. crushed corn flakes & 1/4 c. melted oleo-mix"
+      "2 lbs. frozen shoestring potatoes (or hash browns)",
+      "2 cups shredded cheddar cheese",
+      "1/2 cup chopped onions",
+      "1 can cream of chicken soup",
+      "1/2 cup melted butter or oleo",
+      "1/2 cup chopped green pepper",
+      "1 pint (16 oz.) sour cream",
+      "Salt and pepper to taste",
+      "Topping: 2 cups crushed corn flakes mixed with 1/4 cup melted butter (oleo)"
     ],
     "instructions": [
       "Mix first ingredients together. Top with corn flake mixture. Bake at 350 for 1 hour. Let stand 5 minutes before serving. 8 to 10 servings."
@@ -1913,19 +1926,17 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=48",
     "story": "This was handed down to my grandmother from her mother, my great grandmother- very good!!) ~ Lisa",
     "ingredients": [
-      "1 can salmon",
+      "1 can salmon, drained (skin and bones removed)",
       "2 eggs",
-      "1 Tbls. corn starch or 2 Tbl. flour",
+      "1 Tbls. cornstarch (or 2 Tbls. flour)",
+      "1 tsp. baking powder",
       "1/2 tsp. salt",
-      "dash pepper",
-      "1 tsp. baking",
-      "powder",
-      "Slack salmon and remove bones. Add eggs and mix. Add",
-      "baking powder, corn starch, salt and pepper. Test frying",
-      "pan with water, if water sizzles then put in salmon patties."
+      "Dash of pepper"
     ],
     "instructions": [
-      "Fry to golden brown or till it holds shape then turn and brown. Serve hot!"
+      "Flake salmon and remove bones. Add eggs and mix well.",
+      "Stir in baking powder, cornstarch (or flour), salt, and pepper.",
+      "Heat oil in a frying pan until a drop of water sizzles. Spoon salmon mixture into patties and fry until golden brown on both sides. Serve hot!"
     ],
     "notes": ""
   },
@@ -1942,14 +1953,14 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=48",
     "story": "This is a stir fry dish",
     "ingredients": [
-      "2 Tbls.. oleo",
-      "2 Tbls.. minced",
+      "2 Tbls. oleo",
+      "2 Tbls. minced",
       "onion",
       "1 lb. shrimp",
       "1 can mushrooms",
       "1 tsp. salt",
       "1/8 tsp. pepper",
-      "3 Tbls.. chill sauce",
+      "3 Tbls. chill sauce",
       "1 2/3 c. water",
       "1 1/3 cup Minute Rice",
       "1/2 pt. sour",
@@ -1975,7 +1986,7 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=49",
     "story": "",
     "ingredients": [
-      "2 Ibs. hamburg",
+      "2 lbs. hamburg",
       "3 c. chopped onions",
       "4 Tbls. vinegar",
       "3 c. chopped celery",
@@ -2109,14 +2120,14 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=51",
     "story": "An easy and good family favorite",
     "ingredients": [
-      "1lb. ground beef",
+      "1 lb. ground beef",
       "1/4 c. chopped onion",
       "1/4 c. bread crumbs",
       "1 beaten egg"
     ],
     "instructions": [
       "Mix together and shape into meatballs. Brown in small amount of shortening.",
-      "Sauce: Mix- 1 can Campbell's Golden Mushroom soup 1/2 c. chopped tomatoes or tomato juice 2 Tbls. vinegar 2 Ibls. soy sauce salt and pepper to taste Stir all sauce ingredients together and pour over meatballs; cover and simmer for 20 minutes. Serve over cooked rice."
+      "Sauce: Mix- 1 can Campbell's Golden Mushroom soup 1/2 c. chopped tomatoes or tomato juice 2 Tbls. vinegar 2 Tbls. soy sauce salt and pepper to taste Stir all sauce ingredients together and pour over meatballs; cover and simmer for 20 minutes. Serve over cooked rice."
     ],
     "notes": ""
   },
@@ -2142,7 +2153,7 @@ export const COOKBOOK_RECIPES = [
     ],
     "instructions": [
       "Mix and form 1\" balls- lay side-by-side in 9X13 pan. Pour sauce over.",
-      "Sauce: 1 1/2 c. brown sugar 1 Tbls.. dry mustard 1/2 c. vinegar 1/2 c. water Bake all at 350 for 1 hour, turning once."
+      "Sauce: 1 1/2 c. brown sugar 1 Tbls. dry mustard 1/2 c. vinegar 1/2 c. water Bake all at 350 for 1 hour, turning once."
     ],
     "notes": ""
   },
@@ -2184,7 +2195,7 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=52",
     "story": "",
     "ingredients": [
-      "1 Ib. lean ground beef-brown & drain",
+      "1 lb. lean ground beef-brown & drain",
       "1 small onion, chopped",
       "1 cup low fat sour cream combined with 1 cup",
       "low fat cottage cheese",
@@ -2212,7 +2223,7 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=52",
     "story": "",
     "ingredients": [
-      "2-3 Ibs. hamburger",
+      "2-3 lbs. hamburger",
       "1 can corn",
       "6-8 slices cheese",
       "1 pkg. tater tots",
@@ -2238,17 +2249,17 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=53",
     "story": "",
     "ingredients": [
-      "2 Ibs. hamburger, browned & seasoned",
-      "8 oz. noodles, cooked & drained",
-      "1 16 oz. sour cream",
-      "1 28 oz. Prego Spaghetti sauce",
-      "3 cups shredded cheese(mozzarella & cheddar)",
-      "1 bag tortilla chips or Doritos-crushed",
-      "After hamburger is browned & drained, layer hamburger on top of",
-      "cooked noodles in a 9X13 pan. Then layer the spaghetti sauce, sour"
+      "2 lbs. ground beef (hamburger), browned & seasoned",
+      "8 oz. egg noodles, cooked & drained",
+      "1 (16 oz.) container sour cream",
+      "1 (28 oz.) jar Prego spaghetti sauce",
+      "3 cups shredded cheese (mozzarella & cheddar)",
+      "1 bag tortilla chips or Doritos, crushed"
     ],
     "instructions": [
-      "cream, chips, top with the cheeses. Bake at 350 until cheese is melted."
+      "Brown and drain ground beef.",
+      "In a 9x13-inch pan, layer cooked noodles on the bottom, followed by browned ground beef, spaghetti sauce, sour cream, and crushed tortilla chips or Doritos.",
+      "Top with shredded mozzarella and cheddar cheeses. Bake at 350°F until hot and cheese is melted."
     ],
     "notes": ""
   },
@@ -2289,14 +2300,14 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=53",
     "story": "",
     "ingredients": [
-      "1 pkg. stuffing mix(Like Stovetop)",
-      "1 or 2 eggs",
       "1 lb. ground turkey",
-      "Prepare stuffing as directed. Beat egg(s). Mix stuffing, egg & ground",
-      "turkey together. Bake in 9X5 loaf pan for 50 minutes at 350 degrees"
+      "1 pkg. stuffing mix (such as Stove Top)",
+      "1 or 2 eggs, beaten"
     ],
     "instructions": [
-      "Mix all ingredients thoroughly and prepare according to family recipe."
+      "Prepare stuffing mix according to package directions.",
+      "Beat egg(s), then mix prepared stuffing, egg, and ground turkey together thoroughly.",
+      "Shape into a 9x5-inch loaf pan and bake at 350°F for 50 minutes."
     ],
     "notes": ""
   },
@@ -2313,19 +2324,16 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=54",
     "story": "",
     "ingredients": [
+      "1 lb. ground beef",
       "1 cup chopped onions",
-      "1 Ib. ground",
-      "beef",
-      "tater tots",
-      "1 can(10.5 oz.) cream of celery soup",
-      "4 cups frozen",
-      "Grease shallow 2 qt. baking dish. Brown ground beef &",
-      "onion. Drain. Spread meat mixture in baking dish, cover",
-      "with undiluted soup & top with single layer of frozen tater",
-      "center"
+      "1 can (10.5 oz.) cream of celery soup (undiluted)",
+      "4 cups frozen tater tots"
     ],
     "instructions": [
-      "tots. Bake at 400 for 45 minutes until bubbly & hot in"
+      "Grease a shallow 2-quart baking dish.",
+      "Brown ground beef and chopped onion in a skillet; drain excess fat.",
+      "Spread meat mixture into the baking dish, cover with undiluted cream of celery soup, and top with a single layer of frozen tater tots.",
+      "Bake at 400°F for 45 minutes until bubbly and hot in the center."
     ],
     "notes": ""
   },
@@ -2342,22 +2350,19 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=54",
     "story": "Peter really liked these when he was at home. So did Gary & Anna Marie's dog, Spooky. He used to come down & make himself at home, and one day I made these pastries & didn't have counter space to put them on, so I set them on a chair. Forgetting Spooky was in the house, I went out to the garage for a minute and came in to catch Spooky enjoying 2 or 3 of them!",
     "ingredients": [
-      "2 cans(12 oz. each) roast beef with gravy 2 Tbls. minced",
-      "4 medium potatoes, peeled, cooked &",
-      "onion",
-      "chopped",
-      "1 8oz. can tomato sauce",
-      "2 Tbls.. parsley",
-      "2 pkgs. pie crust(I make",
-      "my own)",
-      "Reserve gravy from meat. Chop meat finely & mix with",
-      "potatoes, onions & parsley. Prepare pie crust & cut into",
-      "each square into four 7 inch squares. Heap filling on one",
-      "side of each square. Fold dough over & press edges",
-      "tomato sauce. Simmer until hot and serve over pastries."
+      "2 cans (12 oz. each) roast beef with gravy (reserve gravy)",
+      "4 medium potatoes, peeled, cooked & chopped",
+      "2 Tbls. minced onion",
+      "2 Tbls. parsley",
+      "1 (8 oz.) can tomato sauce",
+      "2 pkgs. pie crust (or homemade pastry for 2 two-crust pies)"
     ],
     "instructions": [
-      "two pieces. Roll out each piece to a square 14X14. Cut together. Prick top. Place on greased cookie sheet. Bake at 400 for 20 to 25 minutes. Combine reserved gravy with"
+      "Reserve gravy from the roast beef. Finely chop the meat and mix with cooked chopped potatoes, minced onion, and parsley.",
+      "Divide pie crust dough into two pieces. Roll each piece into a 14x14-inch square and cut each into four 7-inch squares (8 squares total).",
+      "Heap meat and potato filling onto one side of each square. Fold pastry over, press edges together to seal, and prick tops with a fork.",
+      "Place on a greased baking sheet and bake at 400°F for 20 to 25 minutes.",
+      "Combine reserved beef gravy with tomato sauce in a saucepan, simmer until hot, and serve warm over the baked pastries."
     ],
     "notes": ""
   },
@@ -2374,14 +2379,17 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=56",
     "story": "",
     "ingredients": [
-      "1/2 c. margarine & 1 cup flour",
-      "oblongs of 6x12 on a cookie sheet."
+      "Base Crust: 1/2 cup margarine, 1 cup flour, 2 Tbls. water",
+      "Puff Layer: 1/2 cup margarine, 1 cup water, 1 cup flour, 3 eggs, 1 tsp. almond flavoring",
+      "Frosting: 1/2 cup softened margarine, 1 box powdered sugar, 1 tsp. almond flavoring, milk to spreading consistency",
+      "Garnish: Sliced almonds & maraschino cherries"
     ],
     "instructions": [
-      "Blend with pastry cutter... mix in 2 Tbls. water. Press and shape into 2 In sauce pan put: 1/2 c. margarine & 1 cup water. Bring to rolling boil, remove from heat. Add 1 cup flour immediately. Blend well by hand when blended add 3 eggs, one at a time. Whipping by hand, after each sheet.",
-      "one. Add 1 tsp. of almond flavoring. Spread onto oblongs on cookie Bake at 350 for 1 hour. When cool frost.",
-      "Frosting: Mix in bowl:",
-      "1/2 c. margarine(softened) 1 box powdered sugar 1 tsp. almond flavoring & enough milk for consistency to to spread Frost oblongs-decorate with almond slices and maraschino cherries."
+      "Base: Blend 1/2 cup margarine and 1 cup flour with a pastry cutter. Mix in 2 Tbls. water. Press and shape into two 6x12-inch oblongs on an ungreased cookie sheet.",
+      "Puff Layer: In a saucepan, bring 1/2 cup margarine and 1 cup water to a rolling boil. Remove from heat and immediately add 1 cup flour, blending well by hand.",
+      "Beat in 3 eggs one at a time by hand until smooth, then stir in 1 tsp. almond flavoring. Spread evenly over the two crust oblongs.",
+      "Bake at 350°F for 1 hour. Cool completely.",
+      "Frosting: Beat softened margarine, powdered sugar, almond flavoring, and enough milk to reach spreading consistency. Frost cooled puffs and garnish with sliced almonds and maraschino cherries."
     ],
     "notes": ""
   },
@@ -2411,7 +2419,7 @@ export const COOKBOOK_RECIPES = [
     "instructions": [
       "Beat either by hand or with an electric mixer all ingredients until completely blended and smooth.",
       "Pour batter into an ungreased 9x13-inch baking pan.",
-      "Bake at 350\u00b0F for about 30 minutes."
+      "Bake at 350°F for about 30 minutes."
     ],
     "notes": "Note: In a white pan, takes about 35 minutes."
   },
@@ -2445,7 +2453,7 @@ export const COOKBOOK_RECIPES = [
       "Cream together shortening and sugars. Add eggs, vanilla, baking soda, baking powder, and salt; mix thoroughly.",
       "Stir in flour, then fold in oatmeal, nuts, and coconut if desired.",
       "Stir in chocolate chips.",
-      "Drop by spoonfuls onto cookie sheets and bake at 350\u00b0F for 10 to 12 minutes."
+      "Drop by spoonfuls onto cookie sheets and bake at 350°F for 10 to 12 minutes."
     ],
     "notes": ""
   },
@@ -2514,15 +2522,18 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=58",
     "story": "My mom Virginia Strom) always made these at Christmas time. They are nice to put in a decorative jar and give as a gift",
     "ingredients": [
-      "tsp. cinnamon & 1/2 tsp. salt. Heat and stir until sugar dissolves and",
-      "mixture boils. Cook until soft-ball stage(or 236 degrees on candy",
-      "thermometer). Remove from heat. Beat by hand about 1 minute or until",
-      "mixture just begins to get creamy. Add 1 1/2 tsp. vanilla and nuts(2 1/2",
-      "cups) that have been warming in the oven. Stir gently. Spread on cookie",
-      "sheet to cool. \"They are delicious!\"."
+      "1 cup sugar",
+      "1/2 cup water",
+      "1 tsp. cinnamon",
+      "1/2 tsp. salt",
+      "1 1/2 tsp. vanilla",
+      "2 1/2 cups walnut halves (warmed in oven)"
     ],
     "instructions": [
-      "Butter sides of 2 quart saucepan- Combine: 1 cup sugar, 1/2 cup water, 1"
+      "Butter the sides of a 2-quart saucepan. Combine sugar, water, cinnamon, and salt.",
+      "Heat and stir until sugar dissolves and mixture comes to a boil. Cook to soft-ball stage (236°F on a candy thermometer).",
+      "Remove from heat and beat by hand for about 1 minute until mixture just begins to turn creamy.",
+      "Add vanilla and warmed walnuts; stir gently to coat. Spread onto a cookie sheet to cool and separate."
     ],
     "notes": ""
   },
@@ -2561,17 +2572,18 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=59",
     "story": "This is a luscious and moist cake recipe I received years ago from my friend, Jane Apps",
     "ingredients": [
-      "2 c. flour",
-      "1 1/2 c. oil",
+      "2 cups flour",
+      "2 cups sugar",
       "2 tsp. baking powder",
-      "2 c. sugar",
       "1 1/2 tsp. salt",
-      "4 eggs",
       "2 tsp. cinnamon",
-      "2 c. grated carrots",
-      "18 oz. can crushed pineapple",
-      "3/4 c. chopped nuts(opt)",
-      "1 cup coconut (opt)"
+      "1 1/2 cups vegetable oil",
+      "4 eggs",
+      "2 cups grated carrots",
+      "1 (8 oz.) can crushed pineapple, drained",
+      "3/4 cup chopped nuts (optional)",
+      "1 cup shredded coconut (optional)",
+      "Cream Cheese Frosting: 1 (8 oz.) pkg. cream cheese, 2 tsp. vanilla, 1 box powdered sugar (OR 1/2 stick margarine, 3 oz. cream cheese, 1/2 box powdered sugar, vanilla)"
     ],
     "instructions": [
       "Mix together dry ingredients. Mix oil, sugar and eggs, beating after each addition. Add dry ingredients and mix well. Add carrots, drained pineapple, coconut & nuts.",
@@ -2617,15 +2629,14 @@ export const COOKBOOK_RECIPES = [
     "story": "",
     "ingredients": [
       "1 cup sugar",
-      "1 1/2 c; peanut butter",
-      "1 cup corn syrup",
-      "4 cups Cheerios",
-      "In large sauce pan, combine sugar and corn syrup. Over medium high",
-      "heat bring this mixture to a full boil. Remove pan from heat. Add peanut",
-      "butter and Cheerios. Mix well and drop by teaspoonful onto waxed paper."
+      "1 cup light corn syrup",
+      "1 1/2 cups peanut butter",
+      "4 cups Cheerios cereal"
     ],
     "instructions": [
-      "Mix all ingredients thoroughly and prepare according to family recipe."
+      "In a large saucepan, combine sugar and corn syrup. Bring to a full boil over medium-high heat.",
+      "Remove pan from heat and stir in peanut butter and Cheerios until well coated.",
+      "Drop by teaspoonfuls onto waxed paper and let cool until set."
     ],
     "notes": ""
   },
@@ -2667,13 +2678,16 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=60",
     "story": "The longer you beat this, the fluffier and richer it is. This is really good on Aunt Bev's No Egg Chocolate Cake recipe.",
     "ingredients": [
-      "1 stick margarine(softened) - | \"2 Stick 6 Tbls. cocoa - 9 T",
-      "2 cups powdered sugar -3",
-      "1 1/2 tsp. vanilla - 2 tsp.",
-      "About 2 Tbls. milk -3 T"
+      "1 stick margarine, softened (or 1 1/2 sticks for a larger batch)",
+      "6 Tbls. cocoa (or 9 Tbls. for a larger batch)",
+      "2 cups powdered sugar (or 3 cups for a larger batch)",
+      "1 1/2 tsp. vanilla (or 2 tsp. for a larger batch)",
+      "About 2 Tbls. milk (or 3 Tbls. for a larger batch)"
     ],
     "instructions": [
-      "Blend butter and cocoa. Mix in powdered sugar and milk, beat until creamy (About 2 or 3 minutes) Add vanilla and beat some more until light and flufly."
+      "Blend softened margarine and cocoa together.",
+      "Mix in powdered sugar and milk; beat until creamy (about 2 to 3 minutes).",
+      "Add vanilla and beat until light and fluffy."
     ],
     "notes": ""
   },
@@ -2690,25 +2704,17 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=61",
     "story": "",
     "ingredients": [
-      "BASE: 1 pkg. Pillsbury Plus Devil's food cake mix",
-      "21 oz. can cherry fruit filling",
+      "Base: 1 pkg. Pillsbury Plus Devil's Food cake mix",
+      "1 (21 oz.) can cherry fruit pie filling",
       "2 eggs, beaten",
-      "FROSTING: 1 cup sugar",
-      "5 Tbls. butter or oleo",
-      "1/3 cup milk",
-      "1 c. (6 oz.) semi-sweet",
-      "chocolate pieces",
-      "Preheat oven to 350.",
-      "Grease and flour a 15x10 inch jelly roll pan or 9x13 pan. In",
-      "large bowl, combine BASE ingredients. Stir by hand until",
-      "well mixed.",
-      "pan) ~ 25 to 30 (for 9x13 pan). FROSTING: In saucepan,",
-      "combine sugar, oleo and milk. Boil, stirring constantly 1",
-      "minute. Remove from heat. Stir in chocolate pieces until",
-      "smooth. Pour over warm bars."
+      "Frosting: 1 cup sugar, 5 Tbls. butter or oleo, 1/3 cup milk, 1 cup (6 oz.) semi-sweet chocolate chips"
     ],
     "instructions": [
-      ". Pour into pan. Bake -20 to 30 (for jelly roll"
+      "Preheat oven to 350°F. Grease and flour a 15x10-inch jelly roll pan or a 9x13-inch baking pan.",
+      "In a large bowl, combine dry cake mix, cherry pie filling, and beaten eggs; stir by hand until well mixed.",
+      "Pour into prepared pan and bake for 20 to 25 minutes (for jelly roll pan) or 25 to 30 minutes (for 9x13 pan).",
+      "Frosting: In a saucepan, combine sugar, butter (or oleo), and milk. Bring to a boil and boil for 1 minute, stirring constantly.",
+      "Remove from heat and stir in chocolate chips until smooth. Pour over warm bars."
     ],
     "notes": ""
   },
@@ -2725,20 +2731,22 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=61",
     "story": "I sometimes add coconut or butterscotch chips, whatever I might have in the cupboard! These freeze nicely.",
     "ingredients": [
-      "11/2 flour",
-      "1/2 c. brown sugar (packed firm)",
-      "1/2 c. cold margarine",
-      "112 oz. pkg. chocolate chips",
-      "1 14 oz. can sweetened condensed milk(NOT",
-      "EVAPORATED MILK)",
+      "1 1/2 cups flour",
+      "1/2 cup brown sugar (packed firm)",
+      "1/2 cup cold margarine",
+      "1 (12 oz.) pkg. chocolate chips (2 cups, divided)",
+      "1 (14 oz.) can sweetened condensed milk (NOT evaporated milk)",
       "1 egg, beaten",
       "1 tsp. vanilla",
-      "CH",
       "1 cup chopped nuts"
     ],
     "instructions": [
-      "Combine flour & sugar; cut in margarine until crumbly. Stir 2 cups in 1/2 cup chocolate chips; press firmly into bottom of 1/2 cu 9x13pan. Bake at 350 for 15 minutes. Meanwhile, in same 1 tsp. v bowl, combine sweetened milk, egg and vanilla: stir in 4 cups o remaining 1 1/2 cups chocolate chips and nuts. Spread evenly over prepared crust. Bake 20 to 25 minutes or until In saucep light golden brown. Cool completely. Cut into bars. Store over medi covered at room temperature.",
-      "from heat, and stir thor Michele Strom time. Drop b"
+      "Combine flour and brown sugar in a bowl; cut in cold margarine until crumbly.",
+      "Stir in 1/2 cup chocolate chips and press mixture firmly into the bottom of a 9x13-inch pan.",
+      "Bake crust at 350°F for 15 minutes.",
+      "Meanwhile, in a bowl, combine sweetened condensed milk, beaten egg, and vanilla; stir in the remaining 1 1/2 cups chocolate chips and chopped nuts.",
+      "Spread topping evenly over the baked crust. Bake for 20 to 25 minutes or until light golden brown.",
+      "Cool completely before cutting into bars. Store covered at room temperature."
     ],
     "notes": ""
   },
@@ -2755,19 +2763,22 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=62",
     "story": "If the quick disappearance from my cookie jar (particularly from my many grandchildren!) is an indication how good these are, this must be an extremely good recipe! I got this recipe from Anna Hosmer.",
     "ingredients": [
-      "23 cup shortening",
-      "2/3 cup oleo(1 1/2 stick)softened",
+      "2/3 cup shortening",
+      "2/3 cup oleo (1 1/2 sticks), softened",
       "1 cup white sugar",
-      "1 cup brown sugar(packed firm)",
+      "1 cup brown sugar (packed firm)",
       "2 eggs",
       "2 tsp. vanilla",
-      "3 1/3 c. flour",
+      "3 1/3 cups flour",
       "1 tsp. salt",
       "1 tsp. baking soda",
-      "1 pkg. chocolate chips(1 use mini-chips)"
+      "1 pkg. chocolate chips (I use mini-chips)"
     ],
     "instructions": [
-      "Place by spoonful onto ungreased cookie sheet. Bake at 350 for 8\u043e\u0433 9 minutes. For a soft cookie, Don't overbake."
+      "Cream together shortening, softened oleo, white sugar, and packed brown sugar.",
+      "Beat in eggs and vanilla.",
+      "Stir in flour, salt, and baking soda until well combined, then fold in chocolate chips.",
+      "Drop by spoonfuls onto ungreased cookie sheets. Bake at 350°F for 8 or 9 minutes. For a soft cookie, don't overbake."
     ],
     "notes": ""
   },
@@ -2811,17 +2822,14 @@ export const COOKBOOK_RECIPES = [
       "3 Tbls. cocoa",
       "1/2 cup milk",
       "1 stick margarine",
-      "1 tsp. vanilla",
       "1/2 cup peanut butter",
-      "4 cups oatmeal",
-      "In saucepan, combine sugar, cocoa, milk and margarine. Cook and stir",
-      "over medium heat until mixture comes to boil. Boil for 1 minute. Remove",
-      "from heat, add peanut butter & vanilla; stir until smooth then add oatmeal",
-      "and stir thoroughly. If mixture gets to dry, add a few drops of milk at a",
-      "time. Drop by spoonfuls on wax paper to cool."
+      "1 tsp. vanilla",
+      "4 cups quick oatmeal"
     ],
     "instructions": [
-      "Mix all ingredients thoroughly and prepare according to family recipe."
+      "In a saucepan, combine sugar, cocoa, milk, and margarine. Cook and stir over medium heat until mixture comes to a full boil; boil for 1 minute.",
+      "Remove from heat; stir in peanut butter and vanilla until smooth.",
+      "Add oatmeal and stir thoroughly (if mixture gets too dry, add a few drops of milk). Drop by spoonfuls onto waxed paper to cool."
     ],
     "notes": ""
   },
@@ -2846,10 +2854,10 @@ export const COOKBOOK_RECIPES = [
       "1/2 c. butter or margarine, softened"
     ],
     "instructions": [
-      "Bake at 350 in greased 9x13 pan 25 minutes or until top springs back when lightly touched. Cool completely CREAM EILLING: Beat together...",
+      "Bake at 350 in greased 9x13 pan 25 minutes or until top springs back when lightly touched. Cool completely CREAM FILLING: Beat together...",
       "2 cups powdered sugar 1/2 c. butter or oleo, softened 1 Tbls. water 1/2 to 3/4 tsp. mint extract 3 drops green food color Spread over cooled cake and chill.",
       "CHOCOLATE TOPPING:",
-      "6 Tbls.. butter or oleo 1 cup Hershey's semi-sweet chocolate chips (Note: No substitutes-generic choco-flavored chips won't work-l also use mint chocolate chips for extra mint flavor, or sometimes 1/2 regular chips~1/2 mint chocolate chips.) Melt butter and chips over low heat stirring until smooth; (I put in microwave 60 seconds on high & get the same results). Cool slightly, pour over chilled cake and filling.",
+      "6 Tbls. butter or oleo 1 cup Hershey's semi-sweet chocolate chips (Note: No substitutes-generic choco-flavored chips won't work-l also use mint chocolate chips for extra mint flavor, or sometimes 1/2 regular chips~1/2 mint chocolate chips.) Melt butter and chips over low heat stirring until smooth; (I put in microwave 60 seconds on high & get the same results). Cool slightly, pour over chilled cake and filling.",
       "Chill and serve"
     ],
     "notes": ""
@@ -2908,7 +2916,7 @@ export const COOKBOOK_RECIPES = [
       "Add dry ingredients (flour, baking soda, cream of tartar) and mix well. Add vanilla.",
       "Chill dough in refrigerator for 1 hour.",
       "Roll out dough 1/4 inch thick on floured surface. Cut with holiday cookie cutters.",
-      "Place on ungreased cookie sheet and bake at 375\u00b0F for 6 to 8 minutes."
+      "Place on ungreased cookie sheet and bake at 375°F for 6 to 8 minutes."
     ],
     "notes": ""
   },
@@ -2943,7 +2951,7 @@ export const COOKBOOK_RECIPES = [
       "Punch down and roll out into a large rectangle on a floured surface.",
       "Cover surface with softened margarine, then sprinkle generously with brown sugar and cinnamon.",
       "Roll up jelly-roll style and slice into rolls. Place in greased pan, cover with Saran Wrap, and refrigerate overnight (or 8 hours).",
-      "Take out about 1/2 hour before baking. Remove wrap and bake at 350\u00b0F for 20 to 25 minutes.",
+      "Take out about 1/2 hour before baking. Remove wrap and bake at 350°F for 20 to 25 minutes.",
       "Glaze with cream cheese icing or powdered sugar glaze immediately while warm."
     ],
     "notes": ""
@@ -2962,8 +2970,8 @@ export const COOKBOOK_RECIPES = [
     "story": "My mother-in-law, Doris Harrold, gave me this recipe. It's easy and something kids love",
     "ingredients": [
       "5 cups corn flakes",
-      "5 Tbls.. peanut butter",
-      "1 12 oz. bag butterscotch chips"
+      "5 Tbls. peanut butter",
+      "1 (12 oz.) bag butterscotch chips"
     ],
     "instructions": [
       "Melt chips and peanut butter together on low heat. Remove pan from heat and add corn flakes. Stir gently until well coated. Press into buttered 9x13 pan or shape into small balls. Let cool."
@@ -3010,17 +3018,16 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=65",
     "story": "",
     "ingredients": [
-      "I c. shortening",
-      "I c. brown sugar(packed)",
-      "1 c. sugar",
+      "1 cup shortening",
+      "1 cup brown sugar (packed)",
+      "1 cup white sugar",
       "2 eggs",
-      "1 1/2 c. flour",
+      "1 1/2 cups flour",
       "1 tsp. salt",
       "1 tsp. baking soda",
-      "3 c. oatmeal",
+      "3 cups oatmeal",
       "1 tsp. vanilla",
-      "1 c. chopped nuts(opt.)",
-      "(I also add either chopped dates or raisins)"
+      "1 cup chopped nuts (optional — chopped dates or raisins are also great)"
     ],
     "instructions": [
       "Mix all ingredients & drop by spoonful onto cookie sheet Bake at 350 for 10-12 minutes. *\"These are crispy, vet chewy\""
@@ -3054,7 +3061,7 @@ export const COOKBOOK_RECIPES = [
       "Place 1 cup chopped dates in a bowl with 1 tsp. soda; pour 1 cup boiling water over dates and let stand.",
       "In a separate bowl, mix 1 cup sugar, 1 Tbls. butter, 1 egg, sifted flour, and baking powder.",
       "Stir the date mixture into the batter. Batter will be thin.",
-      "Pour into a greased 9x13 pan and bake at 350\u00b0F for 30 to 35 minutes.",
+      "Pour into a greased 9x13 pan and bake at 350°F for 30 to 35 minutes.",
       "While cake is baking, cook topping: combine 1 cup chopped dates, 1 cup sugar, and 1 cup water in a small saucepan and simmer until thickened.",
       "Pour hot date topping over cake immediately upon removing from oven."
     ],
@@ -3100,12 +3107,12 @@ export const COOKBOOK_RECIPES = [
     "story": "",
     "ingredients": [
       "3 Tbls. sugar",
-      "1 pkg. (6 serving) vanilla pudding & pie filling",
+      "1 pkg. (6-serving size) cook-and-serve vanilla pudding & pie filling mix",
       "1 tsp. pumpkin pie spice",
-      "1 can(13 oz.) evaporated milk",
+      "1 can (13 oz.) evaporated milk",
       "1 egg, slightly beaten",
-      "I c. canned pumpkin",
-      "1 baking 9 inch pie shell, cooled"
+      "1 cup canned pumpkin",
+      "1 baked 9-inch pie shell, cooled"
     ],
     "instructions": [
       "Combine pudding mix, sugar, spice, milk, egg and pumpkin in saucepan Cook & stir over medium heat until full boil. Remove. Cool 5 minutes Stirring twice. Pour into shell & chill 4 hours. Garnish with cool whip and nut if desired"
@@ -3150,21 +3157,23 @@ export const COOKBOOK_RECIPES = [
     "bookPage": "43",
     "originalPageImage": "/cookbook/page_67.webp",
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=67",
-    "story": "This is another favorite of my son-in-law, Jeff. Sally also uses this same recipe to make gingersnap bars, just press dough into greased jelly roll pan and sprinkle with white",
+    "story": "This is another favorite of my son-in-law, Jeff. Sally also uses this same recipe to make gingersnap bars—just press dough into a greased jelly roll pan, sprinkle with white sugar, bake, and cut into bars.",
     "ingredients": [
-      "sugar & bake, then cut into bars. \"",
-      "MIX: 3/4 c. shortening",
-      "1 c. white sugar",
+      "3/4 cup shortening",
+      "1 cup white sugar (plus extra for rolling)",
       "1 egg",
-      "1/4 c. molasses",
-      "THEN MIX IN: 2 c. flour - 1 tsp. cinnamon 2 tsp. soda",
-      "3/4 tsp. cloves",
-      "- 3/4 tsp. ginger - 1/2 tsp. salt",
-      "Form into walnut-size balls, roll in white sugar & bake at",
-      "350 for 8-10 minutes."
+      "1/4 cup molasses",
+      "2 cups flour",
+      "2 tsp. baking soda",
+      "1 tsp. cinnamon",
+      "3/4 tsp. ground cloves",
+      "3/4 tsp. ground ginger",
+      "1/2 tsp. salt"
     ],
     "instructions": [
-      "Mix all ingredients thoroughly and prepare according to family recipe."
+      "Cream together shortening, sugar, egg, and molasses.",
+      "Stir in flour, baking soda, cinnamon, cloves, ginger, and salt until well blended.",
+      "Shape dough into walnut-sized balls, roll in white sugar, and bake on cookie sheets at 350°F for 8 to 10 minutes."
     ],
     "notes": ""
   },
@@ -3207,16 +3216,16 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=68",
     "story": "This was given to us by Jamie's mom, it's very good!",
     "ingredients": [
-      "1 - 9 inch graham cracker crust",
-      "1- 14 oz. can condensed milk",
-      "1 tsp. vanilla",
-      "1-8 oz. pkg. cream cheese, softened",
-      "1/3 c. lemon juice",
-      "In mixing bowl, beat cheese until fluffy. Gradually beat in milk until",
-      "with lemon topping"
+      "1 (9-inch) graham cracker pie crust",
+      "1 (8 oz.) pkg. cream cheese, softened",
+      "1 (14 oz.) can sweetened condensed milk",
+      "1/3 cup lemon juice",
+      "1 tsp. vanilla"
     ],
     "instructions": [
-      "smooth. Stir in lemon juice & vanilla. Pour into prepared crust. Top"
+      "In a mixing bowl, beat softened cream cheese until light and fluffy.",
+      "Gradually beat in sweetened condensed milk until smooth.",
+      "Stir in lemon juice and vanilla until mixture thickens. Pour into graham cracker crust, chill, and top with lemon topping if desired."
     ],
     "notes": ""
   },
@@ -3233,14 +3242,14 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=68",
     "story": "",
     "ingredients": [
-      "1 3/4 c. unsifted flour",
+      "1 3/4 cups unsifted flour",
       "1 cup sugar",
-      "1/3 c. cocoa",
+      "1/3 cup cocoa",
       "1 1/2 tsp. baking powder",
       "1 1/2 tsp. baking soda",
       "1/8 tsp. salt",
-      "I c. mayonnaise",
-      "1 c. water",
+      "1 cup mayonnaise",
+      "1 cup water",
       "2 tsp. vanilla"
     ],
     "instructions": [
@@ -3261,25 +3270,19 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=69",
     "story": "",
     "ingredients": [
-      "MIX: 2 cups flour",
+      "2 cups flour",
       "2 cups sugar",
       "2 tsp. baking soda",
-      "ADD: 2 beaten eggs",
-      "1-20 oz. can crushed",
-      "1 c. chopped walnuts",
-      "pineapple(do not drain)",
-      "on top. When cool frost with Cream Cheese Frosting....",
-      "1 stick softened butter",
-      "8 oz. cream cheese (\"low fat\" works good but the",
-      "\"no-fat\" doesn't come out quite right.\")",
-      "1 lb. confectioners sugar",
-      "1 tsp. vanilla",
-      "Beat~Beat-Beat~Beat!! The longer you beat it, the fluffier",
-      "it gets!! I find that this makes enough for 2 cakes. Just",
-      "freeze half. It freezes great!!"
+      "2 eggs, beaten",
+      "1 (20 oz.) can crushed pineapple (do not drain)",
+      "1 cup chopped walnuts (sprinkled on top)",
+      "Cream Cheese Frosting: 1 stick softened butter, 8 oz. cream cheese, 1 lb. confectioners’ sugar, 1 tsp. vanilla"
     ],
     "instructions": [
-      "No need to beat. Just stir together. Pour into greased 9x13 pan. Bake at 350 for 30 to 40 minutes until golden brown"
+      "Stir together flour, sugar, baking soda, beaten eggs, and undrained crushed pineapple by hand (no need to use a mixer).",
+      "Pour into a greased 9x13-inch pan and sprinkle 1 cup chopped walnuts over the top.",
+      "Bake at 350°F for 30 to 40 minutes until golden brown. Cool completely.",
+      "Frosting: Beat softened butter, cream cheese, confectioners’ sugar, and vanilla until very light and fluffy. Spread over cooled cake."
     ],
     "notes": ""
   },
@@ -3323,21 +3326,19 @@ export const COOKBOOK_RECIPES = [
     "bookPage": "46",
     "originalPageImage": "/cookbook/page_70.webp",
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=70",
-    "story": "",
+    "story": "The men in the family really love these—they are a little extra work to make, but Mom still makes them.",
     "ingredients": [
-      "make, but Mom still makes them\"",
-      "\"The men in the family really love these~they are a little extra work to",
-      "1 c. shortening",
-      "1/2 c. sugar",
-      "1/2 c. brown sugar",
+      "1 cup shortening",
+      "1/2 cup white sugar",
+      "1/2 cup brown sugar",
       "1 egg",
       "3 Tbls. milk",
       "2 tsp. vanilla",
-      "2 2/3 c. flour",
+      "2 2/3 cups flour",
       "2 tsp. cream of tartar",
       "1 tsp. baking soda",
       "1/2 tsp. salt",
-      "1/2 c. jam (Mom uses strawberry)"
+      "1/2 cup jam (Mom uses strawberry)"
     ],
     "instructions": [
       "Mix all ingredients, except jam. Chill 1 hour. Roll 1/2 of dough at a time.",
@@ -3359,19 +3360,18 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=70",
     "story": "This recipe is from an old book I've had for years. Now with an electric beater it would be a lot easier to make.",
     "ingredients": [
-      "2 c. flour",
+      "2 cups flour",
       "2 tsp. baking powder",
       "1/2 tsp. salt",
-      "2 c. sugar",
+      "2 cups sugar",
       "4 eggs",
-      "1 c. milk, scalded",
-      "1/2 tsp. almond extract",
-      "Turn eggs on sugar-beat until thick and fluffy. Add milk. Mix all dry",
-      "ingredients well together. Add all at once to first ingredients. Bake for 25",
-      "to 30 minutes at 350"
+      "1 cup milk, scalded",
+      "1/2 tsp. almond extract"
     ],
     "instructions": [
-      "Mix all ingredients thoroughly and prepare according to family recipe."
+      "Beat eggs and sugar together until thick and fluffy, then add scalded milk and almond extract.",
+      "Sift dry ingredients (flour, baking powder, and salt) together and fold all at once into the egg mixture.",
+      "Pour into a baking pan and bake at 350°F for 25 to 30 minutes."
     ],
     "notes": ""
   },
@@ -3447,27 +3447,25 @@ export const COOKBOOK_RECIPES = [
     "bookPage": "48",
     "originalPageImage": "/cookbook/page_72.webp",
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=72",
-    "story": "I LOVE these cookies. My mom usually only made them at Christmas, now I get her to make them other times too. I like to push the chocolate stars on the tops. My mom(Sally) said she remembers when she was a little girl that her Grandpa Strom would sometimes give the kids one of \"his\" Brach's chocolate stars from his \"hidden stock",
+    "story": "I LOVE these cookies. My mom usually only made them at Christmas, now I get her to make them other times too. I like to push the chocolate stars on the tops. My mom (Sally) said she remembers when she was a little girl that her Grandpa Strom would sometimes give the kids one of “his” Brach’s chocolate stars from his “hidden stock” as a special treat.",
     "ingredients": [
-      "as a special",
-      "treat.\"",
-      "13/4 c. flour",
-      "1 tsp. soda",
+      "1 3/4 cups flour",
+      "1 tsp. baking soda",
       "1/2 tsp. salt",
-      "1/2 c. shortening",
+      "1/2 cup shortening",
       "1/2 cup peanut butter",
-      "1/2 cup sugar",
-      "1/2 cup brown sugar(packed)",
+      "1/2 cup white sugar (plus extra for rolling)",
+      "1/2 cup brown sugar (packed)",
       "1 egg",
       "2 Tbls. milk",
       "1 tsp. vanilla",
-      "Brach's Chocolate Stars"
+      "Brach's Chocolate Stars or Hershey's Kisses"
     ],
     "instructions": [
-      "Mix dry ingredients. Cream shortening, peanut butter & sugars. Add eggs, milk & vanilla; beat well.",
-      ". Blend in dry ingredients thoroughly.",
-      "Shape in balls-roll in granulated sugar. Place on ungreased cookie sheets.",
-      "Bake at 375 for 5 minutes; remove from oven, put candy kiss on top of cookie. Press down so cookie cracks around edge. Return to oven for 2 to 5 minutes. *NOTE~THESE BURN EASY~SO WATCH THEM CAREFULLY!"
+      "Mix dry ingredients (flour, baking soda, and salt).",
+      "Cream shortening, peanut butter, white sugar, and brown sugar. Add egg, milk, and vanilla; beat well.",
+      "Blend in dry ingredients thoroughly. Shape into balls, roll in granulated sugar, and place on ungreased cookie sheets.",
+      "Bake at 375°F for 5 minutes; remove from oven and press a chocolate star or candy kiss onto the top of each cookie so the cookie cracks around the edge. Return to oven for 2 to 5 minutes. (Watch carefully—these burn easily!)"
     ],
     "notes": "Note: These burn easily, so watch them carefully!"
   },
@@ -3513,12 +3511,16 @@ export const COOKBOOK_RECIPES = [
     "story": "",
     "ingredients": [
       "2 cups sugar",
-      "1/2 c. margarine",
+      "1/2 cup margarine",
       "1/2 cup milk",
-      "3 c. quick oatmeal"
+      "3/4 cup peanut butter",
+      "3 cups quick oatmeal",
+      "1 tsp. vanilla (optional)"
     ],
     "instructions": [
-      "Mix all ingredients thoroughly and prepare according to family recipe."
+      "In a saucepan, combine sugar, margarine, and milk. Cook and stir over medium-low heat until mixture comes to a boil; boil for 1 1/2 minutes.",
+      "Remove from heat; stir in peanut butter and vanilla until smooth.",
+      "Add quick oatmeal and stir thoroughly (if mixture gets too dry, add a few drops of milk at a time). Drop by spoonfuls onto waxed paper to cool."
     ],
     "notes": ""
   },
@@ -3528,22 +3530,29 @@ export const COOKBOOK_RECIPES = [
     "sectionId": "desserts",
     "sectionName": "Desserts & Sweet Treats",
     "category": "Desserts & Sweet Treats",
-    "contributor": "Beverly Strom (Leo)",
+    "contributor": "Beverly Strom (Chuck)",
     "pageNumber": 73,
     "bookPage": "49",
     "originalPageImage": "/cookbook/page_73.webp",
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=73",
     "story": "",
     "ingredients": [
-      "1 tsp. vanilla(optional)",
-      "In a saucepan, combine sugar, margarine and milk. Cook &",
-      "stir over medium low heat until mixture comes to a boil."
+      "1 1/2 cups flour",
+      "1/2 tsp. salt",
+      "2 tsp. baking powder",
+      "1/2 cup peanut butter",
+      "1/2 cup butter, softened",
+      "1 1/2 cups brown sugar",
+      "2 eggs",
+      "1 tsp. vanilla",
+      "2/3 cup milk",
+      "Frosting: 2 Tbls. peanut butter, 2 Tbls. butter, 1 3/4 cups powdered sugar, 1 tsp. vanilla, 2 to 3 Tbls. milk"
     ],
     "instructions": [
-      "Boil for 1 1/2 minutes. Remove from heat; add peanut butter & stir until smooth then add oatmeal stir thoroughly, if mixture get to dry, add a few drops of milk at a time.",
-      "Drop by spoonfuls on wax paper to cool.",
-      "Marian Finnerty PEANUT BUTTER CAKE 1 1/2 c. flour 1/2 tsp. salt 2 tsp. baking powder 1/2 c. peanut butter 1/2 c. butter 1 1/2 c. brown sugar 2 eggs 1 tsp. vanilla 2/3 c. milk Bake at 350 for 35-40 minutes. Frost with following:",
-      "FROSTING: 2 Tbls. peanut butter, 2 Tbls. butter 1 3/4 c. powdered sugar, vanilla, 2-3 Tbls. milk Mix well and spread on cooled cake."
+      "Cream butter, peanut butter, and brown sugar together. Beat in eggs and vanilla.",
+      "Combine flour, baking powder, and salt; add alternately with 2/3 cup milk and mix until smooth.",
+      "Pour into a greased baking pan and bake at 350°F for 35 to 40 minutes.",
+      "Frosting: Beat 2 Tbls. peanut butter, 2 Tbls. butter, 1 3/4 cups powdered sugar, vanilla, and 2 to 3 Tbls. milk until smooth; spread over cooled cake."
     ],
     "notes": ""
   },
@@ -3560,7 +3569,7 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=73",
     "story": "",
     "ingredients": [
-      "1c. flour",
+      "1 c. flour",
       "1/4 c. brown sugar",
       "1 stick oleo",
       "1/2 c. walnut"
@@ -3583,17 +3592,17 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=74",
     "story": "This recipe is from my Aunt Marian(Finnerty). She brought this cake to a family gathering, and it was so good, I asked her for the recipe. It's very moist and flavorful. I've had many ask me for the recipe when I've taken this cake to potlucks or wherever. It's really tasty!",
     "ingredients": [
-      "PUT IN PAN & BRING TO BOIL: 1 cup butter, 1 cup water,",
-      "4 Tbls. peanut butter.",
-      "ADD: 1 1/2-2 cups sugar - 2 cups flour - 1/2 tsp. salt (optional)",
-      "1 tsp. baking soda",
-      "will be thick",
-      "BEAT IN: 2 eggs",
-      "1/2 c. sour cream"
+      "Boil in saucepan: 1 cup butter, 1 cup water, 4 Tbls. peanut butter",
+      "Dry Mix: 1 1/2 to 2 cups sugar, 2 cups flour, 1/2 tsp. salt (optional), 1 tsp. baking soda",
+      "Beat In: 2 eggs, 1/2 cup sour cream",
+      "Frosting: 1/2 cup butter, 4 Tbls. peanut butter, 6 Tbls. milk, 1 (1 lb.) box powdered sugar (3 3/4 to 4 cups), 1 tsp. vanilla"
     ],
     "instructions": [
-      "Pour into greased 10x15 inch pan(jelly roll type pan) and bake at 350 for 20 minutes. Frost while still warm from oven with following...",
-      "FROSTING: 1/2 cup butter - 4 Tbls. peanut butter 6 Tbls. milk - Put in pan and bring to boil; remove Remove from heat; add 1 (1 lb.) box powdered sugar, 1 tsp. vanilla 4C Beat together until creamy"
+      "In a saucepan, bring 1 cup butter, 1 cup water, and 4 Tbls. peanut butter to a boil.",
+      "Add sugar, flour, salt, and baking soda; stir well (batter will be thick).",
+      "Beat in 2 eggs and 1/2 cup sour cream until smooth.",
+      "Pour into a greased 10x15-inch jelly roll pan and bake at 350°F for 20 minutes.",
+      "Frosting: In a saucepan, bring 1/2 cup butter, 4 Tbls. peanut butter, and 6 Tbls. milk to a boil. Remove from heat, beat in 1 box powdered sugar and 1 tsp. vanilla until creamy, and frost cake while still warm from the oven."
     ],
     "notes": ""
   },
@@ -3610,10 +3619,10 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=74",
     "story": "",
     "ingredients": [
-      "1 c. brown sugar",
-      "1 c. white sugar",
-      "1 cup butter(soft)",
-      "1 cup oil",
+      "1 cup brown sugar",
+      "1 cup white sugar",
+      "1 cup butter, softened",
+      "1 cup vegetable oil",
       "1 egg",
       "1 tsp. coconut flavoring",
       "1/2 tsp. butter flavoring",
@@ -3621,12 +3630,12 @@ export const COOKBOOK_RECIPES = [
       "1 tsp. salt",
       "1 tsp. baking soda",
       "1 tsp. cream of tartar",
-      "1 c. coconut",
-      "1 c. oatmeal",
-      "1 c. Rice Krispies",
-      "I c. chocolate chips",
-      "1 c. nuts",
-      "3 1/2 c. flour"
+      "1 cup shredded coconut",
+      "1 cup oatmeal",
+      "1 cup Rice Krispies",
+      "1 cup chocolate chips",
+      "1 cup chopped pecans or walnuts",
+      "3 1/2 cups flour"
     ],
     "instructions": [
       "Drop by spoonful on greased cookie sheet. Bake at 350 for 10 minutes."
@@ -3672,17 +3681,19 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=75",
     "story": "",
     "ingredients": [
-      "2 c. flour",
-      "2 C. sugar",
+      "2 cups flour",
+      "2 cups sugar",
       "2 eggs",
-      "2 tsp. soda",
-      "1 can pineapple & juice",
-      "I c. coconut",
-      "1 c. nuts"
+      "2 tsp. baking soda",
+      "1 (20 oz.) can crushed pineapple with juice (undrained)",
+      "1 cup shredded coconut",
+      "1 cup chopped nuts",
+      "Cream Cheese Frosting: 1/2 stick margarine, 8 oz. cream cheese, 1 3/4 cups powdered sugar, 1 tsp. vanilla"
     ],
     "instructions": [
-      "Mix & bake at 350 for 40-45 minutes. Frost with following:",
-      "FROSTING: 1/2 stick margarine 8 oz. cream cheese"
+      "Mix flour, sugar, eggs, baking soda, undrained pineapple, coconut, and nuts together in a bowl.",
+      "Pour into a greased 9x13-inch baking pan and bake at 350°F for 40 to 45 minutes.",
+      "Frosting: Beat softened margarine, cream cheese, powdered sugar, and vanilla until smooth; spread over cooled cake."
     ],
     "notes": ""
   },
@@ -3699,12 +3710,10 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=75",
     "story": "",
     "ingredients": [
-      "Beverly Strom(Chuck)",
-      "POWDERED SUGAR COOKIES",
-      "1 c. shortening",
-      "1 c. powdered sugar",
+      "1 cup shortening",
+      "1 cup powdered sugar",
       "1 egg",
-      "2 c. flour",
+      "2 cups flour",
       "1 tsp. cream of tartar",
       "1 tsp. baking soda",
       "1 tsp. vanilla"
@@ -3757,7 +3766,7 @@ export const COOKBOOK_RECIPES = [
     ],
     "instructions": [
       "Mix together flour, oats & sugar in a large bowl. Stir in margarine with fork to make a crumbly mixture; set aside.",
-      "EILLING: 4 c. rhubarb(heaping) 3/4 c. sugar 1/4 c. flour 1/2 tsp. cinnamon 1/2 c. water Combine rhubarb, sugar,flour, cinnamon & water in 9x11 pan. Stir to mix well. Sprinkle topping evenly over filling. Bake uncovered at 350 for 45 minutes."
+      "FILLING: 4 c. rhubarb(heaping) 3/4 c. sugar 1/4 c. flour 1/2 tsp. cinnamon 1/2 c. water Combine rhubarb, sugar,flour, cinnamon & water in 9x11 pan. Stir to mix well. Sprinkle topping evenly over filling. Bake uncovered at 350 for 45 minutes."
     ],
     "notes": ""
   },
@@ -3775,7 +3784,7 @@ export const COOKBOOK_RECIPES = [
     "story": "",
     "ingredients": [
       "1 stick margarine",
-      "3 Tbls.. cocoa",
+      "3 Tbls. cocoa",
       "1/2 c. milk",
       "2 c. sugar"
     ],
@@ -3825,29 +3834,24 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=77",
     "story": "A recipe from Good Housekeeping",
     "ingredients": [
-      "2 c. unsifted flour",
+      "2 cups unsifted flour",
       "2 tsp. baking soda",
       "2 tsp. cinnamon",
       "1/2 tsp. salt",
       "3 eggs",
-      "1 1/2 c. sugar",
-      "3/4 c. Miracle Whip",
-      "1 c. raisins(opt.)",
-      "1(8 oz.) can crushed pineapple, 1 c. chopped nuts(opt.)",
-      "undrained",
-      "2 c. coarsely shredded carrots(about 6 carrots)",
-      "Grease & flour 9x13 pan. Stir together first 4 ingredients;",
-      "set aside. In large bowl, beat next 4 ingredients. Beat in",
-      "flour mixture. With spoon, stir in carrots, nuts, raisins. Pour",
-      "into cake pan & bake at 350 for 30 to 35 minutes.",
-      "FROSTING(I always double this recipe):",
-      "1(3 oz.) pkg cream cheese(softened)",
-      "1 Tbls. butter, soft",
-      "1 tsp. vanilla",
-      "2 cups powdered sugar"
+      "1 1/2 cups sugar",
+      "3/4 cup Miracle Whip Salad Dressing",
+      "1 (8 oz.) can crushed pineapple, undrained",
+      "2 cups coarsely shredded carrots (about 6 carrots)",
+      "1 cup raisins (optional)",
+      "1 cup chopped nuts (optional)",
+      "Cream Cheese Frosting (double for 9x13 cake): 1 (3 oz.) pkg. softened cream cheese, 1 Tbls. softened butter, 1 tsp. vanilla, 2 cups powdered sugar, splash of milk"
     ],
     "instructions": [
-      "Add milk, if necessary, to make spreading consistency."
+      "Grease and flour a 9x13-inch baking pan. Stir together flour, baking soda, cinnamon, and salt; set aside.",
+      "In a large bowl, beat eggs, sugar, Miracle Whip, and undrained pineapple. Beat in the dry flour mixture.",
+      "With a spoon, fold in shredded carrots, nuts, and raisins. Pour into prepared pan and bake at 350°F for 30 to 35 minutes.",
+      "Frosting: Beat softened cream cheese, butter, vanilla, and powdered sugar, adding a few drops of milk if needed for spreading consistency."
     ],
     "notes": ""
   },
@@ -3985,8 +3989,8 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=80",
     "story": "",
     "ingredients": [
-      "1.Ib. Nestles Quick(dry powder type)",
-      "1lb. powdered sugar",
+      "1 lb. Nestles Quick(dry powder type)",
+      "1 lb. powdered sugar",
       "1(11 oz.) jar non-dairy creamer",
       "1(8 qt. box) powdered milk"
     ],
@@ -4106,7 +4110,7 @@ export const COOKBOOK_RECIPES = [
       "1 cup flour",
       "1/2 cup salt",
       "2 tsp. cream of tartar 1 cup water",
-      "1 Tbls.. cooking oil",
+      "1 Tbls. cooking oil",
       "few drops or food color & flavoring, if desired"
     ],
     "instructions": [
@@ -4128,7 +4132,7 @@ export const COOKBOOK_RECIPES = [
     "story": "",
     "ingredients": [
       "1 lb. hamburger",
-      "1lb. hot or mild sausage",
+      "1 lb. hot or mild sausage",
       "dash of oregano",
       "dash of garlic powder",
       "1(1 lb.) pkg. Velveeta Cheese"
@@ -4198,14 +4202,14 @@ export const COOKBOOK_RECIPES = [
     "pdfUrl": "/strom_family_cookbook_cleaned.pdf#page=83",
     "story": "",
     "ingredients": [
-      "Slice and freeze fresh fruit: Banana, strawberries, peaches, pear,",
-      "blueberries, apples or whatever you like or have on hand.",
-      "Whiz in blender with some juice of choice and some real vanilla extract.",
-      "If you like peanut butter, it might be good in it, too. Such an easy",
-      "breakfast or snack any time of day!"
+      "Sliced frozen fresh fruit (bananas, strawberries, peaches, pears, blueberries, or apples)",
+      "Fruit juice of your choice",
+      "Splash of real vanilla extract",
+      "Optional: Spoonful of peanut butter"
     ],
     "instructions": [
-      "Mix all ingredients thoroughly and prepare according to family recipe."
+      "Slice and freeze fresh fruit ahead of time.",
+      "Blend frozen fruit in a blender with your favorite fruit juice, a splash of real vanilla extract, and optional peanut butter until thick and smooth."
     ],
     "notes": ""
   },
@@ -4258,7 +4262,6 @@ export const COOKBOOK_RECIPES = [
   }
 ];
 
-// Helper: search across recipes and memories
 export function searchCookbook(query = '', sectionId = 'all') {
   const q = query.trim().toLowerCase();
   
