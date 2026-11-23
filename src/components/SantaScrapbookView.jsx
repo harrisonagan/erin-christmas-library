@@ -15,9 +15,9 @@ export const SANTA_SCRAPBOOK_PAGES = [
   {
     year: 2012,
     title: "Rowan's First Santa Visit",
-    subtitle: '8 Months Old',
+    subtitle: '4 Months Old',
     location: 'Rivertown Mall • Grand Rapids, MI',
-    handwrittenNote: 'Rowan 2012 — 8 months old • Rivertown Mall, Grand Rapids',
+    handwrittenNote: 'Rowan — 4 months old • Rivertown Mall, Grand Rapids',
     theme: 'crimson',
     sticker: "🎅 Rowan's First Christmas",
     mainPhoto: assetUrl('santa/santa-2012.webp?v=2'),
@@ -29,7 +29,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     title: 'Sitting Up with Santa',
     subtitle: 'Rowan • 1 Year Old',
     location: null,
-    handwrittenNote: 'Sweet little spectacles & snowflake frame • 2013',
+    handwrittenNote: 'Sweet little spectacles & snowflake frame',
     theme: 'evergreen',
     sticker: '❄️ Snowflake Memories',
     mainPhoto: assetUrl('santa/santa-2013.webp?v=2'),
@@ -41,7 +41,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     title: 'Christmas Eve Excitement',
     subtitle: 'Rowan • 2 Years Old',
     location: null,
-    handwrittenNote: 'Visiting Santa & Mrs. Claus • 2014',
+    handwrittenNote: 'Rowan wanted his mom and Dad to join him with Santa',
     theme: 'gold',
     sticker: '🎄 Holiday Magic',
     mainPhoto: assetUrl('santa/santa-2014.webp?v=2'),
@@ -53,7 +53,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     title: "Elouise's First Santa Photo",
     subtitle: 'Rowan (3) & Baby Elouise',
     location: null,
-    handwrittenNote: 'Big brother Rowan with baby sister Elouise in her reindeer dress • 2015',
+    handwrittenNote: "Big brother Rowan with little sister Elouise's first Christmas",
     theme: 'crimson',
     sticker: "🦌 Elouise's First Christmas",
     mainPhoto: assetUrl('santa/santa-2015.webp?v=2'),
@@ -65,7 +65,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     title: 'Santa in Lexington',
     subtitle: 'Rowan (4), Elouise (1) & Family',
     location: 'Lexington',
-    handwrittenNote: '2016 Santa in Lexington • Gathering with Santa around the grand Christmas tree',
+    handwrittenNote: 'Santa in Lexington • Gathering with Santa around the grand Christmas tree',
     theme: 'gold',
     sticker: '🎅 Santa in Lexington',
     mainPhoto: assetUrl('santa/santa-2016.webp?v=1'),
@@ -77,7 +77,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     title: 'Stripes & Smiles at Sullivan’s',
     subtitle: 'Rowan (5) & Elouise (2)',
     location: "Sullivan's Hardware",
-    handwrittenNote: 'Rowan - 5 • Elouise - 2 • Sullivan Hardware - 2017',
+    handwrittenNote: 'Rowan - 5 • Elouise - 2 • Sullivan Hardware',
     theme: 'evergreen',
     sticker: '🍬 Candy Cane Stripes',
     mainPhoto: assetUrl('santa/santa-2017.webp?v=2'),
@@ -85,7 +85,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     bonusPhotos: [
       {
         src: assetUrl('santa/santa-2017-bonus.webp?v=2'),
-        caption: '2017 Bonus Holiday Memory ✨',
+        caption: 'Elouise drew a picture of Santa and showed Santa',
         tilt: '-2.5deg',
       },
     ],
@@ -95,7 +95,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     title: 'Big Grins with Santa Claus',
     subtitle: 'Rowan (6), Elouise (3) & Baby Solomon',
     location: "Sullivan's Hardware",
-    handwrittenNote: "Sullivan's Hardware - 2018 • Solomon's First Christmas!",
+    handwrittenNote: "Sullivan's Hardware • Solomon's First Christmas!",
     theme: 'gold',
     sticker: "🎅 Solomon's First Christmas",
     mainPhoto: assetUrl('santa/santa-2018.webp?v=2'),
@@ -103,12 +103,12 @@ export const SANTA_SCRAPBOOK_PAGES = [
     bonusPhotos: [
       {
         src: assetUrl('santa/santa-2018-bonus-1.webp?v=2'),
-        caption: '2018 Bonus — Holiday Crew Together 🎄',
+        caption: "Sullivan's with the Cousins",
         tilt: '-2deg',
       },
       {
         src: assetUrl('santa/santa-2018-bonus-2.webp?v=2'),
-        caption: "2018 Bonus — Solomon's First Visit with Santa 🎅",
+        caption: "Solomon's First Visit with Santa 🎅",
         tilt: '2.5deg',
       },
     ],
@@ -118,7 +118,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     title: "“Chillin' With My Snowmies”",
     subtitle: 'Rowan (7), Elouise (4) & Solomon (1)',
     location: "Sullivan's Hardware",
-    handwrittenNote: "Sullivan's - 2019 • Matching 'Chillin' With My Snowmies' shirts!",
+    handwrittenNote: "Sullivan's • Matching 'Chillin' With My Snowmies' shirts!",
     theme: 'crimson',
     sticker: null,
     mainPhoto: assetUrl('santa/santa-2019.webp?v=2'),
@@ -128,9 +128,9 @@ export const SANTA_SCRAPBOOK_PAGES = [
   {
     year: 2020,
     title: 'Cozy Christmas Pajamas at Home',
-    subtitle: 'No Santa 2020 — COVID Year',
+    subtitle: 'No Santa — COVID Year',
     location: 'Home Sweet Home',
-    handwrittenNote: 'No Santa 2020 - covid year • Rowan, Solomon & Elouise in matching reindeer PJs',
+    handwrittenNote: 'No Santa - COVID year • Rowan, Solomon & Elouise in matching reindeer PJs',
     theme: 'evergreen',
     sticker: null,
     mainPhoto: assetUrl('santa/santa-2020.webp?v=2'),
@@ -140,11 +140,11 @@ export const SANTA_SCRAPBOOK_PAGES = [
   {
     year: 2021,
     title: 'Buffalo Plaid Robes with the Cousins',
-    subtitle: '2021 with Cousins',
+    subtitle: 'With Cousins',
     location: "Sullivan's Hardware",
-    handwrittenNote: "Sullivan's Hardware - 2021 with cousins • Matching red & black plaid robes!",
+    handwrittenNote: "Sullivan's Hardware with cousins • Matching red & black plaid robes!",
     theme: 'crimson',
-    sticker: '🧣 Cousin Crew 2021',
+    sticker: '🧣 Cousin Crew',
     mainPhoto: assetUrl('santa/santa-2021.webp?v=2'),
     orientation: 'landscape',
     bonusPhotos: [],
@@ -154,7 +154,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     title: 'Candy Canes & Sparkle Shoes',
     subtitle: 'Rowan (10), Elouise (7) & Solomon (4)',
     location: "Sullivan's Hardware",
-    handwrittenNote: 'Solomon holding two candy canes, Elouise & Rowan smiling big • 2022',
+    handwrittenNote: "Sullivan's North Pole",
     theme: 'gold',
     sticker: null,
     mainPhoto: assetUrl('santa/santa-2022.webp?v=2'),
@@ -166,7 +166,7 @@ export const SANTA_SCRAPBOOK_PAGES = [
     title: 'Santa Hats & Holiday Adventures',
     subtitle: 'Row (11), Lulu (8) & Sol (5)',
     location: "Sullivan's Hardware & Michigan",
-    handwrittenNote: "Sullivan's 2023 • Row - 11 • Lulu - 8 • Sol - 5",
+    handwrittenNote: "Sullivan's • Row - 11 • Lulu - 8 • Sol - 5",
     theme: 'crimson',
     sticker: null,
     mainPhoto: assetUrl('santa/santa-2023.webp?v=2'),
@@ -174,12 +174,12 @@ export const SANTA_SCRAPBOOK_PAGES = [
     bonusPhotos: [
       {
         src: assetUrl('santa/santa-2023-bonus-1.webp?v=2'),
-        caption: '2023 Bonus — Festive Family & Friends Gathering 🎉',
+        caption: "Sullivan's with the Cousins",
         tilt: '-2deg',
       },
       {
         src: assetUrl('santa/santa-2023-bonus-mi.webp?v=2'),
-        caption: '2023 Bonus — Great Wolf Lodge, Michigan 🐺❄️',
+        caption: 'Great Wolf Lodge Traverse City Michigan with the Cousins',
         tilt: '2deg',
       },
     ],
@@ -187,9 +187,9 @@ export const SANTA_SCRAPBOOK_PAGES = [
   {
     year: 2024,
     title: 'Holiday Pajamas at Sullivan’s',
-    subtitle: 'Visits with Santa • 2024',
+    subtitle: 'Visits with Santa',
     location: "Sullivan's Hardware",
-    handwrittenNote: "Sullivan's - 2024 • Maeve's First Christmas!",
+    handwrittenNote: "Maeve's First Christmas",
     theme: 'evergreen',
     sticker: "🎀 Maeve's First Christmas",
     mainPhoto: assetUrl('santa/santa-2024.webp?v=2'),
@@ -198,10 +198,10 @@ export const SANTA_SCRAPBOOK_PAGES = [
   },
   {
     year: 2025,
-    title: 'Christmas 2025 with Santa',
+    title: 'Christmas with Santa',
     subtitle: 'The Tradition Continues',
     location: "Sullivan's Hardware",
-    handwrittenNote: "Sullivan's Hardware - 2025 • All dressed up in holiday plaids & velvet with Santa",
+    handwrittenNote: "Sullivan's Hardware • All dressed up in holiday plaids & velvet with Santa",
     theme: 'gold',
     sticker: null,
     mainPhoto: assetUrl('santa/santa-2025.webp?v=2'),
@@ -309,7 +309,7 @@ function BonusPolaroidCard({ bonus, year, onZoom }) {
         onZoom({
           src: bonus.src,
           year,
-          title: `${year} Bonus Snapshot`,
+          title: `${year} Snapshot`,
           caption: bonus.caption,
           theme: 'gold',
         })
@@ -320,7 +320,7 @@ function BonusPolaroidCard({ bonus, year, onZoom }) {
       {/* Festive Red & Gold Washi Tape at Top */}
       <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-6 bg-gradient-to-r from-red-800/85 via-amber-500/80 to-red-800/85 rounded-sm shadow-sm border border-amber-200/40 rotate-[-1.5deg] flex items-center justify-center pointer-events-none">
         <span className="text-[9px] font-mono uppercase tracking-widest text-amber-100 font-bold">
-          ★ {year} BONUS ★
+          ★ SNAPSHOT ★
         </span>
       </div>
 
@@ -406,7 +406,7 @@ function ScrapbookSpread({ page, onZoom }) {
           <div className="lg:col-span-5 flex flex-col items-center justify-center gap-7 pt-4 lg:pt-0">
             <div className="text-center">
               <span className="px-3.5 py-1 rounded-full bg-amber-950/90 border border-amber-500/40 text-xs font-serif font-semibold text-amber-200 shadow">
-                📸 {page.year} Bonus Scrapbook Snapshots ({page.bonusPhotos.length})
+                📸 Scrapbook Snapshots ({page.bonusPhotos.length})
               </span>
             </div>
             <div className="flex flex-col sm:flex-row lg:flex-col gap-7 w-full items-center justify-center">
