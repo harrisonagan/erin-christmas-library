@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const BASE_URL = import.meta.env.BASE_URL || '/';
@@ -344,18 +344,28 @@ function BonusPolaroidCard({ bonus, year, onZoom }) {
   );
 }
 
-function ScrapbookSpread({ page, onZoom }) {
-  const style = THEME_STYLES[page.theme] || THEME_STYLES.crimson;
+function ScrapbookSpread({ page, pageIndex, totalPages, onZoom }) {
   const hasBonus = page.bonusPhotos && page.bonusPhotos.length > 0;
 
   return (
-    <div className="relative bg-gradient-to-br from-[#231710] via-[#1a110b] to-[#120b07] border-2 border-amber-900/60 rounded-3xl p-5 sm:p-8 md:p-10 shadow-[0_25px_70px_rgba(0,0,0,0.9)] overflow-hidden">
+    <div className="relative bg-gradient-to-br from-[#271911] via-[#1d120c] to-[#150c08] border border-amber-800/70 rounded-r-2xl rounded-l-md p-5 sm:p-8 md:p-11 shadow-[inset_24px_0_45px_rgba(0,0,0,0.75),inset_0_0_30px_rgba(212,175,55,0.06)] overflow-hidden">
+      {/* Realistic Left Spine Gutter Crease & Stitched Gold Thread */}
+      <div className="absolute top-0 bottom-0 left-0 w-7 sm:w-10 bg-gradient-to-r from-black/80 via-black/35 to-transparent pointer-events-none z-10" />
+      <div className="absolute top-3 bottom-3 left-2.5 sm:left-3.5 w-px border-l border-dashed border-[#d4af37]/35 pointer-events-none z-10" />
+
+      {/* Crimson Silk Bookmark Ribbon Hanging from Top Spine */}
+      <div className="absolute -top-1 left-5 sm:left-7 w-4 sm:w-5 h-12 sm:h-14 bg-gradient-to-b from-[#9e1420] via-[#7a0e18] to-[#570810] shadow-[2px_4px_10px_rgba(0,0,0,0.8)] border-x border-[#e6c469]/40 pointer-events-none z-20 [clip-path:polygon(0_0,100%_0,100%_100%,50%_82%,0_100%)]" />
+
       {/* Subtle Scrapbook Paper Corner Flourishes */}
       <div className="absolute top-0 left-0 w-32 h-32 bg-radial from-amber-500/10 to-transparent pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-40 h-40 bg-radial from-red-600/10 to-transparent pointer-events-none" />
 
+      {/* Top Corner Ornate Gold Filigree Accents */}
+      <div className="absolute top-3 right-3 w-7 h-7 border-t-2 border-r-2 border-[#d4af37]/45 rounded-tr-lg pointer-events-none" />
+      <div className="absolute bottom-3 right-3 w-7 h-7 border-b-2 border-r-2 border-[#d4af37]/45 rounded-br-lg pointer-events-none" />
+
       {/* Spread Header Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-6 mb-7 border-b border-amber-900/50">
+      <div className="pl-3 sm:pl-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-6 mb-7 border-b border-amber-900/50">
         <div>
           {(page.location || page.sticker) && (
             <div className="flex flex-wrap items-center gap-2 mb-2">
@@ -394,7 +404,7 @@ function ScrapbookSpread({ page, onZoom }) {
 
       {/* Main Content Layout: Single Centered Heirloom Frame OR 2-Column Spread with Bonus Polaroids */}
       <div
-        className={`grid grid-cols-1 ${
+        className={`pl-3 sm:pl-5 grid grid-cols-1 ${
           hasBonus ? 'lg:grid-cols-12 gap-8 items-center' : 'place-items-center'
         }`}
       >
@@ -422,6 +432,16 @@ function ScrapbookSpread({ page, onZoom }) {
           </div>
         )}
       </div>
+
+      {/* Bottom Book Page Footer Number */}
+      {typeof pageIndex === 'number' && (
+        <div className="mt-7 pt-3 border-t border-amber-900/30 flex items-center justify-between text-[11px] font-serif italic text-amber-200/60 pl-3 sm:pl-5">
+          <span>Agan Family Holiday Scrapbook</span>
+          <span className="font-mono not-italic text-amber-300/75">
+            — Page {pageIndex + 1} of {totalPages} —
+          </span>
+        </div>
+      )}
     </div>
   );
 }
@@ -429,9 +449,79 @@ function ScrapbookSpread({ page, onZoom }) {
 export default function SantaScrapbookView({ onClose }) {
   const [viewStyle, setViewStyle] = useState('flipbook'); // 'flipbook' | 'all'
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [turnDirection, setTurnDirection] = useState(1); // 1 = turning forward (right-to-left), -1 = turning back (left-to-right)
+  const [isRiffling, setIsRiffling] = useState(false);
+  const [riffleTargetYear, setRiffleTargetYear] = useState(null);
+  const [flipTick, setFlipTick] = useState(0);
   const [zoomedItem, setZoomedItem] = useState(null);
 
+  const riffleTimerRef = useRef(null);
   const currentPage = SANTA_SCRAPBOOK_PAGES[currentIndex];
+  const totalPages = SANTA_SCRAPBOOK_PAGES.length;
+
+  // Clean up any active riffle timer on unmount
+  useEffect(() => {
+    return () => {
+      if (riffleTimerRef.current) clearInterval(riffleTimerRef.current);
+    };
+  }, []);
+
+  // Turn to a specific page index:
+  // - Adjacent page (distance === 1): single smooth 3D page turn
+  // - Multi-page jump (distance > 1): rapid sequential page-flipping riffle animation through intermediate pages!
+  const navigateToPage = (targetIdx) => {
+    if (targetIdx < 0 || targetIdx >= totalPages) return;
+    if (riffleTimerRef.current) {
+      clearInterval(riffleTimerRef.current);
+      riffleTimerRef.current = null;
+    }
+
+    const diff = targetIdx - currentIndex;
+    if (diff === 0) return;
+
+    const dir = diff > 0 ? 1 : -1;
+    setTurnDirection(dir);
+
+    if (Math.abs(diff) === 1) {
+      setIsRiffling(false);
+      setRiffleTargetYear(null);
+      setFlipTick((t) => t + 1);
+      setCurrentIndex(targetIdx);
+      return;
+    }
+
+    // Multi-page rapid flip / riffle animation
+    setIsRiffling(true);
+    setRiffleTargetYear(SANTA_SCRAPBOOK_PAGES[targetIdx].year);
+    let stepIdx = currentIndex;
+    const stepMs = Math.max(70, Math.min(115, Math.round(680 / Math.abs(diff))));
+
+    // Immediately advance the first page
+    stepIdx += dir;
+    setFlipTick((t) => t + 1);
+    setCurrentIndex(stepIdx);
+
+    riffleTimerRef.current = setInterval(() => {
+      if (stepIdx === targetIdx) {
+        clearInterval(riffleTimerRef.current);
+        riffleTimerRef.current = null;
+        setIsRiffling(false);
+        setRiffleTargetYear(null);
+        return;
+      }
+      stepIdx += dir;
+      setFlipTick((t) => t + 1);
+      setCurrentIndex(stepIdx);
+      if (stepIdx === targetIdx) {
+        clearInterval(riffleTimerRef.current);
+        riffleTimerRef.current = null;
+        setTimeout(() => {
+          setIsRiffling(false);
+          setRiffleTargetYear(null);
+        }, 160);
+      }
+    }, stepMs);
+  };
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -442,14 +532,52 @@ export default function SantaScrapbookView({ onClose }) {
       if (e.key === 'Escape') {
         onClose?.();
       } else if (viewStyle === 'flipbook' && e.key === 'ArrowRight') {
-        setCurrentIndex((prev) => Math.min(SANTA_SCRAPBOOK_PAGES.length - 1, prev + 1));
+        navigateToPage(Math.min(totalPages - 1, currentIndex + 1));
       } else if (viewStyle === 'flipbook' && e.key === 'ArrowLeft') {
-        setCurrentIndex((prev) => Math.max(0, prev - 1));
+        navigateToPage(Math.max(0, currentIndex - 1));
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [viewStyle, zoomedItem, onClose]);
+  }, [viewStyle, zoomedItem, currentIndex, totalPages, onClose]);
+
+  // 3D Page Turn Variants (hinged along the left book spine)
+  const pageTurnVariants = {
+    enter: ( { dir, fast } ) => ({
+      rotateY: dir > 0 ? 78 : -78,
+      x: dir > 0 ? 35 : -35,
+      opacity: 0.15,
+      scale: 0.985,
+      transition: {
+        duration: fast ? 0.09 : 0.42,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    }),
+    center: ( { fast } ) => ({
+      rotateY: 0,
+      x: 0,
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: fast ? 0.09 : 0.42,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    }),
+    exit: ( { dir, fast } ) => ({
+      rotateY: dir > 0 ? -78 : 78,
+      x: dir > 0 ? -35 : 35,
+      opacity: 0.1,
+      scale: 0.985,
+      transition: {
+        duration: fast ? 0.08 : 0.36,
+        ease: [0.4, 0, 0.2, 1],
+      },
+    }),
+  };
+
+  // Stacked page thickness on left (already turned) and right (remaining)
+  const leftStackCount = Math.min(5, currentIndex);
+  const rightStackCount = Math.min(5, totalPages - 1 - currentIndex);
 
   return (
     <motion.div
@@ -459,7 +587,7 @@ export default function SantaScrapbookView({ onClose }) {
       className="fixed inset-0 z-50 bg-[#0d0705] text-amber-50 overflow-y-auto flex flex-col"
     >
       {/* Top Sticky Scrapbook Navigation Header */}
-      <header className="sticky top-0 z-30 bg-[#140b07]/95 backdrop-blur-md border-b border-amber-900/60 px-4 sm:px-8 py-3.5 shadow-lg print:hidden">
+      <header className="sticky top-0 z-30 bg-[#140b07]/95 backdrop-blur-md border-b border-amber-900/60 px-4 sm:px-8 py-3 shadow-lg print:hidden">
         <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <button
@@ -478,7 +606,7 @@ export default function SantaScrapbookView({ onClose }) {
           </div>
 
           <div className="flex items-center gap-2.5">
-            {/* Switch between Page-by-Page Flipbook & Full Scrollable Scrapbook */}
+            {/* Switch between Animated Book View & Full Scrollable Scrapbook */}
             <div className="flex bg-stone-950 p-1 rounded-xl border border-stone-800 text-xs font-sans">
               <button
                 onClick={() => setViewStyle('flipbook')}
@@ -488,7 +616,7 @@ export default function SantaScrapbookView({ onClose }) {
                     : 'text-stone-400 hover:text-stone-200'
                 }`}
               >
-                <span>📖</span> <span>Flipbook</span>
+                <span>📖</span> <span>Animated Book</span>
               </button>
               <button
                 onClick={() => setViewStyle('all')}
@@ -498,7 +626,7 @@ export default function SantaScrapbookView({ onClose }) {
                     : 'text-stone-400 hover:text-stone-200'
                 }`}
               >
-                <span>🖼️</span> <span>All Years ({SANTA_SCRAPBOOK_PAGES.length})</span>
+                <span>🖼️</span> <span>All Years ({totalPages})</span>
               </button>
             </div>
 
@@ -522,87 +650,154 @@ export default function SantaScrapbookView({ onClose }) {
             </button>
           </div>
         </div>
-
-        {/* Interactive Year Timeline Ribbon */}
-        <div className="max-w-6xl mx-auto mt-3 pt-2.5 border-t border-stone-800/80 flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
-          {SANTA_SCRAPBOOK_PAGES.map((p, idx) => {
-            const isActive = viewStyle === 'flipbook' && idx === currentIndex;
-            const hasBonus = p.bonusPhotos && p.bonusPhotos.length > 0;
-            return (
-              <button
-                key={p.year}
-                onClick={() => {
-                  if (viewStyle === 'flipbook') {
-                    setCurrentIndex(idx);
-                  } else {
-                    const el = document.getElementById(`santa-year-${p.year}`);
-                    el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                  }
-                }}
-                className={`px-3 py-1 rounded-full text-xs font-serif font-bold transition flex items-center gap-1 flex-shrink-0 border ${
-                  isActive
-                    ? 'bg-gradient-to-r from-red-800 via-amber-700 to-red-800 border-[#f3d47c] text-white shadow'
-                    : 'bg-stone-900/90 border-stone-800 text-amber-200/75 hover:text-amber-100 hover:border-amber-700/60'
-                }`}
-              >
-                <span>{p.year}</span>
-                {hasBonus && <span className="text-[10px] text-amber-300">★</span>}
-              </button>
-            );
-          })}
-        </div>
       </header>
 
       {/* Main Scrapbook Stage */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-8 py-6 sm:py-10">
+      <main className="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-8 py-5 sm:py-8">
         {viewStyle === 'flipbook' ? (
-          <div>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentPage.year}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.25 }}
-              >
-                <ScrapbookSpread page={currentPage} onZoom={setZoomedItem} />
-              </motion.div>
-            </AnimatePresence>
+          <div className="relative">
+            {/* Physical Book Top Year Index Tabs */}
+            <div className="max-w-5xl mx-auto px-2 sm:px-6 flex items-end gap-1 sm:gap-1.5 overflow-x-auto no-scrollbar pt-1">
+              {SANTA_SCRAPBOOK_PAGES.map((p, idx) => {
+                const isActive = idx === currentIndex;
+                const isTarget = riffleTargetYear === p.year;
+                const hasBonus = p.bonusPhotos && p.bonusPhotos.length > 0;
+                return (
+                  <button
+                    key={p.year}
+                    onClick={() => navigateToPage(idx)}
+                    className={`relative px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-t-xl text-xs font-serif font-bold transition-all flex items-center gap-1 flex-shrink-0 border-t-2 border-x-2 ${
+                      isActive
+                        ? 'bg-gradient-to-b from-[#8b151e] via-[#680e15] to-[#271911] border-[#f3d47c] text-[#fff3c4] shadow-[0_-4px_14px_rgba(212,175,55,0.35)] -mb-0.5 pb-2.5 z-20 scale-105'
+                        : isTarget
+                        ? 'bg-amber-800/80 border-amber-300 text-white z-10'
+                        : 'bg-[#1b110c] hover:bg-[#2a1a12] border-amber-900/60 text-amber-200/70 hover:text-amber-100'
+                    }`}
+                    title={`Flip to ${p.year}`}
+                  >
+                    <span>{p.year}</span>
+                    {hasBonus && <span className="text-[10px] text-amber-300">★</span>}
+                  </button>
+                );
+              })}
+            </div>
 
-            {/* Bottom Page Turn Controls */}
-            <div className="mt-7 flex items-center justify-between gap-4 bg-[#180f0a] border border-amber-900/50 rounded-2xl p-4 shadow-lg">
+            {/* 3D Hardcover Leather Book Chassis */}
+            <div className="relative max-w-5xl mx-auto p-2.5 sm:p-4 md:p-5 rounded-3xl bg-gradient-to-br from-[#540c12] via-[#38070b] to-[#210306] border-2 border-[#d4af37]/75 shadow-[0_30px_80px_rgba(0,0,0,0.95),inset_0_2px_6px_rgba(255,255,255,0.2)]">
+              {/* Outer Gold-Tooled Leather Hardcover Trim */}
+              <div className="relative rounded-2xl border border-[#d4af37]/40 p-1 sm:p-2 bg-[#140a06]">
+                {/* Left Stacked Turned Page Edges */}
+                {leftStackCount > 0 && (
+                  <div
+                    className="hidden sm:block absolute top-3 bottom-3 left-0.5 rounded-l-md bg-gradient-to-r from-[#d8c7a6] via-[#efe3ca] to-[#bba886] border-l border-amber-900/50 pointer-events-none z-10"
+                    style={{ width: `${leftStackCount * 2 + 2}px` }}
+                  />
+                )}
+
+                {/* Right Stacked Remaining Page Edges */}
+                {rightStackCount > 0 && (
+                  <div
+                    className="hidden sm:block absolute top-3 bottom-3 right-0.5 rounded-r-md bg-repeating-linear-gradient to-l from-[#cbb894] via-[#f3e8d2] to-[#dfd0b2] border-r border-amber-900/60 pointer-events-none z-20 shadow-inner"
+                    style={{ width: `${rightStackCount * 2.5 + 3}px` }}
+                  />
+                )}
+
+                {/* 3D Perspective Stage for Turning Pages */}
+                <div
+                  className="relative overflow-hidden rounded-xl"
+                  style={{ perspective: '2000px' }}
+                >
+                  {/* Animated Flying Page Sheet Overlay During Page Turn / Riffle */}
+                  <AnimatePresence>
+                    {flipTick > 0 && (
+                      <motion.div
+                        key={`leaf-${flipTick}`}
+                        initial={{
+                          rotateY: turnDirection > 0 ? 0 : -110,
+                          opacity: 0.75,
+                        }}
+                        animate={{
+                          rotateY: turnDirection > 0 ? -110 : 0,
+                          opacity: 0,
+                        }}
+                        exit={{ opacity: 0 }}
+                        transition={{
+                          duration: isRiffling ? 0.11 : 0.4,
+                          ease: 'easeInOut',
+                        }}
+                        style={{
+                          transformOrigin: 'left center',
+                          transformStyle: 'preserve-3d',
+                        }}
+                        className="absolute inset-0 z-30 pointer-events-none rounded-r-2xl bg-gradient-to-r from-black/50 via-[#f5ead6]/25 to-[#fff8eb]/45 border-r-2 border-[#e6c469]/60 shadow-[20px_0_50px_rgba(0,0,0,0.85)]"
+                      />
+                    )}
+                  </AnimatePresence>
+
+                  {/* Actual Turning Scrapbook Page */}
+                  <AnimatePresence
+                    mode="wait"
+                    initial={false}
+                    custom={{ dir: turnDirection, fast: isRiffling }}
+                  >
+                    <motion.div
+                      key={currentPage.year}
+                      custom={{ dir: turnDirection, fast: isRiffling }}
+                      variants={pageTurnVariants}
+                      initial="enter"
+                      animate="center"
+                      exit="exit"
+                      style={{
+                        transformOrigin: 'left center',
+                        transformStyle: 'preserve-3d',
+                      }}
+                    >
+                      <ScrapbookSpread
+                        page={currentPage}
+                        pageIndex={currentIndex}
+                        totalPages={totalPages}
+                        onZoom={setZoomedItem}
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Book Page Turn Controls */}
+            <div className="max-w-5xl mx-auto mt-5 flex items-center justify-between gap-4 bg-[#180f0a] border border-amber-900/50 rounded-2xl p-3.5 sm:p-4 shadow-lg">
               <button
-                onClick={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
-                disabled={currentIndex === 0}
-                className="px-5 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 disabled:opacity-35 border border-amber-800/50 text-xs sm:text-sm font-serif font-bold text-amber-100 flex items-center gap-2 transition"
+                onClick={() => navigateToPage(currentIndex - 1)}
+                disabled={currentIndex === 0 || isRiffling}
+                className="px-4 sm:px-5 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 disabled:opacity-35 border border-amber-800/50 text-xs sm:text-sm font-serif font-bold text-amber-100 flex items-center gap-2 transition active:scale-95"
               >
                 <span>←</span>
                 <span>
                   {currentIndex > 0
-                    ? `Previous (${SANTA_SCRAPBOOK_PAGES[currentIndex - 1].year})`
+                    ? `Turn Back (${SANTA_SCRAPBOOK_PAGES[currentIndex - 1].year})`
                     : 'First Page'}
                 </span>
               </button>
 
               <div className="text-center font-serif">
                 <span className="text-xs sm:text-sm text-amber-200 font-bold">
-                  Year {currentPage.year}
+                  {isRiffling && riffleTargetYear
+                    ? `Flipping to ${riffleTargetYear}...`
+                    : `Year ${currentPage.year}`}
                 </span>
                 <span className="block text-[11px] text-stone-400 font-sans">
-                  Page {currentIndex + 1} of {SANTA_SCRAPBOOK_PAGES.length} • Click any photo to zoom
+                  Page {currentIndex + 1} of {totalPages} • Tap any year tab above to flip pages
                 </span>
               </div>
 
               <button
-                onClick={() =>
-                  setCurrentIndex((prev) => Math.min(SANTA_SCRAPBOOK_PAGES.length - 1, prev + 1))
-                }
-                disabled={currentIndex === SANTA_SCRAPBOOK_PAGES.length - 1}
-                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-700 to-red-800 hover:from-amber-600 hover:to-red-700 disabled:opacity-35 border border-amber-400/50 text-xs sm:text-sm font-serif font-bold text-white flex items-center gap-2 shadow transition"
+                onClick={() => navigateToPage(currentIndex + 1)}
+                disabled={currentIndex === totalPages - 1 || isRiffling}
+                className="px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-700 to-red-800 hover:from-amber-600 hover:to-red-700 disabled:opacity-35 border border-amber-400/50 text-xs sm:text-sm font-serif font-bold text-white flex items-center gap-2 shadow transition active:scale-95"
               >
                 <span>
-                  {currentIndex < SANTA_SCRAPBOOK_PAGES.length - 1
-                    ? `Next (${SANTA_SCRAPBOOK_PAGES[currentIndex + 1].year})`
+                  {currentIndex < totalPages - 1
+                    ? `Next Page (${SANTA_SCRAPBOOK_PAGES[currentIndex + 1].year})`
                     : 'Final Year (2025)'}
                 </span>
                 <span>→</span>
@@ -624,9 +819,14 @@ export default function SantaScrapbookView({ onClose }) {
               </p>
             </div>
 
-            {SANTA_SCRAPBOOK_PAGES.map((page) => (
+            {SANTA_SCRAPBOOK_PAGES.map((page, idx) => (
               <div key={page.year} id={`santa-year-${page.year}`} className="scroll-mt-28">
-                <ScrapbookSpread page={page} onZoom={setZoomedItem} />
+                <ScrapbookSpread
+                  page={page}
+                  pageIndex={idx}
+                  totalPages={totalPages}
+                  onZoom={setZoomedItem}
+                />
               </div>
             ))}
           </div>
