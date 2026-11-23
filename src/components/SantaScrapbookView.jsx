@@ -252,49 +252,49 @@ function FramedSantaPhoto({ page, onZoom }) {
     >
       {/* Outer Decorative Holiday Frame */}
       <div
-        className={`relative p-3.5 sm:p-5 md:p-6 rounded-2xl bg-gradient-to-br ${style.outerBorder} shadow-[0_22px_50px_rgba(0,0,0,0.85),inset_0_1px_2px_rgba(255,255,255,0.25)] border-2 ${style.accentBorder}`}
+        className={`relative p-2 sm:p-3 md:p-3.5 rounded-2xl bg-gradient-to-br ${style.outerBorder} shadow-[0_14px_32px_rgba(0,0,0,0.85),inset_0_1px_2px_rgba(255,255,255,0.25)] border-2 ${style.accentBorder}`}
       >
         {/* Gold Filigree Inner Trim */}
-        <div className="relative p-2.5 sm:p-4 rounded-xl bg-[#fbf6ea] shadow-[inset_0_2px_10px_rgba(0,0,0,0.28)] border border-[#d4af37]/80">
+        <div className="relative p-1.5 sm:p-2.5 rounded-xl bg-[#fbf6ea] shadow-[inset_0_2px_8px_rgba(0,0,0,0.28)] border border-[#d4af37]/80">
           {/* Vintage Gold Scrapbook Corner Mounts */}
-          <div className="absolute top-1.5 left-1.5 w-5 h-5 border-t-4 border-l-4 border-[#b38728] rounded-tl-sm pointer-events-none z-20" />
-          <div className="absolute top-1.5 right-1.5 w-5 h-5 border-t-4 border-r-4 border-[#b38728] rounded-tr-sm pointer-events-none z-20" />
-          <div className="absolute bottom-1.5 left-1.5 w-5 h-5 border-b-4 border-l-4 border-[#b38728] rounded-bl-sm pointer-events-none z-20" />
-          <div className="absolute bottom-1.5 right-1.5 w-5 h-5 border-b-4 border-r-4 border-[#b38728] rounded-br-sm pointer-events-none z-20" />
+          <div className="absolute top-1 left-1 w-3.5 h-3.5 border-t-[3px] border-l-[3px] border-[#b38728] rounded-tl-sm pointer-events-none z-20" />
+          <div className="absolute top-1 right-1 w-3.5 h-3.5 border-t-[3px] border-r-[3px] border-[#b38728] rounded-tr-sm pointer-events-none z-20" />
+          <div className="absolute bottom-1 left-1 w-3.5 h-3.5 border-b-[3px] border-l-[3px] border-[#b38728] rounded-bl-sm pointer-events-none z-20" />
+          <div className="absolute bottom-1 right-1 w-3.5 h-3.5 border-b-[3px] border-r-[3px] border-[#b38728] rounded-br-sm pointer-events-none z-20" />
 
-          {/* Main Cropped Photo */}
+          {/* Main Cropped Photo (Viewport-scaled so the full book always fits on screen) */}
           <div className="relative overflow-hidden rounded-lg bg-stone-900 shadow-inner flex items-center justify-center">
             <img
               src={page.mainPhoto}
               alt={`Santa ${page.year} — ${page.title}`}
               className={`${
                 page.orientation === 'landscape'
-                  ? 'max-h-[340px] sm:max-h-[450px] md:max-h-[500px] w-auto'
-                  : 'max-h-[400px] sm:max-h-[510px] md:max-h-[560px] w-auto'
+                  ? 'max-h-[28vh] sm:max-h-[36vh] md:max-h-[40vh] w-auto'
+                  : 'max-h-[33vh] sm:max-h-[40vh] md:max-h-[44vh] w-auto'
               } object-contain block transition-transform duration-500 group-hover:scale-[1.015]`}
             />
           </div>
 
           {/* Bottom Mat Caption Strip */}
-          <div className="pt-3 pb-5 sm:pb-6 px-2 text-center">
-            <p className="font-serif italic text-stone-700 text-xs sm:text-sm tracking-wide">
+          <div className="pt-1.5 pb-3.5 sm:pb-4 px-2 text-center">
+            <p className="font-serif italic text-stone-700 text-[11px] sm:text-xs tracking-wide line-clamp-2">
               “{page.handwrittenNote}”
             </p>
           </div>
         </div>
 
         {/* Prominent Embossed Year Plaque on Frame Border */}
-        <div className=" -mt-5 sm:-mt-6 relative z-30 flex justify-center">
+        <div className="-mt-3.5 sm:-mt-4 relative z-30 flex justify-center">
           <div
-            className={`px-7 sm:px-9 py-1.5 sm:py-2 rounded-full bg-gradient-to-b ${style.plaqueBg} border-2 ${style.accentBorder} shadow-[0_8px_20px_rgba(0,0,0,0.85),inset_0_1px_1px_rgba(255,255,255,0.3)] flex items-center gap-2.5`}
+            className={`px-4 sm:px-6 py-0.5 sm:py-1 rounded-full bg-gradient-to-b ${style.plaqueBg} border-2 ${style.accentBorder} shadow-[0_6px_14px_rgba(0,0,0,0.85),inset_0_1px_1px_rgba(255,255,255,0.3)] flex items-center gap-2`}
           >
-            <span className="text-[#e6c469] text-xs sm:text-sm">✦</span>
+            <span className="text-[#e6c469] text-[10px] sm:text-xs">✦</span>
             <span
-              className={`font-serif font-bold text-xl sm:text-2xl md:text-3xl tracking-[0.16em] ${style.plaqueText} drop-shadow`}
+              className={`font-serif font-bold text-base sm:text-xl tracking-[0.14em] ${style.plaqueText} drop-shadow`}
             >
               {page.year}
             </span>
-            <span className="text-[#e6c469] text-xs sm:text-sm">✦</span>
+            <span className="text-[#e6c469] text-[10px] sm:text-xs">✦</span>
           </div>
         </div>
       </div>
@@ -315,11 +315,11 @@ function BonusPolaroidCard({ bonus, year, onZoom }) {
         })
       }
       style={{ transform: `rotate(${bonus.tilt || '0deg'})` }}
-      className="group relative cursor-zoom-in bg-[#fcf9f2] p-3 sm:p-3.5 pb-5 rounded-xl shadow-[0_14px_32px_rgba(0,0,0,0.75)] border border-[#e2d6b5] hover:rotate-0 hover:scale-[1.03] transition-all duration-300 max-w-[320px] sm:max-w-[350px] w-full mx-auto"
+      className="group relative cursor-zoom-in bg-[#fcf9f2] p-2 sm:p-2.5 pb-3 rounded-xl shadow-[0_10px_24px_rgba(0,0,0,0.75)] border border-[#e2d6b5] hover:rotate-0 hover:scale-[1.03] transition-all duration-300 max-w-[210px] sm:max-w-[230px] w-full mx-auto"
     >
       {/* Festive Red & Gold Washi Tape at Top */}
-      <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-6 bg-gradient-to-r from-red-800/85 via-amber-500/80 to-red-800/85 rounded-sm shadow-sm border border-amber-200/40 rotate-[-1.5deg] flex items-center justify-center pointer-events-none">
-        <span className="text-[9px] font-mono uppercase tracking-widest text-amber-100 font-bold">
+      <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-20 h-4 bg-gradient-to-r from-red-800/85 via-amber-500/80 to-red-800/85 rounded-sm shadow-sm border border-amber-200/40 rotate-[-1.5deg] flex items-center justify-center pointer-events-none">
+        <span className="text-[8px] font-mono uppercase tracking-widest text-amber-100 font-bold">
           ★ SNAPSHOT ★
         </span>
       </div>
@@ -328,17 +328,14 @@ function BonusPolaroidCard({ bonus, year, onZoom }) {
         <img
           src={bonus.src}
           alt={bonus.caption}
-          className="max-h-[250px] sm:max-h-[280px] w-auto object-contain block"
+          className="max-h-[14vh] sm:max-h-[16vh] w-auto object-contain block"
         />
       </div>
 
-      <div className="mt-3 text-center px-1">
-        <p className="font-serif italic text-stone-800 text-xs sm:text-sm font-medium leading-snug">
+      <div className="mt-1.5 text-center px-1">
+        <p className="font-serif italic text-stone-800 text-[10px] sm:text-xs font-medium leading-tight line-clamp-2">
           {bonus.caption}
         </p>
-        <span className="inline-block mt-1 text-[10px] font-mono uppercase tracking-widest text-amber-800 font-semibold">
-          Click to Enlarge 🔍
-        </span>
       </div>
     </div>
   );
@@ -348,55 +345,51 @@ function ScrapbookSpread({ page, pageIndex, totalPages, onZoom }) {
   const hasBonus = page.bonusPhotos && page.bonusPhotos.length > 0;
 
   return (
-    <div className="relative bg-gradient-to-br from-[#271911] via-[#1d120c] to-[#150c08] border border-amber-800/70 rounded-r-2xl rounded-l-md p-5 sm:p-8 md:p-11 shadow-[inset_24px_0_45px_rgba(0,0,0,0.75),inset_0_0_30px_rgba(212,175,55,0.06)] overflow-hidden">
+    <div className="relative bg-gradient-to-br from-[#271911] via-[#1d120c] to-[#150c08] border border-amber-800/70 rounded-r-2xl rounded-l-md p-3 sm:p-5 md:p-6 shadow-[inset_18px_0_35px_rgba(0,0,0,0.75),inset_0_0_25px_rgba(212,175,55,0.06)] overflow-hidden">
       {/* Realistic Left Spine Gutter Crease & Stitched Gold Thread */}
-      <div className="absolute top-0 bottom-0 left-0 w-7 sm:w-10 bg-gradient-to-r from-black/80 via-black/35 to-transparent pointer-events-none z-10" />
-      <div className="absolute top-3 bottom-3 left-2.5 sm:left-3.5 w-px border-l border-dashed border-[#d4af37]/35 pointer-events-none z-10" />
+      <div className="absolute top-0 bottom-0 left-0 w-5 sm:w-7 bg-gradient-to-r from-black/80 via-black/35 to-transparent pointer-events-none z-10" />
+      <div className="absolute top-2 bottom-2 left-2 sm:left-2.5 w-px border-l border-dashed border-[#d4af37]/35 pointer-events-none z-10" />
 
       {/* Crimson Silk Bookmark Ribbon Hanging from Top Spine */}
-      <div className="absolute -top-1 left-5 sm:left-7 w-4 sm:w-5 h-12 sm:h-14 bg-gradient-to-b from-[#9e1420] via-[#7a0e18] to-[#570810] shadow-[2px_4px_10px_rgba(0,0,0,0.8)] border-x border-[#e6c469]/40 pointer-events-none z-20 [clip-path:polygon(0_0,100%_0,100%_100%,50%_82%,0_100%)]" />
-
-      {/* Subtle Scrapbook Paper Corner Flourishes */}
-      <div className="absolute top-0 left-0 w-32 h-32 bg-radial from-amber-500/10 to-transparent pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-40 h-40 bg-radial from-red-600/10 to-transparent pointer-events-none" />
+      <div className="absolute -top-1 left-3.5 sm:left-5 w-3.5 sm:w-4 h-8 sm:h-10 bg-gradient-to-b from-[#9e1420] via-[#7a0e18] to-[#570810] shadow-[2px_4px_10px_rgba(0,0,0,0.8)] border-x border-[#e6c469]/40 pointer-events-none z-20 [clip-path:polygon(0_0,100%_0,100%_100%,50%_82%,0_100%)]" />
 
       {/* Top Corner Ornate Gold Filigree Accents */}
-      <div className="absolute top-3 right-3 w-7 h-7 border-t-2 border-r-2 border-[#d4af37]/45 rounded-tr-lg pointer-events-none" />
-      <div className="absolute bottom-3 right-3 w-7 h-7 border-b-2 border-r-2 border-[#d4af37]/45 rounded-br-lg pointer-events-none" />
+      <div className="absolute top-2.5 right-2.5 w-5 h-5 border-t-2 border-r-2 border-[#d4af37]/45 rounded-tr-md pointer-events-none" />
+      <div className="absolute bottom-2.5 right-2.5 w-5 h-5 border-b-2 border-r-2 border-[#d4af37]/45 rounded-br-md pointer-events-none" />
 
-      {/* Spread Header Banner */}
-      <div className="pl-3 sm:pl-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-6 mb-7 border-b border-amber-900/50">
-        <div>
+      {/* Spread Header Banner (Compact so the full page fits on screen) */}
+      <div className="pl-3 sm:pl-4 flex items-center justify-between gap-2 pb-2.5 mb-3 border-b border-amber-900/50">
+        <div className="min-w-0">
           {(page.location || page.sticker) && (
-            <div className="flex flex-wrap items-center gap-2 mb-2">
+            <div className="flex flex-wrap items-center gap-1.5 mb-1">
               {page.location && (
-                <span className="px-3 py-1 rounded-full bg-stone-900/90 border border-stone-700/80 text-xs font-sans text-amber-200/90">
+                <span className="px-2 py-0.5 rounded-full bg-stone-900/90 border border-stone-700/80 text-[10px] sm:text-[11px] font-sans text-amber-200/90">
                   📍 {page.location}
                 </span>
               )}
               {page.sticker && (
-                <span className="px-3 py-1 rounded-full bg-amber-950/80 border border-amber-600/40 text-xs font-sans text-amber-300">
+                <span className="px-2 py-0.5 rounded-full bg-amber-950/80 border border-amber-600/40 text-[10px] sm:text-[11px] font-sans text-amber-300">
                   {page.sticker}
                 </span>
               )}
             </div>
           )}
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-amber-100 tracking-wide">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-serif font-bold text-amber-100 tracking-wide leading-tight truncate">
             {page.title}
           </h2>
           {page.subtitle && (
-            <p className="text-sm sm:text-base font-serif italic text-amber-200/80 mt-0.5">
+            <p className="text-xs sm:text-sm font-serif italic text-amber-200/80">
               {page.subtitle}
             </p>
           )}
         </div>
 
-        {/* Large Decorative Year Stamp in Top Right */}
-        <div className="self-start sm:self-center flex-shrink-0 px-5 py-2 rounded-2xl bg-[#110a06] border-2 border-[#d4af37]/60 shadow-inner text-center">
-          <span className="block text-[10px] font-mono uppercase tracking-[0.2em] text-amber-400/80">
-            Scrapbook Year
+        {/* Compact Decorative Year Stamp in Top Right */}
+        <div className="flex-shrink-0 px-3 sm:px-4 py-1 rounded-xl bg-[#110a06] border border-[#d4af37]/60 shadow-inner text-center">
+          <span className="block text-[8px] font-mono uppercase tracking-[0.18em] text-amber-400/80">
+            Year
           </span>
-          <span className="font-serif font-bold text-2xl sm:text-3xl text-[#fae39c] tracking-widest">
+          <span className="font-serif font-bold text-lg sm:text-2xl text-[#fae39c] tracking-widest leading-none">
             {page.year}
           </span>
         </div>
@@ -404,22 +397,20 @@ function ScrapbookSpread({ page, pageIndex, totalPages, onZoom }) {
 
       {/* Main Content Layout: Single Centered Heirloom Frame OR 2-Column Spread with Bonus Polaroids */}
       <div
-        className={`pl-3 sm:pl-5 grid grid-cols-1 ${
-          hasBonus ? 'lg:grid-cols-12 gap-8 items-center' : 'place-items-center'
+        className={`pl-2 sm:pl-4 grid grid-cols-1 ${
+          hasBonus ? 'md:grid-cols-12 gap-4 items-center' : 'place-items-center'
         }`}
       >
-        <div className={hasBonus ? 'lg:col-span-7 flex justify-center' : 'w-full flex justify-center'}>
+        <div className={hasBonus ? 'md:col-span-7 flex justify-center' : 'w-full flex justify-center'}>
           <FramedSantaPhoto page={page} onZoom={onZoom} />
         </div>
 
         {hasBonus && (
-          <div className="lg:col-span-5 flex flex-col items-center justify-center gap-7 pt-4 lg:pt-0">
-            <div className="text-center">
-              <span className="px-3.5 py-1 rounded-full bg-amber-950/90 border border-amber-500/40 text-xs font-serif font-semibold text-amber-200 shadow">
-                📸 Scrapbook Snapshots ({page.bonusPhotos.length})
-              </span>
-            </div>
-            <div className="flex flex-col sm:flex-row lg:flex-col gap-7 w-full items-center justify-center">
+          <div className="md:col-span-5 flex flex-col items-center justify-center gap-3 pt-1 md:pt-0">
+            <span className="px-2.5 py-0.5 rounded-full bg-amber-950/90 border border-amber-500/40 text-[10px] font-serif font-semibold text-amber-200 shadow">
+              📸 Snapshots ({page.bonusPhotos.length})
+            </span>
+            <div className="flex flex-row md:flex-col gap-3 w-full items-center justify-center">
               {page.bonusPhotos.map((bonus, idx) => (
                 <BonusPolaroidCard
                   key={idx}
@@ -435,10 +426,10 @@ function ScrapbookSpread({ page, pageIndex, totalPages, onZoom }) {
 
       {/* Bottom Book Page Footer Number */}
       {typeof pageIndex === 'number' && (
-        <div className="mt-7 pt-3 border-t border-amber-900/30 flex items-center justify-between text-[11px] font-serif italic text-amber-200/60 pl-3 sm:pl-5">
-          <span>Agan Family Holiday Scrapbook</span>
+        <div className="mt-3 pt-2 border-t border-amber-900/30 flex items-center justify-between text-[10px] font-serif italic text-amber-200/60 pl-3 sm:pl-4">
+          <span>Agan Family Holiday Scrapbook • Click any photo to enlarge</span>
           <span className="font-mono not-italic text-amber-300/75">
-            — Page {pageIndex + 1} of {totalPages} —
+            Page {pageIndex + 1} of {totalPages}
           </span>
         </div>
       )}
@@ -587,46 +578,46 @@ export default function SantaScrapbookView({ onClose }) {
       className="fixed inset-0 z-50 bg-[#0d0705] text-amber-50 overflow-y-auto flex flex-col"
     >
       {/* Top Sticky Scrapbook Navigation Header */}
-      <header className="sticky top-0 z-30 bg-[#140b07]/95 backdrop-blur-md border-b border-amber-900/60 px-4 sm:px-8 py-3 shadow-lg print:hidden">
-        <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
+      <header className="sticky top-0 z-30 bg-[#140b07]/95 backdrop-blur-md border-b border-amber-900/60 px-3 sm:px-6 py-2 shadow-lg print:hidden">
+        <div className="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2.5">
             <button
               onClick={onClose}
-              className="px-3.5 py-1.5 rounded-xl bg-stone-900 hover:bg-stone-800 border border-amber-900/60 text-xs font-sans text-amber-200 flex items-center gap-1.5 transition"
+              className="px-3 py-1 rounded-xl bg-stone-900 hover:bg-stone-800 border border-amber-900/60 text-xs font-sans text-amber-200 flex items-center gap-1 transition"
             >
-              <span>←</span> <span>Back to Library</span>
+              <span>←</span> <span>Library</span>
             </button>
-            <div className="hidden sm:block h-5 w-px bg-stone-800" />
+            <div className="hidden sm:block h-4 w-px bg-stone-800" />
             <div>
-              <h1 className="text-base sm:text-xl font-serif font-bold text-amber-100 flex items-center gap-2">
+              <h1 className="text-sm sm:text-base font-serif font-bold text-amber-100 flex items-center gap-1.5">
                 <span>🎅</span>
-                <span>Pictures with Santa • Family Scrapbook (2012–2025)</span>
+                <span>Pictures with Santa (2012–2025)</span>
               </h1>
             </div>
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2">
             {/* Switch between Animated Book View & Full Scrollable Scrapbook */}
-            <div className="flex bg-stone-950 p-1 rounded-xl border border-stone-800 text-xs font-sans">
+            <div className="flex bg-stone-950 p-0.5 rounded-xl border border-stone-800 text-xs font-sans">
               <button
                 onClick={() => setViewStyle('flipbook')}
-                className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
+                className={`px-2.5 py-1 rounded-lg transition flex items-center gap-1 ${
                   viewStyle === 'flipbook'
                     ? 'bg-amber-800 text-amber-50 font-semibold shadow'
                     : 'text-stone-400 hover:text-stone-200'
                 }`}
               >
-                <span>📖</span> <span>Animated Book</span>
+                <span>📖</span> <span>Book</span>
               </button>
               <button
                 onClick={() => setViewStyle('all')}
-                className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
+                className={`px-2.5 py-1 rounded-lg transition flex items-center gap-1 ${
                   viewStyle === 'all'
                     ? 'bg-amber-800 text-amber-50 font-semibold shadow'
                     : 'text-stone-400 hover:text-stone-200'
                 }`}
               >
-                <span>🖼️</span> <span>All Years ({totalPages})</span>
+                <span>🖼️</span> <span>All ({totalPages})</span>
               </button>
             </div>
 
@@ -635,15 +626,15 @@ export default function SantaScrapbookView({ onClose }) {
                 setViewStyle('all');
                 setTimeout(() => window.print(), 250);
               }}
-              className="hidden md:flex px-3.5 py-1.5 rounded-xl bg-stone-900 hover:bg-stone-800 border border-stone-700 text-xs font-sans text-amber-200 items-center gap-1.5 transition"
+              className="hidden md:flex px-3 py-1 rounded-xl bg-stone-900 hover:bg-stone-800 border border-stone-700 text-xs font-sans text-amber-200 items-center gap-1 transition"
               title="Print or Save Photo Book as PDF"
             >
-              <span>🖨️</span> <span>Print / PDF</span>
+              <span>🖨️</span> <span>Print</span>
             </button>
 
             <button
               onClick={onClose}
-              className="w-9 h-9 rounded-full bg-stone-900 hover:bg-stone-800 border border-stone-700 flex items-center justify-center text-stone-300"
+              className="w-8 h-8 rounded-full bg-stone-900 hover:bg-stone-800 border border-stone-700 flex items-center justify-center text-stone-300 text-xs"
               title="Close"
             >
               ✕
@@ -653,11 +644,11 @@ export default function SantaScrapbookView({ onClose }) {
       </header>
 
       {/* Main Scrapbook Stage */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-8 py-5 sm:py-8">
+      <main className="flex-1 max-w-4xl w-full mx-auto px-2.5 sm:px-6 py-2 sm:py-3 flex flex-col justify-center">
         {viewStyle === 'flipbook' ? (
-          <div className="relative">
+          <div className="relative w-full">
             {/* Physical Book Top Year Index Tabs */}
-            <div className="max-w-5xl mx-auto px-2 sm:px-6 flex items-end gap-1 sm:gap-1.5 overflow-x-auto no-scrollbar pt-1">
+            <div className="max-w-3xl mx-auto px-2 sm:px-4 flex items-end gap-1 overflow-x-auto no-scrollbar pt-0.5">
               {SANTA_SCRAPBOOK_PAGES.map((p, idx) => {
                 const isActive = idx === currentIndex;
                 const isTarget = riffleTargetYear === p.year;
@@ -666,9 +657,9 @@ export default function SantaScrapbookView({ onClose }) {
                   <button
                     key={p.year}
                     onClick={() => navigateToPage(idx)}
-                    className={`relative px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-t-xl text-xs font-serif font-bold transition-all flex items-center gap-1 flex-shrink-0 border-t-2 border-x-2 ${
+                    className={`relative px-2.5 sm:px-3 py-1 rounded-t-lg text-[11px] sm:text-xs font-serif font-bold transition-all flex items-center gap-1 flex-shrink-0 border-t-2 border-x-2 ${
                       isActive
-                        ? 'bg-gradient-to-b from-[#8b151e] via-[#680e15] to-[#271911] border-[#f3d47c] text-[#fff3c4] shadow-[0_-4px_14px_rgba(212,175,55,0.35)] -mb-0.5 pb-2.5 z-20 scale-105'
+                        ? 'bg-gradient-to-b from-[#8b151e] via-[#680e15] to-[#271911] border-[#f3d47c] text-[#fff3c4] shadow-[0_-3px_10px_rgba(212,175,55,0.35)] -mb-0.5 pb-1.5 z-20 scale-105'
                         : isTarget
                         ? 'bg-amber-800/80 border-amber-300 text-white z-10'
                         : 'bg-[#1b110c] hover:bg-[#2a1a12] border-amber-900/60 text-amber-200/70 hover:text-amber-100'
@@ -676,29 +667,29 @@ export default function SantaScrapbookView({ onClose }) {
                     title={`Flip to ${p.year}`}
                   >
                     <span>{p.year}</span>
-                    {hasBonus && <span className="text-[10px] text-amber-300">★</span>}
+                    {hasBonus && <span className="text-[9px] text-amber-300">★</span>}
                   </button>
                 );
               })}
             </div>
 
-            {/* 3D Hardcover Leather Book Chassis */}
-            <div className="relative max-w-5xl mx-auto p-2.5 sm:p-4 md:p-5 rounded-3xl bg-gradient-to-br from-[#540c12] via-[#38070b] to-[#210306] border-2 border-[#d4af37]/75 shadow-[0_30px_80px_rgba(0,0,0,0.95),inset_0_2px_6px_rgba(255,255,255,0.2)]">
+            {/* 3D Hardcover Leather Book Chassis (Compact so the entire book fits in viewport) */}
+            <div className="relative max-w-3xl mx-auto p-2 sm:p-3 rounded-2xl bg-gradient-to-br from-[#540c12] via-[#38070b] to-[#210306] border-2 border-[#d4af37]/75 shadow-[0_20px_55px_rgba(0,0,0,0.95),inset_0_2px_5px_rgba(255,255,255,0.2)]">
               {/* Outer Gold-Tooled Leather Hardcover Trim */}
-              <div className="relative rounded-2xl border border-[#d4af37]/40 p-1 sm:p-2 bg-[#140a06]">
+              <div className="relative rounded-xl border border-[#d4af37]/40 p-1 sm:p-1.5 bg-[#140a06]">
                 {/* Left Stacked Turned Page Edges */}
                 {leftStackCount > 0 && (
                   <div
-                    className="hidden sm:block absolute top-3 bottom-3 left-0.5 rounded-l-md bg-gradient-to-r from-[#d8c7a6] via-[#efe3ca] to-[#bba886] border-l border-amber-900/50 pointer-events-none z-10"
-                    style={{ width: `${leftStackCount * 2 + 2}px` }}
+                    className="hidden sm:block absolute top-2.5 bottom-2.5 left-0.5 rounded-l-md bg-gradient-to-r from-[#d8c7a6] via-[#efe3ca] to-[#bba886] border-l border-amber-900/50 pointer-events-none z-10"
+                    style={{ width: `${leftStackCount * 1.5 + 2}px` }}
                   />
                 )}
 
                 {/* Right Stacked Remaining Page Edges */}
                 {rightStackCount > 0 && (
                   <div
-                    className="hidden sm:block absolute top-3 bottom-3 right-0.5 rounded-r-md bg-repeating-linear-gradient to-l from-[#cbb894] via-[#f3e8d2] to-[#dfd0b2] border-r border-amber-900/60 pointer-events-none z-20 shadow-inner"
-                    style={{ width: `${rightStackCount * 2.5 + 3}px` }}
+                    className="hidden sm:block absolute top-2.5 bottom-2.5 right-0.5 rounded-r-md bg-repeating-linear-gradient to-l from-[#cbb894] via-[#f3e8d2] to-[#dfd0b2] border-r border-amber-900/60 pointer-events-none z-20 shadow-inner"
+                    style={{ width: `${rightStackCount * 2 + 2}px` }}
                   />
                 )}
 
@@ -765,40 +756,37 @@ export default function SantaScrapbookView({ onClose }) {
             </div>
 
             {/* Bottom Book Page Turn Controls */}
-            <div className="max-w-5xl mx-auto mt-5 flex items-center justify-between gap-4 bg-[#180f0a] border border-amber-900/50 rounded-2xl p-3.5 sm:p-4 shadow-lg">
+            <div className="max-w-3xl mx-auto mt-2.5 flex items-center justify-between gap-2 bg-[#180f0a] border border-amber-900/50 rounded-xl px-3 py-2 shadow-lg">
               <button
                 onClick={() => navigateToPage(currentIndex - 1)}
                 disabled={currentIndex === 0 || isRiffling}
-                className="px-4 sm:px-5 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 disabled:opacity-35 border border-amber-800/50 text-xs sm:text-sm font-serif font-bold text-amber-100 flex items-center gap-2 transition active:scale-95"
+                className="px-3 sm:px-4 py-1.5 rounded-lg bg-stone-900 hover:bg-stone-800 disabled:opacity-35 border border-amber-800/50 text-xs font-serif font-bold text-amber-100 flex items-center gap-1.5 transition active:scale-95"
               >
                 <span>←</span>
                 <span>
                   {currentIndex > 0
-                    ? `Turn Back (${SANTA_SCRAPBOOK_PAGES[currentIndex - 1].year})`
-                    : 'First Page'}
+                    ? `Back (${SANTA_SCRAPBOOK_PAGES[currentIndex - 1].year})`
+                    : 'Start'}
                 </span>
               </button>
 
               <div className="text-center font-serif">
-                <span className="text-xs sm:text-sm text-amber-200 font-bold">
+                <span className="text-xs text-amber-200 font-bold">
                   {isRiffling && riffleTargetYear
                     ? `Flipping to ${riffleTargetYear}...`
-                    : `Year ${currentPage.year}`}
-                </span>
-                <span className="block text-[11px] text-stone-400 font-sans">
-                  Page {currentIndex + 1} of {totalPages} • Tap any year tab above to flip pages
+                    : `${currentPage.year} • Page ${currentIndex + 1} of ${totalPages}`}
                 </span>
               </div>
 
               <button
                 onClick={() => navigateToPage(currentIndex + 1)}
                 disabled={currentIndex === totalPages - 1 || isRiffling}
-                className="px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-700 to-red-800 hover:from-amber-600 hover:to-red-700 disabled:opacity-35 border border-amber-400/50 text-xs sm:text-sm font-serif font-bold text-white flex items-center gap-2 shadow transition active:scale-95"
+                className="px-3 sm:px-4 py-1.5 rounded-lg bg-gradient-to-r from-amber-700 to-red-800 hover:from-amber-600 hover:to-red-700 disabled:opacity-35 border border-amber-400/50 text-xs font-serif font-bold text-white flex items-center gap-1.5 shadow transition active:scale-95"
               >
                 <span>
                   {currentIndex < totalPages - 1
-                    ? `Next Page (${SANTA_SCRAPBOOK_PAGES[currentIndex + 1].year})`
-                    : 'Final Year (2025)'}
+                    ? `Next (${SANTA_SCRAPBOOK_PAGES[currentIndex + 1].year})`
+                    : 'End'}
                 </span>
                 <span>→</span>
               </button>
