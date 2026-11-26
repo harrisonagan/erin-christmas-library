@@ -109,6 +109,11 @@ export default function CoverGalleryView({ books = [], onSelectBook, onAddBook, 
                       2 Copies
                     </span>
                   )}
+                  {book.bonusPhoto && (
+                    <span className="px-1.5 py-0.5 rounded bg-amber-800/95 border border-amber-300/70 text-[8.5px] font-sans font-semibold text-amber-50 shadow">
+                      📸 Bonus Pic
+                    </span>
+                  )}
                 </div>
 
                 {coverUrl ? (

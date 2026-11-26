@@ -286,14 +286,19 @@ export default function ReaderModal({ book, onClose, onUpdateBook }) {
                     goToPrev();
                   }
                 }}
-                className="relative max-h-full max-w-full flex items-center justify-center cursor-grab active:cursor-grabbing"
+                className="relative max-h-full max-w-full flex flex-col items-center justify-center cursor-grab active:cursor-grabbing"
               >
                 <img
                   src={getPageImageUrl(currentPage)}
                   alt={`Page ${currentPageIndex + 1}`}
-                  className="max-h-[75vh] w-auto max-w-full object-contain rounded-lg shadow-2xl border border-stone-800"
+                  className="max-h-[70vh] w-auto max-w-full object-contain rounded-lg shadow-2xl border border-stone-800"
                   draggable={false}
                 />
+                {currentPage?.caption && (
+                  <p className="mt-3 px-4 py-1.5 rounded-full bg-stone-900/90 border border-amber-800/50 text-amber-100 text-xs sm:text-sm font-serif text-center shadow-lg max-w-xl">
+                    {currentPage.caption}
+                  </p>
+                )}
               </motion.div>
             </AnimatePresence>
 

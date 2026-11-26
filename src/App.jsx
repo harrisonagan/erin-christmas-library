@@ -780,8 +780,17 @@ const INITIAL_BOOKS = [
     author: 'Unknown',
     category: 'story',
     cover: '/covers/christmas-comes-to-monster-mountain.webp?v=5',
+    bonusPhoto: '/covers/christmas-comes-to-monster-mountain-bonus.webp?v=1',
+    bonusCaption: 'Bonus Picture: Erin with “Santa in Jail” inside Christmas Comes to Monster Mountain!',
     notes: 'Ideals Publishing • Featuring Ted E. Bear in a snowy mountain adventure',
-    pages: []
+    pages: [
+      {
+        id: 'monster_mountain_erin_bonus',
+        pageNumber: 1,
+        image: '/covers/christmas-comes-to-monster-mountain-bonus.webp?v=1',
+        caption: 'Bonus Picture: Erin with “Santa in Jail” inside Christmas Comes to Monster Mountain!'
+      }
+    ]
   },
   {
     id: 'the_baby_jesus',
@@ -1926,10 +1935,38 @@ export default function App() {
                           </div>
 
                           {selectedBook.notes && (
-                            <div className="text-amber-200/90 text-sm sm:text-base italic bg-amber-950/30 border border-amber-900/40 p-4 rounded-2xl mb-6 font-serif leading-relaxed text-left">
+                            <div className="text-amber-200/90 text-sm sm:text-base italic bg-amber-950/30 border border-amber-900/40 p-4 rounded-2xl mb-5 font-serif leading-relaxed text-left">
                               <span className="text-amber-400 font-serif text-lg mr-1">“</span>
                               {selectedBook.notes}
                               <span className="text-amber-400 font-serif text-lg ml-1">”</span>
+                            </div>
+                          )}
+
+                          {selectedBook.bonusPhoto && (
+                            <div
+                              onClick={() => setIsReaderOpen(true)}
+                              className="group cursor-pointer mb-5 p-3.5 rounded-2xl bg-gradient-to-br from-amber-950/60 via-stone-900/80 to-amber-950/40 border border-amber-500/40 hover:border-amber-400/80 shadow-lg transition-all flex flex-col sm:flex-row items-center gap-4 text-left"
+                              title="Click to view full-size bonus picture"
+                            >
+                              <div className="relative flex-shrink-0 bg-[#fdf8ed] p-1.5 pb-3 rounded-lg shadow-[0_8px_20px_rgba(0,0,0,0.65)] transform -rotate-2 group-hover:rotate-0 group-hover:scale-105 transition-transform duration-300">
+                                <img
+                                  src={resolvePublicAssetUrl(selectedBook.bonusPhoto)}
+                                  alt={selectedBook.bonusCaption || 'Bonus Picture'}
+                                  className="w-28 h-36 sm:w-24 sm:h-32 object-cover rounded"
+                                />
+                              </div>
+                              <div className="flex-1 text-center sm:text-left">
+                                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-800/80 border border-amber-400/50 text-[10px] font-sans font-bold uppercase tracking-wider text-amber-100 mb-1.5">
+                                  <span>📸</span>
+                                  <span>Bonus Family Picture Included</span>
+                                </div>
+                                <p className="text-amber-100 font-serif text-sm sm:text-base font-semibold leading-snug mb-1">
+                                  {selectedBook.bonusCaption || 'Special family photo tucked inside this book!'}
+                                </p>
+                                <span className="text-xs font-sans text-amber-300/90 group-hover:text-amber-200 underline">
+                                  Click to open full screen →
+                                </span>
+                              </div>
                             </div>
                           )}
                         </div>
