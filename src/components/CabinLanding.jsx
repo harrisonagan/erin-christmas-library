@@ -233,21 +233,12 @@ export default function CabinLanding({ onStepUp }) {
         className="absolute inset-0 flex items-center justify-center p-4 sm:p-6 pointer-events-none z-20"
       >
         <div className="relative text-center px-6 py-8 sm:px-12 sm:py-10 max-w-[340px] sm:max-w-lg bg-[#18110df4] backdrop-blur-md rounded-3xl border border-amber-900/60 shadow-[0_25px_60px_rgba(0,0,0,0.95)] pointer-events-auto">
-          {/* Decorative Holly / Candle */}
-          <div className="flex items-center justify-center gap-2 mb-2 text-amber-400">
-            <span className="text-base sm:text-xl">🕯️</span>
-            <span className="text-[10px] sm:text-xs uppercase tracking-widest font-sans font-semibold text-amber-300/80">
-              Cozy Hearth & Stories
-            </span>
-            <span className="text-base sm:text-xl">🕯️</span>
-          </div>
-
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-serif font-bold text-amber-100 tracking-wide mb-2 sm:mb-3 drop-shadow">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-serif font-bold text-amber-100 tracking-wide mb-3 sm:mb-4 drop-shadow">
             Erin's Christmas Library
           </h1>
 
           <p className="text-stone-300 text-xs sm:text-base font-serif italic mb-6 sm:mb-8 max-w-md mx-auto leading-relaxed">
-            Snow is softly falling outside the window, the fire is glowing in the hearth, and a shelf of holiday magic awaits.
+            A cherished collection of vintage Christmas books that is an ingredient in making Christmas magic.
           </p>
 
           <button
