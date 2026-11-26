@@ -124,10 +124,10 @@ const INITIAL_BOOKS = [
   { 
     id: 'the_newborn_king', 
     title: 'The Newborn King', 
-    author: 'Unknown', 
+    author: 'Cindy R. Waters', 
     category: 'story',
     cover: '/covers/the-newborn-king.webp?v=5',
-    notes: 'Bendon Publishing • A Treasured Keepsake Board Book • The holy birth of Christ',
+    notes: 'Bendon Publishing • Illustrated by Pat Thompson • The holy birth of Christ',
     pages: [] 
   },
   { 
@@ -151,19 +151,19 @@ const INITIAL_BOOKS = [
   { 
     id: 'the_nutcracker_golden', 
     title: 'The Nutcracker', 
-    author: 'Unknown', 
+    author: 'Rita Balducci', 
     category: 'story',
     cover: '/covers/the-nutcracker-golden.webp?v=5',
-    notes: 'A Little Golden Book Classic (#460-16) • Clara, the Nutcracker, and the Mouse King',
+    notes: 'A Little Golden Book (#460-16) • Illustrated by Barbara Lanza • Clara and the Nutcracker',
     pages: [] 
   },
   { 
     id: 'the_littlest_christmas_elf', 
     title: 'The Littlest Christmas Elf', 
-    author: 'Unknown', 
+    author: 'Nancy Buss', 
     category: 'story',
     cover: '/covers/the-littlest-christmas-elf.webp?v=5',
-    notes: 'A Little Golden Book (#459-00) • Oliver the helpful Christmas elf',
+    notes: 'A Little Golden Book (#459-00) • Illustrated by Terri Super • Oliver the helpful Christmas elf',
     pages: [] 
   },
   { 
@@ -214,10 +214,10 @@ const INITIAL_BOOKS = [
   { 
     id: 'the_nutcracker_popup', 
     title: 'The Nutcracker: A Christmas Pop-up', 
-    author: 'Unknown', 
+    author: 'E.T.A. Hoffmann', 
     category: 'story',
     cover: '/covers/the-nutcracker-popup.webp?v=5',
-    notes: 'Three-dimensional holiday pop-up edition with magical scenes',
+    notes: 'Landoll Pop-Up Edition (1995) • Three-dimensional holiday pop-up scenes',
     pages: [] 
   },
   { 
@@ -258,41 +258,41 @@ const INITIAL_BOOKS = [
     notes: 'Classic illustrated holiday songbook of Frosty the Snowman',
     pages: []
   },
-  {
-    id: 'this_little_reindeers_first_christmas',
-    title: "This Little Reindeer's First Christmas",
-    author: 'Unknown',
-    category: 'story',
-    cover: '/covers/this-little-reindeers-first-christmas.webp?v=6',
-    notes: "Sweet holiday board book following a little reindeer's first Christmas",
-    pages: []
-  },
-  {
-    id: 'peace_on_earth',
-    title: 'Peace on Earth',
-    author: 'Jonny Marx',
-    category: 'story',
-    cover: '/covers/peace-on-earth.webp?v=5',
-    notes: 'Illustrated by Lindsey Sagar • Heartwarming holiday storybook',
-    pages: []
-  },
-  {
-    id: 'biscuits_pet_and_play_christmas',
-    title: "Biscuit's Pet & Play Christmas",
-    author: 'Alyssa Satin Capucilli',
-    category: 'story',
-    cover: '/covers/biscuits-pet-and-play-christmas.webp?v=5',
-    notes: 'A Touch & Feel Book • Festive holiday fun with Biscuit the puppy',
-    pages: []
-  },
-  {
-    id: 'christmas_pop_up_peekaboo',
-    title: 'Christmas Pop-Up Peekaboo!',
-    author: 'Unknown',
-    category: 'story',
-    cover: '/covers/christmas-pop-up-peekaboo.webp?v=5',
-    notes: 'DK Publishing • Pop-up surprise under every festive flap!',
-    pages: []
+  { 
+    id: 'this_little_reindeers_first_christmas', 
+    title: "This Little Reindeer's First Christmas", 
+    author: 'Emma Treehouse', 
+    category: 'story', 
+    cover: '/covers/this-little-reindeers-first-christmas.webp?v=6', 
+    notes: "Sweet holiday die-cut board book following a little reindeer's first Christmas", 
+    pages: [] 
+  }, 
+  { 
+    id: 'peace_on_earth', 
+    title: 'Peace on Earth', 
+    author: 'Jonny Marx', 
+    category: 'story', 
+    cover: '/covers/peace-on-earth.webp?v=5', 
+    notes: 'Illustrated by Lindsey Sagar • Heartwarming holiday storybook', 
+    pages: [] 
+  }, 
+  { 
+    id: 'biscuits_pet_and_play_christmas', 
+    title: "Biscuit's Pet & Play Christmas", 
+    author: 'Alyssa Satin Capucilli', 
+    category: 'story', 
+    cover: '/covers/biscuits-pet-and-play-christmas.webp?v=5', 
+    notes: 'A Touch & Feel Book • Festive holiday fun with Biscuit the puppy', 
+    pages: [] 
+  }, 
+  { 
+    id: 'christmas_pop_up_peekaboo', 
+    title: 'Christmas Pop-Up Peekaboo!', 
+    author: 'DK Publishing', 
+    category: 'story', 
+    cover: '/covers/christmas-pop-up-peekaboo.webp?v=5', 
+    notes: 'DK Publishing • Pop-up surprise under every festive flap!', 
+    pages: [] 
   },
   {
     id: 'the_twelve_days_of_christmas_brett',
@@ -360,10 +360,10 @@ const INITIAL_BOOKS = [
   {
     id: 'rudolph_helps_out',
     title: 'Rudolph the Red-Nosed Reindeer: Rudolph Helps Out',
-    author: 'Unknown',
+    author: 'Robert L. May',
     category: 'story',
     cover: '/covers/rudolph-helps-out.webp?v=5',
-    notes: 'Classic Rudolph holiday board book adventure',
+    notes: 'Character Arts / Bendon • Classic Rudolph holiday board book adventure',
     pages: []
   },
   {
@@ -378,19 +378,19 @@ const INITIAL_BOOKS = [
   {
     id: 'touch_and_feel_christmas',
     title: 'Touch and Feel Christmas',
-    author: 'Unknown',
+    author: 'Kim Huynh',
     category: 'story',
     cover: '/covers/touch-and-feel-christmas.webp?v=5',
-    notes: 'Shoebox Touch and Feel Holiday Board Book',
+    notes: 'Illustrated by Emi Ordas • Shoebox Touch and Feel Holiday Board Book',
     pages: []
   },
   {
     id: 'rudolph_wonderful_winter',
     title: 'Rudolph the Red-Nosed Reindeer: Wonderful Winter',
-    author: 'Unknown',
+    author: 'Katie Kobble',
     category: 'story',
     cover: '/covers/rudolph-wonderful-winter.webp?v=5',
-    notes: 'Classic Rudolph snowy winter board book',
+    notes: 'Illustrated by Bendon • Classic Rudolph snowy winter board book',
     pages: []
   },
   {
@@ -431,11 +431,11 @@ const INITIAL_BOOKS = [
   },
   {
     id: 'happy_day_christmas',
-    title: 'A Happy Day Book: Christmas',
-    author: 'Unknown',
+    title: 'Christmas Is... (A Happy Day Book)',
+    author: 'Sue Turner Hayes',
     category: 'story',
     cover: '/covers/happy-day-christmas.webp?v=5',
-    notes: "A Happy Day Book • Vintage holiday children's keepsake",
+    notes: 'Illustrated by Kathryn Hutton • Standard Publishing Happy Day Book',
     pages: []
   },
   {
@@ -600,10 +600,10 @@ const INITIAL_BOOKS = [
   {
     id: 'the_little_christmas_elf',
     title: 'The Little Christmas Elf',
-    author: 'Unknown',
+    author: 'Nikki Shannon Smith',
     category: 'story',
     cover: '/covers/the-little-christmas-elf.webp?v=5',
-    notes: 'A Little Golden Book • Classic holiday elf tale',
+    notes: 'Illustrated by Susan Mitchell • A Little Golden Book about Nina the elf',
     pages: []
   },
   {
@@ -627,10 +627,10 @@ const INITIAL_BOOKS = [
   {
     id: 'the_animals_christmas_eve',
     title: "The Animals' Christmas Eve",
-    author: 'Unknown',
+    author: 'Gale Wiersum',
     category: 'story',
     cover: '/covers/the-animals-christmas-eve.webp?v=5',
-    notes: 'A Little Golden Book Classic • Woodland and barnyard animals celebrate Christmas Eve',
+    notes: 'Illustrated by Alexandra Steele-Morgan • A Little Golden Book Classic',
     pages: []
   },
   {
@@ -646,10 +646,10 @@ const INITIAL_BOOKS = [
   {
     id: 'the_first_christmas_popup',
     title: 'The First Christmas: A Christmas Pop-up',
-    author: 'Unknown',
+    author: 'Landoll',
     category: 'story',
     cover: '/covers/the-first-christmas-popup.webp?v=5',
-    notes: 'Three-dimensional pop-up Nativity keepsake book',
+    notes: 'Landoll Pop-Up Edition (1995) • Three-dimensional pop-up Nativity keepsake book',
     pages: []
   },
   {
@@ -741,10 +741,10 @@ const INITIAL_BOOKS = [
   {
     id: 'the_bear_who_slept_through_christmas',
     title: 'The Bear Who Slept Through Christmas',
-    author: 'Unknown',
+    author: 'John Barrett',
     category: 'story',
     cover: '/covers/the-bear-who-slept-through-christmas.webp?v=5',
-    notes: "Ideals Publishing • Featuring Ted E. Bear's search for the true meaning of Christmas",
+    notes: 'Illustrated by Rick Reinert • Ideals Publishing • Ted E. Bear discovers Christmas',
     pages: []
   },
   {
@@ -759,10 +759,10 @@ const INITIAL_BOOKS = [
   {
     id: 'a_christmas_carol_popup',
     title: 'A Christmas Carol: A Christmas Pop-up',
-    author: 'Unknown',
+    author: 'Charles Dickens',
     category: 'story',
     cover: '/covers/a-christmas-carol-popup.webp?v=5',
-    notes: "Three-dimensional holiday pop-up adaptation of Charles Dickens' classic",
+    notes: 'Landoll Pop-Up Edition (1995) • Three-dimensional holiday pop-up adaptation',
     pages: []
   },
   {
@@ -777,12 +777,12 @@ const INITIAL_BOOKS = [
   {
     id: 'christmas_comes_to_monster_mountain',
     title: 'Christmas Comes to Monster Mountain',
-    author: 'Unknown',
+    author: 'John Barrett',
     category: 'story',
     cover: '/covers/christmas-comes-to-monster-mountain.webp?v=5',
     bonusPhoto: '/covers/christmas-comes-to-monster-mountain-bonus.webp?v=1',
     bonusCaption: 'Bonus Picture: Erin with “Santa in Jail” inside Christmas Comes to Monster Mountain!',
-    notes: 'Ideals Publishing • Featuring Ted E. Bear in a snowy mountain adventure',
+    notes: 'Illustrated by Rick Reinert • Ideals Publishing • Featuring Ted E. Bear',
     pages: [
       {
         id: 'monster_mountain_erin_bonus',
@@ -804,46 +804,46 @@ const INITIAL_BOOKS = [
   {
     id: 'christmas_joys',
     title: 'Christmas Joys',
-    author: 'Unknown',
+    author: 'Kathleen N. Daly',
     category: 'story',
     cover: '/covers/christmas-joys.webp?v=8',
-    notes: 'A Rand McNally Junior Elf Book (#8206 • 49¢) • Vintage holiday storybook',
+    notes: 'Illustrated by Mary McClain • A Rand McNally Junior Elf Book (#8206)',
     pages: []
   },
   {
     id: 'night_before_christmas_golden',
     title: 'The Night Before Christmas (Little Golden Book)',
-    author: 'Unknown',
+    author: 'Clement C. Moore',
     category: 'story',
     cover: '/covers/night-before-christmas-golden.webp?v=5',
-    notes: 'A Little Golden Book Vintage Edition',
+    notes: 'Illustrated by Corinne Malvern • A Little Golden Book Vintage Classic',
     pages: []
   },
   {
     id: 'jingle_bells_golden',
     title: 'Jingle Bells',
-    author: 'Unknown',
+    author: 'Kathleen N. Daly',
     category: 'story',
     cover: '/covers/jingle-bells-golden.webp?v=5',
-    notes: 'A Little Golden Book Vintage Edition (#58-31) • Festive sleigh ride adventure',
+    notes: 'Illustrated by J.P. Miller • A Little Golden Book Vintage Edition (#58-31)',
     pages: []
   },
   {
     id: 'rudolph_little_golden_book',
     title: 'Rudolph the Red-Nosed Reindeer (Little Golden Book)',
-    author: 'Unknown',
+    author: 'Barbara Shook Hazen & Robert L. May',
     category: 'story',
     cover: '/covers/rudolph-little-golden-book.webp?v=5',
-    notes: 'A Little Golden Book Vintage Edition (#331 • 29¢)',
+    notes: 'Illustrated by Richard Scarry • A Little Golden Book Vintage Classic (#331)',
     pages: []
   },
   {
     id: 'the_snowman_golden',
-    title: 'The Snowman',
-    author: 'Unknown',
+    title: 'Frosty the Snow Man',
+    author: 'Annie North Bedford',
     category: 'story',
     cover: '/covers/the-snowman-golden.webp?v=5',
-    notes: 'A Little Golden Book (#00451) • Magical winter snowman story',
+    notes: 'Illustrated by Corinne Malvern • Little Golden Book (#451-09) • Adapted from Steve Nelson & Jack Rollins',
     pages: []
   },
   {
@@ -887,21 +887,21 @@ const INITIAL_BOOKS = [
   {
     id: 'twelve_days_of_christmas_golden',
     title: 'The Twelve Days of Christmas: A Christmas Carol',
-    author: 'Unknown',
+    author: 'Traditional',
     category: 'story',
     cover: '/covers/twelve-days-of-christmas-golden.webp?v=5',
-    notes: 'A Little Golden Book (#454-09) • Classic illustrated carol',
+    notes: 'Illustrated by Mike Eagle • A Little Golden Book (#454-09) • Classic illustrated carol',
     pages: []
   },
   {
     id: 'jolly_old_santa_claus_ideals',
     title: 'Jolly Old Santa Claus (Ideals)',
-    author: 'Unknown',
+    author: 'Alice Leedy Mason',
     category: 'story',
     isMagazine: true,
     badge: 'Vintage Holiday Magazine',
     cover: '/covers/jolly-old-santa-claus-ideals.webp?v=7',
-    notes: 'Vintage Holiday Magazine • Ideals Publishing ($2.50 Issue) • Illustrated holiday poetry, stories, and nostalgia',
+    notes: 'Illustrated by George Hinke • Vintage Ideals Good Friends Issue ($2.50)',
     pages: []
   },
   {
@@ -944,10 +944,10 @@ const INITIAL_BOOKS = [
   {
     id: 'the_santa_claus_book_golden_shape',
     title: 'The Santa Claus Book',
-    author: 'Unknown',
+    author: 'Eileen Daly',
     category: 'story',
     cover: '/covers/the-santa-claus-book-golden-shape.webp?v=5',
-    notes: 'A Golden Shape Book (#5920) • Vintage die-cut Santa Claus storybook',
+    notes: 'Illustrated by Florence Sarah Winship • A Golden Shape Book (#5920)',
     pages: []
   },
   {
@@ -1115,10 +1115,10 @@ const INITIAL_BOOKS = [
   {
     id: 'reindeer_of_the_year_sequins',
     title: 'Reindeer of the Year',
-    author: 'Unknown',
+    author: 'Rosie Greening',
     category: 'story',
     cover: '/covers/reindeer-of-the-year.webp?v=5',
-    notes: 'With two-way reversible sequins! • Interactive holiday board book',
+    notes: 'Illustrated by Stuart Lynch • Make Believe Ideas • Interactive two-way sequins',
     pages: []
   },
   // Family Cookbooks & Keepsakes
@@ -1283,6 +1283,8 @@ export default function App() {
         upgraded.push({
           ...fresh,
           ...b,
+          author: b.author && b.author !== 'Unknown' ? b.author : fresh.author,
+          title: b.title && b.title !== 'Unknown' ? b.title : fresh.title,
           id: fresh.id,
           cover: hasCustomUploadedCover ? b.cover : fresh.cover,
           pages: fresh.pages && fresh.pages.length > 0 ? fresh.pages : b.pages || [],
