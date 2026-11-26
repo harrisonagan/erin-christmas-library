@@ -21,9 +21,12 @@ import ReaderModal from './components/ReaderModal';
 import AddBookModal from './components/AddBookModal';
 import CloudBackupModal from './components/CloudBackupModal';
 import CookbookView from './components/CookbookView';
-import SantaScrapbookView, { SANTA_SCRAPBOOK_PAGES } from './components/SantaScrapbookView';
+import SantaScrapbookView, {
+  SANTA_SCRAPBOOK_PAGES,
+  ERIN_KATE_SANTA_PAGES,
+} from './components/SantaScrapbookView';
 
-// Curated Authentic Family Christmas Library (Family Collection + Santa Scrapbook)
+// Curated Authentic Family Christmas Library (Family Collection + Santa Scrapbooks)
 const INITIAL_BOOKS = [
   {
     id: 'album_santa',
@@ -34,6 +37,20 @@ const INITIAL_BOOKS = [
     notes: '14 years of family Santa photos in chronological order (2012–2025) with festive borders, years, handwritten notes & bonus holiday snapshots! 🎅✨',
     pages: SANTA_SCRAPBOOK_PAGES.map((p, idx) => ({
       id: `santa_page_${p.year}`,
+      pageNumber: idx + 1,
+      image: p.mainPhoto,
+      caption: `${p.year} — ${p.title}: ${p.handwrittenNote}`,
+    })),
+  },
+  {
+    id: 'album_erin_kate_santa',
+    title: 'Erin & Kate Seeing Santa (1998–2007)',
+    author: 'Childhood Christmas Album',
+    category: 'album',
+    cover: '/covers/erin-kate-santa-cover.webp?v=1',
+    notes: '10 years of childhood Christmas memories of Erin & her sister Kate visiting Santa at Traverse City Mall (1998–2007), complete with handwritten Kodak photo backs! 🎄🎅',
+    pages: ERIN_KATE_SANTA_PAGES.map((p, idx) => ({
+      id: `erin_kate_santa_${p.year}`,
       pageNumber: idx + 1,
       image: p.mainPhoto,
       caption: `${p.year} — ${p.title}: ${p.handwrittenNote}`,
@@ -1263,7 +1280,11 @@ export default function App() {
         continue;
       }
 
-      if (fresh.id === 'cookbook_erin' || fresh.id === 'album_santa') {
+      if (
+        fresh.id === 'cookbook_erin' ||
+        fresh.id === 'album_santa' ||
+        fresh.id === 'album_erin_kate_santa'
+      ) {
         upgraded.push({
           ...b,
           ...fresh,
@@ -1336,6 +1357,7 @@ export default function App() {
   const [isCookbookOpen, setIsCookbookOpen] = useState(false);
   const [cookbookInitialRecipe, setCookbookInitialRecipe] = useState(null);
   const [isSantaScrapbookOpen, setIsSantaScrapbookOpen] = useState(false);
+  const [isErinKateAlbumOpen, setIsErinKateAlbumOpen] = useState(false);
 
   // Always default filter to 'all' when entering or returning to the bookshelf page
   useEffect(() => {
@@ -1354,6 +1376,9 @@ export default function App() {
         if (match && match[1]) {
           setCookbookInitialRecipe(decodeURIComponent(match[1]));
         }
+      } else if (hash.includes('erin-kate-santa')) {
+        setIsAtBookshelf(true);
+        setIsErinKateAlbumOpen(true);
       } else if (hash.includes('santa')) {
         setIsAtBookshelf(true);
         setIsSantaScrapbookOpen(true);
@@ -2073,6 +2098,28 @@ export default function App() {
                               </button>
                             </div>
                           </div>
+                        ) : selectedBook.id === 'album_erin_kate_santa' ? (
+                          <div className="w-full flex flex-col gap-2.5">
+                            <button
+                              onClick={() => {
+                                setIsErinKateAlbumOpen(true);
+                                setSelectedBook(null);
+                                window.location.hash = '#/erin-kate-santa';
+                              }}
+                              className="w-full py-4 px-6 bg-gradient-to-r from-emerald-900 via-emerald-800 to-amber-700 hover:from-emerald-800 hover:to-amber-600 text-amber-50 rounded-2xl text-sm font-semibold shadow-[0_10px_25px_rgba(6,95,70,0.5)] border border-amber-400/50 transition-all flex items-center justify-center gap-2.5 transform active:scale-95"
+                            >
+                              <span className="text-xl">🎄</span>
+                              <span className="font-bold">Open Erin & Kate Santa Album (1998–2007)</span>
+                            </button>
+                            <div className="flex items-center justify-center gap-4 text-xs font-sans text-stone-400 pt-1">
+                              <button
+                                onClick={() => setIsReaderOpen(true)}
+                                className="hover:text-amber-200 underline"
+                              >
+                                View Classic Page Flip
+                              </button>
+                            </div>
+                          </div>
                         ) : selectedBook.id === 'cookbook_erin' ? (
                           <div className="w-full flex flex-col gap-2.5">
                             <button
@@ -2235,6 +2282,26 @@ export default function App() {
               setIsSantaScrapbookOpen(false);
               setActiveFilter('all');
               if (window.location.hash.includes('santa')) {
+                window.history.pushState(null, '', window.location.pathname + window.location.search);
+              }
+            }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Dedicated Interactive Erin & Kate Childhood Santa Album View (#/erin-kate-santa) */}
+      <AnimatePresence>
+        {isErinKateAlbumOpen && (
+          <SantaScrapbookView
+            pages={ERIN_KATE_SANTA_PAGES}
+            albumTitle="Erin & Kate Seeing Santa (1998–2007)"
+            albumSubtitle="1998 – 2007 • Traverse City Mall Childhood Christmas Memories"
+            kickerText="✦ Childhood Holiday Keepsake ✦"
+            coverTheme="evergreen"
+            onClose={() => {
+              setIsErinKateAlbumOpen(false);
+              setActiveFilter('all');
+              if (window.location.hash.includes('erin-kate-santa')) {
                 window.history.pushState(null, '', window.location.pathname + window.location.search);
               }
             }}

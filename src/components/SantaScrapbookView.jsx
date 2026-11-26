@@ -210,6 +210,150 @@ export const SANTA_SCRAPBOOK_PAGES = [
   },
 ];
 
+export const ERIN_KATE_SANTA_PAGES = [
+  {
+    year: 1998,
+    title: 'Overalls & Holiday Smiles',
+    subtitle: 'Erin & Kate with Santa',
+    location: 'Traverse City Mall • December 1998',
+    handwrittenNote: 'Traverse City Mall • December 1998 — Erin & Kate in denim overalls with Santa!',
+    theme: 'evergreen',
+    sticker: '🎄 Traverse City Mall',
+    mainPhoto: assetUrl('erin-kate-santa/erin-kate-1998.webp?v=1'),
+    orientation: 'portrait',
+    bonusPhotos: [
+      {
+        src: assetUrl('erin-kate-santa/erin-kate-1998-back.webp?v=1'),
+        caption: 'Back of Print: “Traverse City Mall December 1998”',
+        label: '✍️ PHOTO BACK',
+        tilt: '-2deg',
+      },
+    ],
+  },
+  {
+    year: 1999,
+    title: 'Candy Cane Frame & Ribbon Bow',
+    subtitle: 'Erin & Kate with Santa',
+    location: 'Traverse City Mall • December 1999',
+    handwrittenNote: 'Traverse City Mall • December 1999 — Framed with a festive candy cane & red bow',
+    theme: 'crimson',
+    sticker: '🍬 Candy Cane Keepsake',
+    mainPhoto: assetUrl('erin-kate-santa/erin-kate-1999.webp?v=1'),
+    orientation: 'portrait',
+    bonusPhotos: [
+      {
+        src: assetUrl('erin-kate-santa/erin-kate-1999-back.webp?v=1'),
+        caption: 'Back of Print: “Traverse City Mall December 1999”',
+        label: '✍️ PHOTO BACK',
+        tilt: '2deg',
+      },
+    ],
+  },
+  {
+    year: 2000,
+    title: 'Christmas Bells & Poinsettias',
+    subtitle: 'Sharing a Laugh with Santa',
+    location: 'Traverse City Mall • Dec 8, 2000',
+    handwrittenNote: 'Traverse City Mall • Dec 8, 2000 — Matching orange tops & holiday bells',
+    theme: 'evergreen',
+    sticker: '🔔 December 8, 2000',
+    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2000.webp?v=1'),
+    orientation: 'portrait',
+    bonusPhotos: [
+      {
+        src: assetUrl('erin-kate-santa/erin-kate-2000-back.webp?v=1'),
+        caption: 'Back of Print: “Traverse City Mall Dec 8, 2000”',
+        label: '✍️ PHOTO BACK',
+        tilt: '-2deg',
+      },
+    ],
+  },
+  {
+    year: 2001,
+    title: 'Happy Holidays Oval Portrait',
+    subtitle: 'Erin & Kate with Santa',
+    location: 'Traverse City Mall',
+    handwrittenNote: '2001 • “Happy Holidays” gold oval frame with twinkling Christmas lights',
+    theme: 'gold',
+    sticker: '✨ Happy Holidays 2001',
+    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2001.webp?v=1'),
+    orientation: 'portrait',
+    bonusPhotos: [],
+  },
+  {
+    year: 2002,
+    title: 'Season’s Greetings in Gold',
+    subtitle: 'Erin & Kate with Santa',
+    location: 'Traverse City Mall',
+    handwrittenNote: '2002 • Season’s Greetings gold-framed portrait in Santa’s velvet chair',
+    theme: 'gold',
+    sticker: '🌟 Season’s Greetings',
+    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2002.webp?v=1'),
+    orientation: 'portrait',
+    bonusPhotos: [],
+  },
+  {
+    year: 2003,
+    title: 'Holiday Plaid & Holly Ribbon',
+    subtitle: 'Erin & Kate with Santa',
+    location: 'Traverse City Mall',
+    handwrittenNote: '2003 • Festive tartan plaid border & golden Season’s Greetings script',
+    theme: 'crimson',
+    sticker: '🎀 Tartan Plaid 2003',
+    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2003.webp?v=1'),
+    orientation: 'portrait',
+    bonusPhotos: [],
+  },
+  {
+    year: 2004,
+    title: 'Evergreen Wreath & Holiday Cast',
+    subtitle: 'Erin & Kate with Santa',
+    location: 'Traverse City Mall',
+    handwrittenNote: '2004 • Framed in evergreen boughs & red berries (complete with a decorated arm cast!)',
+    theme: 'evergreen',
+    sticker: '🌲 Evergreen Frame',
+    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2004.webp?v=1'),
+    orientation: 'portrait',
+    bonusPhotos: [],
+  },
+  {
+    year: 2005,
+    title: 'Christmas 2005 Tradition',
+    subtitle: 'Erin & Kate with Santa',
+    location: 'Traverse City Mall',
+    handwrittenNote: 'Christmas 2005 • Growing up fast but keeping the annual Santa tradition alive',
+    theme: 'gold',
+    sticker: '🎄 Christmas 2005',
+    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2005.webp?v=1'),
+    orientation: 'portrait',
+    bonusPhotos: [],
+  },
+  {
+    year: 2006,
+    title: 'Holiday Garland & Red Bow',
+    subtitle: 'Erin & Kate with Santa',
+    location: 'Traverse City Mall',
+    handwrittenNote: '2006 • All smiles with Santa & ornaments on the evergreen garland',
+    theme: 'crimson',
+    sticker: '🎀 Christmas 2006',
+    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2006.webp?v=1'),
+    orientation: 'portrait',
+    bonusPhotos: [],
+  },
+  {
+    year: 2007,
+    title: 'A Decade of Santa Memories',
+    subtitle: 'Erin & Kate with Santa',
+    location: 'Traverse City Mall',
+    handwrittenNote: '2007 • Ten years of Erin & Kate visiting Santa together (1998–2007)!',
+    theme: 'evergreen',
+    sticker: '🎅 10 Years of Memories',
+    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2007.webp?v=1'),
+    orientation: 'portrait',
+    bonusPhotos: [],
+  },
+];
+
 const THEME_STYLES = {
   crimson: {
     outerBorder: 'from-[#7f131b] via-[#5e0c13] to-[#3f070c]',
@@ -318,9 +462,9 @@ function BonusPolaroidCard({ bonus, year, onZoom }) {
       className="group relative cursor-zoom-in bg-[#fcf9f2] p-2 sm:p-2.5 pb-3 rounded-xl shadow-[0_10px_24px_rgba(0,0,0,0.75)] border border-[#e2d6b5] hover:rotate-0 hover:scale-[1.03] transition-all duration-300 max-w-[210px] sm:max-w-[230px] w-full mx-auto"
     >
       {/* Festive Red & Gold Washi Tape at Top */}
-      <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-20 h-4 bg-gradient-to-r from-red-800/85 via-amber-500/80 to-red-800/85 rounded-sm shadow-sm border border-amber-200/40 rotate-[-1.5deg] flex items-center justify-center pointer-events-none">
+      <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-24 h-4 bg-gradient-to-r from-red-800/85 via-amber-500/80 to-red-800/85 rounded-sm shadow-sm border border-amber-200/40 rotate-[-1.5deg] flex items-center justify-center pointer-events-none">
         <span className="text-[8px] font-mono uppercase tracking-widest text-amber-100 font-bold">
-          ★ SNAPSHOT ★
+          {bonus.label || '★ SNAPSHOT ★'}
         </span>
       </div>
 
@@ -437,15 +581,22 @@ function ScrapbookSpread({ page, pageIndex, totalPages, onZoom }) {
   );
 }
 
-export default function SantaScrapbookView({ onClose }) {
+export default function SantaScrapbookView({
+  onClose,
+  pages = SANTA_SCRAPBOOK_PAGES,
+  albumTitle = 'Pictures with Santa (2012–2025)',
+  albumSubtitle = '2012 – 2025 • In Chronological Order with Bonus Family Memories',
+  kickerText = '✦ Agan Family Holiday Keepsake ✦',
+  coverTheme = 'crimson',
+}) {
   const [viewStyle, setViewStyle] = useState('flipbook'); // 'flipbook' | 'all'
   const [currentIndex, setCurrentIndex] = useState(0);
   const [turnDirection, setTurnDirection] = useState(1); // 1 = turning forward (right-to-left), -1 = turning back (left-to-right)
   const [flipTick, setFlipTick] = useState(0);
   const [zoomedItem, setZoomedItem] = useState(null);
 
-  const currentPage = SANTA_SCRAPBOOK_PAGES[currentIndex];
-  const totalPages = SANTA_SCRAPBOOK_PAGES.length;
+  const currentPage = pages[currentIndex] || pages[0];
+  const totalPages = pages.length;
 
   // Turn to a specific page index:
   // Always animates as a single page turn in the appropriate direction directly to the target year
@@ -536,7 +687,7 @@ export default function SantaScrapbookView({ onClose }) {
             <div>
               <h1 className="text-sm sm:text-base font-serif font-bold text-amber-100 flex items-center gap-1.5">
                 <span>🎅</span>
-                <span>Pictures with Santa (2012–2025)</span>
+                <span>{albumTitle}</span>
               </h1>
             </div>
           </div>
@@ -594,7 +745,7 @@ export default function SantaScrapbookView({ onClose }) {
           <div className="relative w-full">
             {/* Physical Book Top Year Index Tabs */}
             <div className="max-w-3xl mx-auto px-2 sm:px-4 flex items-end gap-1 overflow-x-auto no-scrollbar pt-0.5">
-              {SANTA_SCRAPBOOK_PAGES.map((p, idx) => {
+              {pages.map((p, idx) => {
                 const isActive = idx === currentIndex;
                 const hasBonus = p.bonusPhotos && p.bonusPhotos.length > 0;
                 return (
@@ -603,7 +754,9 @@ export default function SantaScrapbookView({ onClose }) {
                     onClick={() => navigateToPage(idx)}
                     className={`relative px-2.5 sm:px-3 py-1 rounded-t-lg text-[11px] sm:text-xs font-serif font-bold transition-all flex items-center gap-1 flex-shrink-0 border-t-2 border-x-2 ${
                       isActive
-                        ? 'bg-gradient-to-b from-[#8b151e] via-[#680e15] to-[#271911] border-[#f3d47c] text-[#fff3c4] shadow-[0_-3px_10px_rgba(212,175,55,0.35)] -mb-0.5 pb-1.5 z-20 scale-105'
+                        ? coverTheme === 'evergreen'
+                          ? 'bg-gradient-to-b from-[#165333] via-[#0e3822] to-[#271911] border-[#f3d47c] text-[#fff3c4] shadow-[0_-3px_10px_rgba(212,175,55,0.35)] -mb-0.5 pb-1.5 z-20 scale-105'
+                          : 'bg-gradient-to-b from-[#8b151e] via-[#680e15] to-[#271911] border-[#f3d47c] text-[#fff3c4] shadow-[0_-3px_10px_rgba(212,175,55,0.35)] -mb-0.5 pb-1.5 z-20 scale-105'
                         : 'bg-[#1b110c] hover:bg-[#2a1a12] border-amber-900/60 text-amber-200/70 hover:text-amber-100'
                     }`}
                     title={`Flip to ${p.year}`}
@@ -616,7 +769,13 @@ export default function SantaScrapbookView({ onClose }) {
             </div>
 
             {/* 3D Hardcover Leather Book Chassis (Compact so the entire book fits in viewport) */}
-            <div className="relative max-w-3xl mx-auto p-2 sm:p-3 rounded-2xl bg-gradient-to-br from-[#540c12] via-[#38070b] to-[#210306] border-2 border-[#d4af37]/75 shadow-[0_20px_55px_rgba(0,0,0,0.95),inset_0_2px_5px_rgba(255,255,255,0.2)]">
+            <div
+              className={`relative max-w-3xl mx-auto p-2 sm:p-3 rounded-2xl bg-gradient-to-br ${
+                coverTheme === 'evergreen'
+                  ? 'from-[#14472c] via-[#0c2f1c] to-[#06180e]'
+                  : 'from-[#540c12] via-[#38070b] to-[#210306]'
+              } border-2 border-[#d4af37]/75 shadow-[0_20px_55px_rgba(0,0,0,0.95),inset_0_2px_5px_rgba(255,255,255,0.2)]`}
+            >
               {/* Outer Gold-Tooled Leather Hardcover Trim */}
               <div className="relative rounded-xl border border-[#d4af37]/40 p-1 sm:p-1.5 bg-[#140a06]">
                 {/* Left Stacked Turned Page Edges */}
@@ -707,7 +866,7 @@ export default function SantaScrapbookView({ onClose }) {
                 <span>←</span>
                 <span>
                   {currentIndex > 0
-                    ? `Back (${SANTA_SCRAPBOOK_PAGES[currentIndex - 1].year})`
+                    ? `Back (${pages[currentIndex - 1].year})`
                     : 'Start'}
                 </span>
               </button>
@@ -725,7 +884,7 @@ export default function SantaScrapbookView({ onClose }) {
               >
                 <span>
                   {currentIndex < totalPages - 1
-                    ? `Next (${SANTA_SCRAPBOOK_PAGES[currentIndex + 1].year})`
+                    ? `Next (${pages[currentIndex + 1].year})`
                     : 'End'}
                 </span>
                 <span>→</span>
@@ -735,19 +894,25 @@ export default function SantaScrapbookView({ onClose }) {
         ) : (
           <div className="space-y-12">
             {/* Cover Title Card in All-Years Mode */}
-            <div className="text-center py-8 px-6 rounded-3xl bg-gradient-to-b from-[#3b090e] to-[#1a0507] border-2 border-[#d4af37]/70 shadow-2xl">
+            <div
+              className={`text-center py-8 px-6 rounded-3xl bg-gradient-to-b ${
+                coverTheme === 'evergreen'
+                  ? 'from-[#113d25] to-[#071a0f]'
+                  : 'from-[#3b090e] to-[#1a0507]'
+              } border-2 border-[#d4af37]/70 shadow-2xl`}
+            >
               <p className="text-xs font-mono uppercase tracking-[0.3em] text-amber-300 mb-2">
-                ✦ Agan Family Holiday Keepsake ✦
+                {kickerText}
               </p>
               <h2 className="text-3xl sm:text-5xl font-serif font-bold text-white mb-2">
-                Pictures with Santa
+                {albumTitle}
               </h2>
               <p className="text-base sm:text-lg font-serif italic text-amber-200">
-                2012 – 2025 • In Chronological Order with Bonus Family Memories
+                {albumSubtitle}
               </p>
             </div>
 
-            {SANTA_SCRAPBOOK_PAGES.map((page, idx) => (
+            {pages.map((page, idx) => (
               <div key={page.year} id={`santa-year-${page.year}`} className="scroll-mt-28">
                 <ScrapbookSpread
                   page={page}
