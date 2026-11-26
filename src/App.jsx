@@ -30,10 +30,10 @@ import SantaScrapbookView, {
 const INITIAL_BOOKS = [
   {
     id: 'album_santa',
-    title: 'Pictures with Santa (2012–2025)',
-    author: 'Agan Family Scrapbook',
+    title: 'Pictures with Santa',
+    author: 'Rowan, Elouise, Solomon, Maeve, and Atley',
     category: 'album',
-    cover: '/covers/santa-scrapbook-cover.webp?v=2',
+    cover: '/covers/santa-scrapbook-cover.webp?v=3',
     notes: '14 years of family Santa photos in chronological order (2012–2025) with festive borders, years, handwritten notes & bonus holiday snapshots! 🎅✨',
     pages: SANTA_SCRAPBOOK_PAGES.map((p, idx) => ({
       id: `santa_page_${p.year}`,
@@ -44,10 +44,10 @@ const INITIAL_BOOKS = [
   },
   {
     id: 'album_erin_kate_santa',
-    title: 'Erin & Kate Seeing Santa (1998–2007)',
-    author: 'Childhood Christmas Album',
+    title: 'Pictures with Santa',
+    author: 'Erin and Kate',
     category: 'album',
-    cover: '/covers/erin-kate-santa-cover.webp?v=1',
+    cover: '/covers/erin-kate-santa-cover.webp?v=2',
     notes: '10 years of childhood Christmas memories of Erin & her sister Kate visiting Santa at Traverse City Mall (1998–2007), complete with handwritten Kodak photo backs! 🎄🎅',
     pages: ERIN_KATE_SANTA_PAGES.map((p, idx) => ({
       id: `erin_kate_santa_${p.year}`,
@@ -1246,7 +1246,9 @@ export default function App() {
   const compareBookTitles = (a, b) => {
     const cleanA = (a?.title || '').replace(/^[^a-zA-Z0-9]+/, '').trim();
     const cleanB = (b?.title || '').replace(/^[^a-zA-Z0-9]+/, '').trim();
-    return cleanA.localeCompare(cleanB, undefined, { numeric: true, sensitivity: 'base' });
+    const titleCmp = cleanA.localeCompare(cleanB, undefined, { numeric: true, sensitivity: 'base' });
+    if (titleCmp !== 0) return titleCmp;
+    return (a?.author || '').localeCompare(b?.author || '', undefined, { numeric: true, sensitivity: 'base' });
   };
 
   const upgradeBuiltInBooks = (list) => {
@@ -1950,7 +1952,11 @@ export default function App() {
 
                           <div className="flex items-center justify-center md:justify-start gap-2.5 mb-4">
                             <p className="text-stone-300 text-sm sm:text-base font-sans font-medium">
-                              By <span className="text-amber-200">{selectedBook.author || 'Unknown'}</span>
+                              {selectedBook.category === 'album' ? (
+                                <span className="text-amber-200">{selectedBook.author}</span>
+                              ) : (
+                                <>By <span className="text-amber-200">{selectedBook.author || 'Unknown'}</span></>
+                              )}
                             </p>
                             <button
                               onClick={() => setIsEditingBook(true)}
@@ -2278,6 +2284,10 @@ export default function App() {
       <AnimatePresence>
         {isSantaScrapbookOpen && (
           <SantaScrapbookView
+            albumTitle="Pictures with Santa"
+            albumKids="Rowan, Elouise, Solomon, Maeve, and Atley"
+            albumSubtitle="Rowan, Elouise, Solomon, Maeve, and Atley • 2012 – 2025"
+            kickerText="✦ Agan Family Holiday Keepsake ✦"
             onClose={() => {
               setIsSantaScrapbookOpen(false);
               setActiveFilter('all');
@@ -2294,8 +2304,9 @@ export default function App() {
         {isErinKateAlbumOpen && (
           <SantaScrapbookView
             pages={ERIN_KATE_SANTA_PAGES}
-            albumTitle="Erin & Kate Seeing Santa (1998–2007)"
-            albumSubtitle="1998 – 2007 • Traverse City Mall Childhood Christmas Memories"
+            albumTitle="Pictures with Santa"
+            albumKids="Erin and Kate"
+            albumSubtitle="Erin and Kate • 1998 – 2007 • Traverse City Mall"
             kickerText="✦ Childhood Holiday Keepsake ✦"
             coverTheme="evergreen"
             onClose={() => {

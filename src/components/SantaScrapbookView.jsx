@@ -584,8 +584,9 @@ function ScrapbookSpread({ page, pageIndex, totalPages, onZoom }) {
 export default function SantaScrapbookView({
   onClose,
   pages = SANTA_SCRAPBOOK_PAGES,
-  albumTitle = 'Pictures with Santa (2012–2025)',
-  albumSubtitle = '2012 – 2025 • In Chronological Order with Bonus Family Memories',
+  albumTitle = 'Pictures with Santa',
+  albumKids = 'Rowan, Elouise, Solomon, Maeve, and Atley',
+  albumSubtitle = 'Rowan, Elouise, Solomon, Maeve, and Atley • 2012 – 2025',
   kickerText = '✦ Agan Family Holiday Keepsake ✦',
   coverTheme = 'crimson',
 }) {
@@ -685,10 +686,15 @@ export default function SantaScrapbookView({
             </button>
             <div className="hidden sm:block h-4 w-px bg-stone-800" />
             <div>
-              <h1 className="text-sm sm:text-base font-serif font-bold text-amber-100 flex items-center gap-1.5">
+              <h1 className="text-sm sm:text-base font-serif font-bold text-amber-100 flex items-center gap-1.5 leading-tight">
                 <span>🎅</span>
                 <span>{albumTitle}</span>
               </h1>
+              {albumKids && (
+                <p className="text-[11px] font-serif italic text-amber-200/80 leading-tight pl-5">
+                  {albumKids}
+                </p>
+              )}
             </div>
           </div>
 

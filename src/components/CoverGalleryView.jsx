@@ -130,11 +130,11 @@ export default function CoverGalleryView({ books = [], onSelectBook, onAddBook, 
                 )}
               </div>
 
-              {/* Title & Author */}
-              <h3 className="mt-3 text-xs font-serif font-bold text-amber-100 text-center line-clamp-1 max-w-[155px] group-hover:text-amber-300 transition">
+              {/* Title & Author / Kids Line */}
+              <h3 className="mt-3 text-xs font-serif font-bold text-amber-100 text-center line-clamp-1 max-w-[165px] group-hover:text-amber-300 transition">
                 {book.title}
               </h3>
-              <p className="text-[11px] text-amber-200/50 text-center line-clamp-1">
+              <p className="text-[11px] text-amber-200/65 text-center line-clamp-2 max-w-[165px] leading-snug">
                 {book.author || 'Unknown'}
               </p>
 

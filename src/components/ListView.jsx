@@ -99,7 +99,9 @@ export default function ListView({ books = [], onSelectBook, onDeleteBook, activ
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-amber-200/60 font-sans">By {book.author || 'Unknown'}</p>
+                  <p className="text-xs text-amber-200/60 font-sans">
+                    {book.category === 'album' ? book.author : `By ${book.author || 'Unknown'}`}
+                  </p>
                   {book.notes && (
                     <p className="text-[11px] text-amber-300/80 italic mt-1 font-serif line-clamp-2">"{book.notes}"</p>
                   )}
