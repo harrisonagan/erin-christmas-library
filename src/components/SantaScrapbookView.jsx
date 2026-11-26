@@ -218,13 +218,13 @@ export const ERIN_KATE_SANTA_PAGES = [
     location: 'Traverse City Mall • December 1998',
     handwrittenNote: 'Traverse City Mall • December 1998 — Erin & Kate in denim overalls with Santa!',
     theme: 'evergreen',
-    sticker: '🎄 Traverse City Mall',
-    mainPhoto: assetUrl('erin-kate-santa/erin-kate-1998.webp?v=1'),
+    sticker: null,
+    mainPhoto: assetUrl('erin-kate-santa/erin-kate-1998.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [
       {
-        src: assetUrl('erin-kate-santa/erin-kate-1998-back.webp?v=1'),
-        caption: 'Back of Print: “Traverse City Mall December 1998”',
+        src: assetUrl('erin-kate-santa/erin-kate-1998-back.webp?v=2'),
+        caption: 'Back of Print: Traverse City Mall • December 1998',
         label: '✍️ PHOTO BACK',
         tilt: '-2deg',
       },
@@ -237,13 +237,13 @@ export const ERIN_KATE_SANTA_PAGES = [
     location: 'Traverse City Mall • December 1999',
     handwrittenNote: 'Traverse City Mall • December 1999 — Framed with a festive candy cane & red bow',
     theme: 'crimson',
-    sticker: '🍬 Candy Cane Keepsake',
-    mainPhoto: assetUrl('erin-kate-santa/erin-kate-1999.webp?v=1'),
+    sticker: null,
+    mainPhoto: assetUrl('erin-kate-santa/erin-kate-1999.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [
       {
-        src: assetUrl('erin-kate-santa/erin-kate-1999-back.webp?v=1'),
-        caption: 'Back of Print: “Traverse City Mall December 1999”',
+        src: assetUrl('erin-kate-santa/erin-kate-1999-back.webp?v=2'),
+        caption: 'Back of Print: Traverse City Mall • December 1999',
         label: '✍️ PHOTO BACK',
         tilt: '2deg',
       },
@@ -256,13 +256,13 @@ export const ERIN_KATE_SANTA_PAGES = [
     location: 'Traverse City Mall • Dec 8, 2000',
     handwrittenNote: 'Traverse City Mall • Dec 8, 2000 — Matching orange tops & holiday bells',
     theme: 'evergreen',
-    sticker: '🔔 December 8, 2000',
-    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2000.webp?v=1'),
+    sticker: null,
+    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2000.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [
       {
-        src: assetUrl('erin-kate-santa/erin-kate-2000-back.webp?v=1'),
-        caption: 'Back of Print: “Traverse City Mall Dec 8, 2000”',
+        src: assetUrl('erin-kate-santa/erin-kate-2000-back.webp?v=2'),
+        caption: 'Back of Print: Traverse City Mall • Dec 8, 2000',
         label: '✍️ PHOTO BACK',
         tilt: '-2deg',
       },
@@ -275,8 +275,8 @@ export const ERIN_KATE_SANTA_PAGES = [
     location: 'Traverse City Mall',
     handwrittenNote: '2001 • “Happy Holidays” gold oval frame with twinkling Christmas lights',
     theme: 'gold',
-    sticker: '✨ Happy Holidays 2001',
-    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2001.webp?v=1'),
+    sticker: null,
+    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2001.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [],
   },
@@ -287,8 +287,8 @@ export const ERIN_KATE_SANTA_PAGES = [
     location: 'Traverse City Mall',
     handwrittenNote: '2002 • Season’s Greetings gold-framed portrait in Santa’s velvet chair',
     theme: 'gold',
-    sticker: '🌟 Season’s Greetings',
-    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2002.webp?v=1'),
+    sticker: null,
+    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2002.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [],
   },
@@ -299,8 +299,8 @@ export const ERIN_KATE_SANTA_PAGES = [
     location: 'Traverse City Mall',
     handwrittenNote: '2003 • Festive tartan plaid border & golden Season’s Greetings script',
     theme: 'crimson',
-    sticker: '🎀 Tartan Plaid 2003',
-    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2003.webp?v=1'),
+    sticker: null,
+    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2003.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [],
   },
@@ -311,8 +311,8 @@ export const ERIN_KATE_SANTA_PAGES = [
     location: 'Traverse City Mall',
     handwrittenNote: '2004 • Framed in evergreen boughs & red berries (complete with a decorated arm cast!)',
     theme: 'evergreen',
-    sticker: '🌲 Evergreen Frame',
-    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2004.webp?v=1'),
+    sticker: null,
+    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2004.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [],
   },
@@ -323,8 +323,8 @@ export const ERIN_KATE_SANTA_PAGES = [
     location: 'Traverse City Mall',
     handwrittenNote: 'Christmas 2005 • Growing up fast but keeping the annual Santa tradition alive',
     theme: 'gold',
-    sticker: '🎄 Christmas 2005',
-    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2005.webp?v=1'),
+    sticker: null,
+    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2005.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [],
   },
@@ -335,8 +335,8 @@ export const ERIN_KATE_SANTA_PAGES = [
     location: 'Traverse City Mall',
     handwrittenNote: '2006 • All smiles with Santa & ornaments on the evergreen garland',
     theme: 'crimson',
-    sticker: '🎀 Christmas 2006',
-    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2006.webp?v=1'),
+    sticker: null,
+    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2006.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [],
   },
@@ -347,8 +347,8 @@ export const ERIN_KATE_SANTA_PAGES = [
     location: 'Traverse City Mall',
     handwrittenNote: '2007 • Ten years of Erin & Kate visiting Santa together (1998–2007)!',
     theme: 'evergreen',
-    sticker: '🎅 10 Years of Memories',
-    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2007.webp?v=1'),
+    sticker: null,
+    mainPhoto: assetUrl('erin-kate-santa/erin-kate-2007.webp?v=2'),
     orientation: 'portrait',
     bonusPhotos: [],
   },
@@ -485,7 +485,7 @@ function BonusPolaroidCard({ bonus, year, onZoom }) {
   );
 }
 
-function ScrapbookSpread({ page, pageIndex, totalPages, onZoom }) {
+function ScrapbookSpread({ page, pageIndex, totalPages, onZoom, footerLabel = 'Agan Family Holiday Scrapbook' }) {
   const hasBonus = page.bonusPhotos && page.bonusPhotos.length > 0;
 
   return (
@@ -571,7 +571,7 @@ function ScrapbookSpread({ page, pageIndex, totalPages, onZoom }) {
       {/* Bottom Book Page Footer Number */}
       {typeof pageIndex === 'number' && (
         <div className="mt-3 pt-2 border-t border-amber-900/30 flex items-center justify-between text-[10px] font-serif italic text-amber-200/60 pl-3 sm:pl-4">
-          <span>Agan Family Holiday Scrapbook • Click any photo to enlarge</span>
+          <span>{footerLabel} • Click any photo to enlarge</span>
           <span className="font-mono not-italic text-amber-300/75">
             Page {pageIndex + 1} of {totalPages}
           </span>
@@ -588,6 +588,7 @@ export default function SantaScrapbookView({
   albumKids = 'Rowan, Elouise, Solomon, Maeve, and Atley',
   albumSubtitle = 'Rowan, Elouise, Solomon, Maeve, and Atley • 2012 – 2025',
   kickerText = '✦ Agan Family Holiday Keepsake ✦',
+  footerLabel = 'Agan Family Holiday Scrapbook',
   coverTheme = 'crimson',
 }) {
   const [viewStyle, setViewStyle] = useState('flipbook'); // 'flipbook' | 'all'
@@ -855,6 +856,7 @@ export default function SantaScrapbookView({
                         pageIndex={currentIndex}
                         totalPages={totalPages}
                         onZoom={setZoomedItem}
+                        footerLabel={footerLabel}
                       />
                     </motion.div>
                   </AnimatePresence>
@@ -925,6 +927,7 @@ export default function SantaScrapbookView({
                   pageIndex={idx}
                   totalPages={totalPages}
                   onZoom={setZoomedItem}
+                  footerLabel={footerLabel}
                 />
               </div>
             ))}

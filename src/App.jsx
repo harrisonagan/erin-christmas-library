@@ -2307,7 +2307,8 @@ export default function App() {
             albumTitle="Pictures with Santa"
             albumKids="Erin and Kate"
             albumSubtitle="Erin and Kate • 1998 – 2007 • Traverse City Mall"
-            kickerText="✦ Childhood Holiday Keepsake ✦"
+            kickerText="✦ The Strom Family Scrapbook ✦"
+            footerLabel="The Strom Family Scrapbook"
             coverTheme="evergreen"
             onClose={() => {
               setIsErinKateAlbumOpen(false);
