@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const BASE_URL = import.meta.env.BASE_URL || '/';
@@ -441,77 +441,22 @@ export default function SantaScrapbookView({ onClose }) {
   const [viewStyle, setViewStyle] = useState('flipbook'); // 'flipbook' | 'all'
   const [currentIndex, setCurrentIndex] = useState(0);
   const [turnDirection, setTurnDirection] = useState(1); // 1 = turning forward (right-to-left), -1 = turning back (left-to-right)
-  const [isRiffling, setIsRiffling] = useState(false);
-  const [riffleTargetYear, setRiffleTargetYear] = useState(null);
   const [flipTick, setFlipTick] = useState(0);
   const [zoomedItem, setZoomedItem] = useState(null);
 
-  const riffleTimerRef = useRef(null);
   const currentPage = SANTA_SCRAPBOOK_PAGES[currentIndex];
   const totalPages = SANTA_SCRAPBOOK_PAGES.length;
 
-  // Clean up any active riffle timer on unmount
-  useEffect(() => {
-    return () => {
-      if (riffleTimerRef.current) clearInterval(riffleTimerRef.current);
-    };
-  }, []);
-
   // Turn to a specific page index:
-  // - Adjacent page (distance === 1): single smooth 3D page turn
-  // - Multi-page jump (distance > 1): rapid sequential page-flipping riffle animation through intermediate pages!
+  // Always animates as a single page turn in the appropriate direction directly to the target year
   const navigateToPage = (targetIdx) => {
     if (targetIdx < 0 || targetIdx >= totalPages) return;
-    if (riffleTimerRef.current) {
-      clearInterval(riffleTimerRef.current);
-      riffleTimerRef.current = null;
-    }
-
     const diff = targetIdx - currentIndex;
     if (diff === 0) return;
 
-    const dir = diff > 0 ? 1 : -1;
-    setTurnDirection(dir);
-
-    if (Math.abs(diff) === 1) {
-      setIsRiffling(false);
-      setRiffleTargetYear(null);
-      setFlipTick((t) => t + 1);
-      setCurrentIndex(targetIdx);
-      return;
-    }
-
-    // Multi-page rapid flip / riffle animation
-    setIsRiffling(true);
-    setRiffleTargetYear(SANTA_SCRAPBOOK_PAGES[targetIdx].year);
-    let stepIdx = currentIndex;
-    const stepMs = Math.max(70, Math.min(115, Math.round(680 / Math.abs(diff))));
-
-    // Immediately advance the first page
-    stepIdx += dir;
+    setTurnDirection(diff > 0 ? 1 : -1);
     setFlipTick((t) => t + 1);
-    setCurrentIndex(stepIdx);
-
-    riffleTimerRef.current = setInterval(() => {
-      if (stepIdx === targetIdx) {
-        clearInterval(riffleTimerRef.current);
-        riffleTimerRef.current = null;
-        setIsRiffling(false);
-        setRiffleTargetYear(null);
-        return;
-      }
-      stepIdx += dir;
-      setFlipTick((t) => t + 1);
-      setCurrentIndex(stepIdx);
-      if (stepIdx === targetIdx) {
-        clearInterval(riffleTimerRef.current);
-        riffleTimerRef.current = null;
-        setTimeout(() => {
-          setIsRiffling(false);
-          setRiffleTargetYear(null);
-        }, 160);
-      }
-    }, stepMs);
+    setCurrentIndex(targetIdx);
   };
 
   useEffect(() => {
@@ -534,33 +479,33 @@ export default function SantaScrapbookView({ onClose }) {
 
   // 3D Page Turn Variants (hinged along the left book spine)
   const pageTurnVariants = {
-    enter: ( { dir, fast } ) => ({
+    enter: ({ dir }) => ({
       rotateY: dir > 0 ? 78 : -78,
       x: dir > 0 ? 35 : -35,
       opacity: 0.15,
       scale: 0.985,
       transition: {
-        duration: fast ? 0.09 : 0.42,
+        duration: 0.42,
         ease: [0.22, 1, 0.36, 1],
       },
     }),
-    center: ( { fast } ) => ({
+    center: () => ({
       rotateY: 0,
       x: 0,
       opacity: 1,
       scale: 1,
       transition: {
-        duration: fast ? 0.09 : 0.42,
+        duration: 0.42,
         ease: [0.22, 1, 0.36, 1],
       },
     }),
-    exit: ( { dir, fast } ) => ({
+    exit: ({ dir }) => ({
       rotateY: dir > 0 ? -78 : 78,
       x: dir > 0 ? -35 : 35,
       opacity: 0.1,
       scale: 0.985,
       transition: {
-        duration: fast ? 0.08 : 0.36,
+        duration: 0.36,
         ease: [0.4, 0, 0.2, 1],
       },
     }),
@@ -651,7 +596,6 @@ export default function SantaScrapbookView({ onClose }) {
             <div className="max-w-3xl mx-auto px-2 sm:px-4 flex items-end gap-1 overflow-x-auto no-scrollbar pt-0.5">
               {SANTA_SCRAPBOOK_PAGES.map((p, idx) => {
                 const isActive = idx === currentIndex;
-                const isTarget = riffleTargetYear === p.year;
                 const hasBonus = p.bonusPhotos && p.bonusPhotos.length > 0;
                 return (
                   <button
@@ -660,8 +604,6 @@ export default function SantaScrapbookView({ onClose }) {
                     className={`relative px-2.5 sm:px-3 py-1 rounded-t-lg text-[11px] sm:text-xs font-serif font-bold transition-all flex items-center gap-1 flex-shrink-0 border-t-2 border-x-2 ${
                       isActive
                         ? 'bg-gradient-to-b from-[#8b151e] via-[#680e15] to-[#271911] border-[#f3d47c] text-[#fff3c4] shadow-[0_-3px_10px_rgba(212,175,55,0.35)] -mb-0.5 pb-1.5 z-20 scale-105'
-                        : isTarget
-                        ? 'bg-amber-800/80 border-amber-300 text-white z-10'
                         : 'bg-[#1b110c] hover:bg-[#2a1a12] border-amber-900/60 text-amber-200/70 hover:text-amber-100'
                     }`}
                     title={`Flip to ${p.year}`}
@@ -698,7 +640,7 @@ export default function SantaScrapbookView({ onClose }) {
                   className="relative overflow-hidden rounded-xl"
                   style={{ perspective: '2000px' }}
                 >
-                  {/* Animated Flying Page Sheet Overlay During Page Turn / Riffle */}
+                  {/* Animated Flying Page Sheet Overlay During Page Turn */}
                   <AnimatePresence>
                     {flipTick > 0 && (
                       <motion.div
@@ -713,7 +655,7 @@ export default function SantaScrapbookView({ onClose }) {
                         }}
                         exit={{ opacity: 0 }}
                         transition={{
-                          duration: isRiffling ? 0.11 : 0.4,
+                          duration: 0.4,
                           ease: 'easeInOut',
                         }}
                         style={{
@@ -729,11 +671,11 @@ export default function SantaScrapbookView({ onClose }) {
                   <AnimatePresence
                     mode="wait"
                     initial={false}
-                    custom={{ dir: turnDirection, fast: isRiffling }}
+                    custom={{ dir: turnDirection }}
                   >
                     <motion.div
                       key={currentPage.year}
-                      custom={{ dir: turnDirection, fast: isRiffling }}
+                      custom={{ dir: turnDirection }}
                       variants={pageTurnVariants}
                       initial="enter"
                       animate="center"
@@ -759,7 +701,7 @@ export default function SantaScrapbookView({ onClose }) {
             <div className="max-w-3xl mx-auto mt-2.5 flex items-center justify-between gap-2 bg-[#180f0a] border border-amber-900/50 rounded-xl px-3 py-2 shadow-lg">
               <button
                 onClick={() => navigateToPage(currentIndex - 1)}
-                disabled={currentIndex === 0 || isRiffling}
+                disabled={currentIndex === 0}
                 className="px-3 sm:px-4 py-1.5 rounded-lg bg-stone-900 hover:bg-stone-800 disabled:opacity-35 border border-amber-800/50 text-xs font-serif font-bold text-amber-100 flex items-center gap-1.5 transition active:scale-95"
               >
                 <span>←</span>
@@ -772,15 +714,13 @@ export default function SantaScrapbookView({ onClose }) {
 
               <div className="text-center font-serif">
                 <span className="text-xs text-amber-200 font-bold">
-                  {isRiffling && riffleTargetYear
-                    ? `Flipping to ${riffleTargetYear}...`
-                    : `${currentPage.year} • Page ${currentIndex + 1} of ${totalPages}`}
+                  {currentPage.year} • Page {currentIndex + 1} of {totalPages}
                 </span>
               </div>
 
               <button
                 onClick={() => navigateToPage(currentIndex + 1)}
-                disabled={currentIndex === totalPages - 1 || isRiffling}
+                disabled={currentIndex === totalPages - 1}
                 className="px-3 sm:px-4 py-1.5 rounded-lg bg-gradient-to-r from-amber-700 to-red-800 hover:from-amber-600 hover:to-red-700 disabled:opacity-35 border border-amber-400/50 text-xs font-serif font-bold text-white flex items-center gap-1.5 shadow transition active:scale-95"
               >
                 <span>
